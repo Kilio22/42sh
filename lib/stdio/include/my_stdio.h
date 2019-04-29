@@ -27,4 +27,6 @@ size_t my_puts(const char *s);
 size_t my_putstr(const char *s);
 void my_show_wordarray(char **array);
 
+#define DISPLAY_RETURN(disp, ret) (my_puts(disp), ret)
+
 #endif /* !MY_STDIO_H_ */

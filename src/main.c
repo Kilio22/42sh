@@ -5,8 +5,18 @@
 ** Main function
 */
 
-int main(int argc, char *argv[])
+#include <sys/types.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include "my.h"
+#include "my_stdio.h"
+#include "my_string.h"
+#include "minishell.h"
+
+int main(int argc, char *argv[], char *env[])
 {
-    argv[argc * 0] = "";
+    (void) argc;
+    (void) argv;
+    loop_shell(init_my_env(env));
     return (0);
 }
