@@ -12,13 +12,24 @@
 #include "my_stdio.h"
 #include "my_string.h"
 #include "minishell.h"
+#include <string.h>
+
+char *get_dirname(void)
+{
+    char current[256];
+    char *dirname = getcwd(current, sizeof(current));
+    size_t i = strlen(dirname + 4);
+
+    for (; dirname[i] != '/'; i--);
+    return (strdup(dirname + i + 1));
+}
 
 char *read_prompt(void)
 {
     char *line;
 
     if (isatty(0))
-        my_printf("$ > ");
+        my_printf("[Ouish@localhost%s]> ", get_dirname());
     line = get_next_line(0);
     if (!line)
         return (NULL);
