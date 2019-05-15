@@ -23,6 +23,12 @@
 #define START_MAP_Y 2
 #define END_MAP_Y 21
 
+typedef struct snake_s {
+    int x;
+    int y;
+    int direction;
+} snake_t;
+
 typedef struct game_s {
     int score;
     int highscore;
@@ -32,6 +38,7 @@ typedef struct game_s {
     int first[2];
     int direction;
     int map[24][70];
+    snake_t body[800];
 } game_t;
 
 enum keys {

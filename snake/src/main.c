@@ -119,16 +119,14 @@ void update_last(game_t *snake)
 {
     int x = snake->last[0];
     int y = snake->last[1];
-    int new_x = snake->last[0];
-    int new_y = snake->last[1];
+    int i = 0;
 
-    new_y = (snake->map[y - 1][x] == 3) ? y - 1 : new_y;
-    new_y = (snake->map[y + 1][x] == 3) ? y + 1 : new_y;
-    new_x = (snake->map[y][x - 1] == 3) ? x - 1: new_x;
-    new_x = (snake->map[y][x + 1] == 3) ? x + 1: new_x;
+    while (snake->body[i].direction != -1)
+        i++;
+    i--;
     snake->map[y][x] = 1;
-    snake->last[0] = new_x;
-    snake->last[1] = new_y;
+    snake->last[0] = snake->body[i].x;
+    snake->last[1] = snake->body[i].y;
 }
 
 void generate_new_fruit(game_t *snake, int new_x, int new_y)
@@ -150,6 +148,42 @@ void generate_new_fruit(game_t *snake, int new_x, int new_y)
     }
 }
 
+void add_last(game_t *snake)
+{
+    int i = 0;
+
+    while (snake->body[i].direction != -1)
+        i++;
+    i--;
+    snake->last[0] = snake->body[i].x;
+    snake->last[1] = snake->body[i].y;
+}
+
+void generate_new_block(game_t *snake)
+{
+    int i = 0;
+    int x;
+    int y;
+
+    while (snake->body[i].direction != -1)
+        i++;
+    snake->body[i].direction = snake->body[i - 1].direction;
+    x = snake->body[i - 1].x;
+    y = snake->body[i - 1].y;
+    if (snake->body[i - 1].direction == UP)
+        y++;
+    if (snake->body[i - 1].direction == DOWN)
+        y--;
+    if (snake->body[i - 1].direction == RIGHT)
+        x--;
+    if (snake->body[i - 1].direction == LEFT)
+        x++;
+    snake->body[i].x = x;
+    snake->body[i].y = y;
+    snake->map[y][x] = 3;
+    add_last(snake);
+}
+
 void update_new(game_t *snake, int new_x, int new_y)
 {
     if (snake->map[new_y][new_x] == 3)
@@ -160,11 +194,29 @@ snake->score + 1 : snake->score + 2;
         snake->highscore = (snake->score > snake->highscore) ?
 snake->score : snake->highscore;
         generate_new_fruit(snake, new_x, new_y);
+        generate_new_block(snake);
     }
     snake->map[snake->first[1]][snake->first[0]] = 3;
     snake->map[new_y][new_x] = 4;
     snake->first[0] = new_x;
     snake->first[1] = new_y;
+}
+
+void update_body(game_t *snake, int new_x, int new_y)
+{
+    int i = 0;
+
+    while (snake->body[i].direction != -1)
+        i++;
+    i--;
+    for (; i > 0; i--) {
+        snake->body[i].direction = snake->body[i - 1].direction;
+        snake->body[i].x = snake->body[i - 1].x;
+        snake->body[i].y = snake->body[i - 1].y;
+    }
+    snake->body[0].direction = snake->direction;
+    snake->body[0].x = new_x;
+    snake->body[0].y = new_y;
 }
 
 void update_snake(game_t *snake)
@@ -185,6 +237,7 @@ void update_snake(game_t *snake)
         snake->loose = true;
         return;
     }
+    update_body(snake, new_x, new_y);
     update_last(snake);
     update_new(snake, new_x, new_y);
 }
@@ -217,6 +270,8 @@ int window_loop(game_t *snake)
         if (snake->pause == true)
             continue;
         update_snake(snake);
+        if (snake->loose == true)
+            break;
         if (print_map(snake) == 1)
             return close_window(1);
         refresh();
@@ -241,6 +296,21 @@ int init_highscore(void)
     return ret_val;
 }
 
+void init_snake(game_t *snake)
+{
+    int x = 31;
+    int y = 4;
+
+    for (int i = 0; i < 3; i++) {
+        snake->body[i].direction = RIGHT;
+        snake->body[i].x = x;
+        snake->body[i].y = y;
+        x--;
+    }
+    for (int i = 3; i < 800; i++)
+        snake->body[i].direction = -1;
+}
+
 game_t init_game(void)
 {
     game_t snake;
@@ -258,6 +328,7 @@ game_t init_game(void)
             snake.map[i][j] = map_snake[i][j];
     }
     snake.highscore = init_highscore();
+    init_snake(&snake);
     return snake;
 }
 
