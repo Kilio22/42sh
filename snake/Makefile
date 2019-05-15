@@ -33,7 +33,7 @@ COLOR_THEME	=	$(BLUE_C)
 DEBUG_THEME	=	$(CYAN_C)
 TESTS_THEME	=	$(RED_C)
 
-NAME	=	build
+NAME	=	snake
 ROOT_PATH	=	./
 SRC_NAME	=	src
 TESTS_NAME	=	tests
@@ -42,9 +42,10 @@ SRC_PATH	=	$(ROOT_PATH)$(SRC_NAME)
 INCL_PATH	=	$(ROOT_PATH)$(INCL_NAME)
 TESTS_PATH	=	$(ROOT_PATH)$(TESTS_NAME)
 
-SRC	=	
+SRC	=	globals.c	\
+		init_window.c
 
-SRC_LIB	=	stdio my string
+SRC_LIB	=	stdio my string ncurses
 
 LIB_PATHS	=	lib/stdio lib/my lib/string
 
