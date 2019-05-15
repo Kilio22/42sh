@@ -201,6 +201,8 @@ int window_loop(game_t *snake)
         }
         if (ret_val == 1 || snake->loose == true)
             break;
+        if (snake->pause == true)
+            continue;
         update_snake(snake);
         if (print_map(snake) == 1)
             return close_window(1);
@@ -245,11 +247,26 @@ game_t init_game(void)
     return snake;
 }
 
+void save_snake(game_t *snake)
+{
+    int fd = open("highscore.txt", O_CREAT | O_RDWR | O_TRUNC,
+S_IRUSR | S_IWUSR);
+    char *highscore = my_itoa(snake->highscore);
+
+    if (fd == -1)
+        return;
+    if (highscore == NULL)
+        return;
+    write(fd, highscore, my_strlen(highscore));
+    free(highscore);
+}
+
 int main(void)
 {
     int ret_val;
 
     game_t snake = init_game();
     ret_val = window_loop(&snake);
+    save_snake(&snake);
     return (ret_val == 1) ? 84 : 0;
 }
