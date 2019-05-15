@@ -32,6 +32,23 @@ int set_term_mode(int i)
     return 0;
 }
 
+int init_colors(void)
+{
+    if (init_pair(1, COLOR_BLACK, COLOR_BLACK) == ERR)
+        return 1;
+    if (init_pair(2, COLOR_RED, COLOR_RED) == ERR)
+        return 1;
+    if (init_pair(3, COLOR_BLUE, COLOR_BLUE) == ERR)
+        return 1;
+    if (init_pair(4, COLOR_BLUE, COLOR_CYAN) == ERR)
+        return 1;
+    if (init_pair(5, COLOR_GREEN, COLOR_GREEN) == ERR)
+        return 1;
+    if (init_pair(6, COLOR_YELLOW, COLOR_YELLOW) == ERR)
+        return 1;
+    return 0;
+}
+
 int init_window(void)
 {
     initscr();
@@ -43,15 +60,7 @@ int init_window(void)
         return 1;
     if (set_term_mode(0) == 1)
         return 1;
-    if (init_pair(1, COLOR_BLACK, COLOR_BLACK) == ERR)
-        return 1;
-    if (init_pair(2, COLOR_RED, COLOR_RED) == ERR)
-        return 1;
-    if (init_pair(3, COLOR_BLUE, COLOR_BLUE) == ERR)
-        return 1;
-    if (init_pair(4, COLOR_BLUE, COLOR_CYAN) == ERR)
-        return 1;
-    if (init_pair(5, COLOR_RED, COLOR_MAGENTA) == ERR)
+    if (init_colors() == 1)
         return 1;
     return 0;
 }

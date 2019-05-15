@@ -60,29 +60,32 @@ static int print_description(void)
         return 1;
     if (mvprintw(LINE_HSCORE + 8, COL_HSCORE, "Right:           D") == ERR)
         return 1;
-    if (mvprintw(LINE_HSCORE + 10, COL_HSCORE, "Quit:            E") == ERR)
+    if (mvprintw(LINE_HSCORE + 10, COL_HSCORE, "Pause:           P") == ERR)
         return 1;
-    if (mvprintw(LINE_HSCORE + 12, COL_HSCORE, "Keep pressing the") == ERR)
-        return 1;
-    if (mvprintw(LINE_HSCORE + 13, COL_HSCORE, "move key to sprint") == ERR)
+    if (mvprintw(LINE_HSCORE + 12, COL_HSCORE, "Quit:            E") == ERR)
         return 1;
     return 0;
 }
 
 static int print_score(game_t *snake)
 {
+    char *score = my_itoa(snake->score);
+    char *highs = my_itoa(snake->highscore);
+
+    if (score == NULL)
+        return 1;
     if (mvprintw(LINE_SNAKE, COL_SNAKE, "SNAKE GAME") == ERR)
         return 1;
     if (mvprintw(LINE_SCORE, COL_SCORE, "Score: ") == ERR)
         return 1;
-    if (mvprintw(LINE_SCORE, COL_SCORE + 18
-- my_strlen(my_itoa(snake->score)), my_itoa(snake->score)) == ERR)
+    if (mvprintw(LINE_SCORE, COL_SCORE + 18 - my_strlen(score), score) == ERR)
         return 1;
     if (mvprintw(LINE_HSCORE, COL_HSCORE, "Highscore: ") == ERR)
         return 1;
-    if (mvprintw(LINE_HSCORE, COL_HSCORE + 18
-- my_strlen(my_itoa(snake->highscore)), my_itoa(snake->highscore)) == ERR)
+    if (mvprintw(LINE_HSCORE, COL_HSCORE + 18 - my_strlen(highs), highs) == ERR)
         return 1;
+    free(score);
+    free(highs);
     return 0;
 }
 
@@ -133,6 +136,7 @@ void generate_new_fruit(game_t *snake, int new_x, int new_y)
     int ret_val = 1;
     int x;
     int y;
+    int color = rand() % 10;
 
     while (ret_val != 0) {
         x = START_MAP_X + (rand() % 40);
@@ -142,7 +146,7 @@ void generate_new_fruit(game_t *snake, int new_x, int new_y)
         if (snake->map[y][x] == 3 || snake->map[y][x] == 4)
             continue;
         ret_val = 0;
-        snake->map[y][x] = 5;
+        snake->map[y][x] = (color < 3) ? 6 : 5;
     }
 }
 
@@ -150,8 +154,9 @@ void update_new(game_t *snake, int new_x, int new_y)
 {
     if (snake->map[new_y][new_x] == 3)
         snake->loose = true;
-    if (snake->map[new_y][new_x] == 5) {
-        snake->score++;
+    if (snake->map[new_y][new_x] == 5 || snake->map[new_y][new_x] == 6) {
+        snake->score = (snake->map[new_y][new_x] == 5) ?
+snake->score + 1 : snake->score + 2;
         snake->highscore = (snake->score > snake->highscore) ?
 snake->score : snake->highscore;
         generate_new_fruit(snake, new_x, new_y);
@@ -184,21 +189,29 @@ void update_snake(game_t *snake)
     update_new(snake, new_x, new_y);
 }
 
-int window_loop(game_t *snake)
+int read_input(game_t *snake)
 {
     int ret_val = 0;
     char buff[20];
+
+    if (read(0, buff, 20) != 0) {
+        ret_val = check_event(buff, snake);
+        for (int i = 0; i < 20; i++)
+            buff[i] = '\0';
+    }
+    return ret_val;
+}
+
+int window_loop(game_t *snake)
+{
+    int ret_val = 0;
 
     if (init_window() == 1)
         return close_window(1);
     while (1) {
         check_size_window();
         clear();
-        if (read(0, buff, 20) != 0) {
-            ret_val = check_event(buff, snake);
-            for (int i = 0; i < 20; i++)
-                buff[i] = '\0';
-        }
+        ret_val = read_input(snake);
         if (ret_val == 1 || snake->loose == true)
             break;
         if (snake->pause == true)
@@ -214,6 +227,7 @@ int window_loop(game_t *snake)
 int init_highscore(void)
 {
     int fd = open("highscore.txt", O_RDONLY);
+    int ret_val = 0;
     char *buff;
 
     if (fd == -1)
@@ -222,9 +236,9 @@ int init_highscore(void)
     if (buff == NULL)
         return 0;
     if (my_str_isnum(buff, 0) == true)
-        return my_atoi(buff);
-    else
-        return 0;
+        ret_val = my_atoi(buff);
+    free(buff);
+    return ret_val;
 }
 
 game_t init_game(void)

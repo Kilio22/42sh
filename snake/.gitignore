@@ -135,3 +135,4 @@ flycheck_*.el
 .vscode
 unit_test*
 vgcore*
+snake
