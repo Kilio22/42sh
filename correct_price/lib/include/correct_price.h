@@ -16,4 +16,7 @@ typedef struct game_s {
     time_t find;
 } game_t;
 
+int get_name(game_t *correct_price);
+int start_game(game_t *game);
+
 #endif /* !CORRECT_PRICE_H_ */

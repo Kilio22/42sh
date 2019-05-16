@@ -17,72 +17,6 @@
 #include "my.h"
 #include "correct_price.h"
 
-int print_start(const char *score, const char *name, int fd, game_t *game)
-{
-    char *hscore;
-    int highscore = -1;
-
-    if (score != NULL)
-        highscore = 0;
-    hscore = get_next_line(fd);
-    if (hscore == NULL)
-        highscore = 0;
-    else if (my_str_isnum(hscore, 0) == false)
-        highscore = 0;
-    highscore = (highscore == 0) ? highscore : my_atoi(hscore);
-    my_printf("\nBonjour et bienvenue dans un nouveau Juste Prix !!!\n");
-    my_printf("Le prix est compris entre 0 et 99999 euros.\n");
-    my_printf("Le record est actuellement de %d secondes, détenu par %s\n",
-highscore, name);
-    game->highscore = highscore;
-    return 0;
-}
-
-int start_game(game_t *game)
-{
-    int fd = open("highscore.txt", O_RDONLY);
-    char *score = NULL;
-    char *name = my_strdup("personne");
-
-    if (fd == -1)
-        score = my_strdup("0");
-    else {
-        free(name);
-        name = get_next_line(fd);
-        if (name == NULL)
-            return -1;
-    }
-    if (print_start(score, name, fd, game) == -1)
-        return -1;
-    free(name);
-    free(score);
-    close(fd);
-    return 0;
-}
-
-int get_name(game_t *correct_price)
-{
-    char *buff;
-
-    my_printf("\nQuel est votre nom ?\n\n");
-    correct_price->name = get_next_line(0);
-    if (correct_price->name == NULL)
-        return -1;
-    my_printf("\nEt bien bonne chance, %s !\nEcrivez ready pour commencer\n",
-correct_price->name);
-    while (1) {
-        buff = get_next_line(0);
-        if (my_strcmp(buff, "ready") == 0)
-            break;
-        my_printf("\nArgument invalide. Ecrivez ready pour commencer\n");
-        free(buff);
-    }
-    free(buff);
-    correct_price->start = time(NULL);
-    correct_price->number = rand() % 100000;
-    return 0;
-}
-
 void manage_price_diff(game_t *correct_price, int price)
 {
     if (price < 0 || price > 99999) {
@@ -122,7 +56,19 @@ int loop_game(game_t *correct_price)
 
 void save_new_highscore(game_t *correct_price)
 {
-    (void) correct_price;
+    int fd = open("highscore.txt", O_CREAT | O_RDWR | O_TRUNC,
+S_IRUSR | S_IWUSR);
+    char *highscore = my_itoa(correct_price->find);
+
+    if (fd == -1)
+        return;
+    if (highscore == NULL)
+        return;
+    write(fd, correct_price->name, my_strlen(correct_price->name));
+    write(fd, "\n", 1);
+    write(fd, highscore, my_strlen(highscore));
+    free(highscore);
+    close(fd);
     return;
 }
 
@@ -138,8 +84,8 @@ correct_price->highscore == 0) {
         save_new_highscore(correct_price);
     } else
         my_printf("Dommage, ce score est inférieur au record.\n");
-    my_printf("Merci d'avoir jouer, et à très bientôt pour un\
- nouveau Juste Prix :D\n\n");
+    my_printf("Merci d'avoir jouer, et à très bientôt pour ");
+    my_printf("un nouveau Juste Prix :D\n\n");
 }
 
 int main(void)
