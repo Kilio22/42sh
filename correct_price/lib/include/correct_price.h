@@ -18,5 +18,6 @@ typedef struct game_s {
 
 int get_name(game_t *correct_price);
 int start_game(game_t *game);
+char *get_line(FILE *stream);
 
 #endif /* !CORRECT_PRICE_H_ */

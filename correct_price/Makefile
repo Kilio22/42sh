@@ -42,7 +42,8 @@ SRC_PATH	=	$(ROOT_PATH)$(SRC_NAME)
 INCL_PATH	=	$(ROOT_PATH)$(INCL_NAME)
 TESTS_PATH	=	$(ROOT_PATH)$(TESTS_NAME)
 
-SRC	=	start_game.c
+SRC	=	start_game.c	\
+		get_line.c
 
 SRC_LIB	=	stdio my string
 

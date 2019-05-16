@@ -35,7 +35,7 @@ int loop_game(game_t *correct_price)
     int price;
 
     while (1) {
-        buff = get_next_line(0);
+        buff = get_line(stdin);
         if (buff == NULL)
             return -1;
         if (my_str_isnum(buff, 0) == false) {

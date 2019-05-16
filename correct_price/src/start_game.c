@@ -18,14 +18,14 @@
 #include "correct_price.h"
 
 static int print_start(const char *score, const char *name,
-int fd, game_t *game)
+FILE *stream, game_t *game)
 {
     char *hscore;
     int highscore = -1;
 
     if (score != NULL)
         highscore = 0;
-    hscore = get_next_line(fd);
+    hscore = get_line(stream);
     if (hscore == NULL)
         highscore = 0;
     else if (my_str_isnum(hscore, 0) == false)
@@ -42,23 +42,23 @@ highscore, name);
 
 int start_game(game_t *game)
 {
-    int fd = open("highscore.txt", O_RDONLY);
+    FILE *stream = fopen("highscore.txt", "r");
     char *score = NULL;
     char *name = my_strdup("personne");
 
-    if (fd == -1)
+    if (stream == NULL)
         score = my_strdup("0");
     else {
         free(name);
-        name = get_next_line(fd);
+        name = get_line(stream);
         if (name == NULL)
             return -1;
     }
-    if (print_start(score, name, fd, game) == -1)
+    if (print_start(score, name, stream, game) == -1)
         return -1;
     free(name);
     free(score);
-    close(fd);
+    fclose(stream);
     return 0;
 }
 
@@ -67,13 +67,13 @@ int get_name(game_t *correct_price)
     char *buff;
 
     my_printf("\nQuel est votre nom ?\n\n");
-    correct_price->name = get_next_line(0);
+    correct_price->name = get_line(stdin);
     if (correct_price->name == NULL)
         return -1;
     my_printf("\nEt bien bonne chance, %s !\nEcrivez ready pour commencer\n",
 correct_price->name);
     while (1) {
-        buff = get_next_line(0);
+        buff = get_line(stdin);
         if (my_strcmp(buff, "ready") == 0)
             break;
         my_printf("\nArgument invalide. Ecrivez ready pour commencer\n");
