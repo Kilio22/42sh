@@ -50,7 +50,7 @@ int loop_parsing_flags(char *str, int index)
     char outputs[] = "\\\a\b\e\f\n\r\t\v";
 
     for (int i = 0; i < 9; i++) {
-        if (str[index] == flags[i]) {
+        if (str[index] == '\\' && str[index + 1] == flags[i]) {
             my_putchar(outputs[i]);
             return 1;
         }
