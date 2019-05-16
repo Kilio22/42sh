@@ -33,7 +33,7 @@ COLOR_THEME	=	$(BLUE_C)
 DEBUG_THEME	=	$(CYAN_C)
 TESTS_THEME	=	$(RED_C)
 
-NAME	=	build
+NAME	=	correct_price
 ROOT_PATH	=	./
 SRC_NAME	=	src
 TESTS_NAME	=	tests
