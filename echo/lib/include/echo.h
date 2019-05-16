@@ -13,6 +13,7 @@
 typedef struct echo_s {
     bool newline;
     bool backslash;
+    int first_str;
 } echo_t;
 
 #endif /* !ECHO_H_ */
