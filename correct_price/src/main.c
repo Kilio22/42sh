@@ -24,9 +24,9 @@ void manage_price_diff(game_t *correct_price, int price)
         return;
     }
     if (price < correct_price->number)
-        my_printf("C'est PLUS !!!\n");
+        my_printf("C'est PLUS !!!\n\n");
     else
-        my_printf("C'est MOINS !!!\n");
+        my_printf("C'est MOINS !!!\n\n");
 }
 
 int loop_game(game_t *correct_price)
