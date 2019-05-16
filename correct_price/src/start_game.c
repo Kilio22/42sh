@@ -36,6 +36,7 @@ int fd, game_t *game)
     my_printf("Le record est actuellement de %d secondes, détenu par %s\n",
 highscore, name);
     game->highscore = highscore;
+    free(hscore);
     return 0;
 }
 
