@@ -34,6 +34,7 @@ typedef struct game_s {
     int highscore;
     bool pause;
     bool loose;
+    int start;
     int last[2];
     int first[2];
     int direction;
@@ -58,5 +59,25 @@ extern const int map_snake[24][70];
 int init_window(void);
 int close_window(int err_code);
 int set_term_mode(int i);
+
+//init_snake.c
+void init_snake(game_t *snake);
+game_t init_game(void);
+void save_snake(game_t *snake);
+int init_highscore(void);
+
+//new_fruits_and_block.c
+void generate_new_block(game_t *snake);
+void generate_new_fruit(game_t *snake, int new_x, int new_y);
+
+//update_snake_body.c
+void update_snake(game_t *snake);
+
+//event_management.c
+int check_event(char *buff, game_t *snake);
+void check_size_window(void);
+
+//display_map.c
+int print_map(game_t *snake);
 
 #endif /* !SNAKE_H_ */

@@ -43,7 +43,12 @@ INCL_PATH	=	$(ROOT_PATH)$(INCL_NAME)
 TESTS_PATH	=	$(ROOT_PATH)$(TESTS_NAME)
 
 SRC	=	globals.c	\
-		init_window.c
+		init_window.c	\
+		display_map.c	\
+		event_management.c	\
+		init_snake.c	\
+		new_fruits_and_block.c	\
+		update_snake_body.c
 
 SRC_LIB	=	stdio my string ncurses
 
