@@ -16,4 +16,7 @@ typedef struct echo_s {
     int first_str;
 } echo_t;
 
+void init_echo(echo_t *params);
+void parse_flags(echo_t *params, int ac, char *av[]);
+
 #endif /* !ECHO_H_ */

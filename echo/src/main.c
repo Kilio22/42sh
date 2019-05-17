@@ -11,40 +11,7 @@
 #include "my_string.h"
 #include "my.h"
 
-void init_echo(echo_t *params)
-{
-    params->newline = true;
-    params->backslash = false;
-    params->first_str = 1;
-}
-
-void manage_flag(char c, echo_t *params)
-{
-    if (c == 'e')
-        params->backslash = true;
-    else if (c == 'n')
-        params->newline = false;
-    else
-        params->backslash = false;
-}
-
-void parse_flags(echo_t *params, int ac, char *av[])
-{
-    int i = 1;
-
-    for (; i < ac; i++) {
-        if (my_strlen(av[i]) != 2)
-            break;
-        if (av[i][0] != '-')
-            break;
-        if (av[i][1] != 'e' && av[i][1] != 'E' && av[i][1] != 'n')
-            break;
-        params->first_str++;
-        manage_flag(av[i][1], params);
-    }
-}
-
-int loop_parsing_flags(char *str, int index)
+static int loop_print_flags(const char *str, int index)
 {
     char flags[] = "\\abefnrtv";
     char outputs[] = "\\\a\b\e\f\n\r\t\v";
@@ -58,7 +25,7 @@ int loop_parsing_flags(char *str, int index)
     return 0;
 }
 
-void parse_str_and_print(echo_t *params, char *str)
+static void parse_str_and_print(echo_t *params, const char *str)
 {
     int i = 0;
 
@@ -68,7 +35,7 @@ void parse_str_and_print(echo_t *params, char *str)
             params->first_str = -1;
             return;
         }
-        if (loop_parsing_flags(str, i) == 1) {
+        if (loop_print_flags(str, i) == 1) {
             i += 2;
             continue;
         }
@@ -77,7 +44,7 @@ void parse_str_and_print(echo_t *params, char *str)
     }
 }
 
-void print_strings(echo_t *params, int ac, char *av[])
+static void print_strings(echo_t *params, int ac, const char *av[])
 {
     int i = params->first_str;
 
@@ -93,7 +60,7 @@ void print_strings(echo_t *params, int ac, char *av[])
     }
 }
 
-void echo(int ac, char *av[])
+void echo(int ac, const char *av[])
 {
     echo_t params;
 
