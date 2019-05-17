@@ -18,6 +18,8 @@ void parse_flags(echo_t *params, int ac, const char *av[])
 {
     int i = 1;
 
+    if (ac == 1)
+        return;
     if (my_strlen(av[i]) != 2)
         return;
     if (my_strcmp("-n", av[i]) != 0)
