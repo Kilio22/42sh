@@ -75,7 +75,7 @@ void echo(int ac, const char *av[])
         my_putchar('\n');
 }
 
-int main(int ac, char *av[])
+int main(int ac, const char *av[])
 {
     echo(ac, av);
     return (0);

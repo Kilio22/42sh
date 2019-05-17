@@ -5,6 +5,7 @@
 ** flag_parsing
 */
 
+#include "my_string.h"
 #include "echo.h"
 
 void init_echo(echo_t *params)
@@ -14,7 +15,7 @@ void init_echo(echo_t *params)
     params->first_str = 1;
 }
 
-static void manage_flag(char c, echo_t *params)
+static void manage_flag(const char c, echo_t *params)
 {
     if (c == 'e')
         params->backslash = true;
@@ -24,7 +25,7 @@ static void manage_flag(char c, echo_t *params)
         params->backslash = false;
 }
 
-void parse_flags(echo_t *params, int ac, char *av[])
+void parse_flags(echo_t *params, int ac, const char *av[])
 {
     int i = 1;
 
