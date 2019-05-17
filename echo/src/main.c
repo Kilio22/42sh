@@ -29,7 +29,6 @@ static void parse_str_and_print(echo_t *params, const char *str)
 {
     int i = 0;
 
-    (void) params;
     while (str[i] != '\0') {
         if (str[i] == '\\' && str[i + 1] == 'c') {
             params->first_str = -1;
