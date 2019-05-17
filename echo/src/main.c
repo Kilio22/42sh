@@ -11,38 +11,6 @@
 #include "my_string.h"
 #include "my.h"
 
-static int loop_print_flags(const char *str, int index)
-{
-    char flags[] = "\\abefnrtv";
-    char outputs[] = "\\\a\b\e\f\n\r\t\v";
-
-    for (int i = 0; i < 9; i++) {
-        if (str[index] == '\\' && str[index + 1] == flags[i]) {
-            my_putchar(outputs[i]);
-            return 1;
-        }
-    }
-    return 0;
-}
-
-static void parse_str_and_print(echo_t *params, const char *str)
-{
-    int i = 0;
-
-    while (str[i] != '\0') {
-        if (str[i] == '\\' && str[i + 1] == 'c') {
-            params->first_str = -1;
-            return;
-        }
-        if (loop_print_flags(str, i) == 1) {
-            i += 2;
-            continue;
-        }
-        my_putchar(str[i]);
-        i++;
-    }
-}
-
 static void print_strings(echo_t *params, int ac, const char *av[])
 {
     int i = params->first_str;
@@ -52,10 +20,7 @@ static void print_strings(echo_t *params, int ac, const char *av[])
             return;
         if (i != params->first_str)
             my_putchar(' ');
-        if (params->backslash == true)
-            parse_str_and_print(params, av[i]);
-        else
-            my_putstr(av[i]);
+        my_putstr(av[i]);
     }
 }
 
