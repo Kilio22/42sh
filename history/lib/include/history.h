@@ -12,14 +12,16 @@
 
 typedef struct content_s {
     int number;
-    struct tm hour;
+    struct tm *hour;
     char *command;
 } content_t;
 
 typedef struct history_s {
     content_t *content;
-    history_t *old;
-    history_t *next;
+    struct history_s *old;
+    struct history_s *next;
 } history_t;
+
+char *get_line(FILE *stream);
 
 #endif /* !HISTORY_H_ */
