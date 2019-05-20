@@ -12,7 +12,7 @@
 
 typedef struct content_s {
     int number;
-    struct tm *hour;
+    time_t timer;
     char *command;
 } content_t;
 
@@ -21,6 +21,11 @@ typedef struct history_s {
     struct history_s *old;
     struct history_s *next;
 } history_t;
+
+typedef struct breakpoints_s {
+    history_t *start;
+    history_t *last;
+} breakpoints_t;
 
 char *get_line(FILE *stream);
 

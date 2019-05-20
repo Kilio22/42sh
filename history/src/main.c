@@ -12,21 +12,45 @@
 #include "my_stdio.h"
 #include "my_string.h"
 
-void print_history(history_t *historic)
+void print_history(breakpoints_t *historic)
 {
-    history_t *current = historic;
+    history_t *current = historic->start;
+    struct tm *timer;
 
     while (current != NULL) {
-        my_printf("%d  %d:%d   %s\n", historic->content->number,
-historic->content->hour->tm_hour, historic->content->hour->tm_min,
-historic->content->command);
+        timer = localtime(&(current->content->timer));
+        if (timer == NULL)
+            continue;
+        my_printf("%d  %d:%d   %s\n", current->content->number,
+timer->tm_hour, timer->tm_min, current->content->command);
         current = current->next;
     }
 }
 
-void history(history_t *historic)
+int add_history(char *buff, breakpoints_t *historic)
 {
-    //time_t timer;
+    history_t *new_historic = malloc(sizeof(history_t));
+
+    if (new_historic == NULL)
+        return -1;
+    new_historic->content = malloc(sizeof(content_t));
+    if (new_historic->content == NULL)
+        return -1;
+    if (time(&(new_historic->content->timer)) == -1)
+        return -1;
+    new_historic->content->command = my_strdup(buff);
+    if (new_historic->content->command == NULL)
+        return -1;
+    new_historic->content->number = historic->last->content->number + 1;
+    historic->last->next = new_historic;
+    new_historic->next = NULL;
+    new_historic->old = historic->last;
+    historic->last = new_historic;
+    return 0;
+}
+
+int history(breakpoints_t *historic)
+{
     char *buff;
 
     while (1) {
@@ -37,51 +61,60 @@ void history(history_t *historic)
             print_history(historic);
         if (my_strcmp("quit", buff) == 0)
             break;
+        if (add_history(buff, historic) == -1)
+            return -1;
         free(buff);
     }
     free(buff);
-}
-
-int init_history(history_t *historic)
-{
-    time_t timer;
-
-    historic->old = NULL;
-    historic->next = NULL;
-    historic->content = malloc(sizeof(content_t));
-    if (historic->content == NULL)
-        return -1;
-    historic->content->number = 0;
-    if (time(&timer) == -1)
-        return -1;
-    historic->content->hour = localtime(&timer);
-    if (historic->content->hour == NULL)
-        return -1;
-    historic->content->command = my_strdup("./42sh");
-    if (historic->content->command == NULL)
-        return -1;
     return 0;
 }
 
-void free_history(history_t *historic)
+int init_history(breakpoints_t *historic)
 {
-    while (historic != NULL) {
-        free(historic->content->command);
-        free(historic->content);
-        historic = historic->next;
+    historic->start = malloc(sizeof(history_t));
+    if (historic->start == NULL)
+        return -1;
+    historic->start->old = NULL;
+    historic->start->next = NULL;
+    historic->start->content = malloc(sizeof(content_t));
+    if (historic->start->content == NULL)
+        return -1;
+    historic->start->content->number = 0;
+    if (time(&(historic->start->content->timer)) == -1)
+        return -1;
+    historic->start->content->command = my_strdup("./42sh");
+    if (historic->start->content->command == NULL)
+        return -1;
+    historic->last = historic->start;
+    return 0;
+}
+
+void free_history(breakpoints_t *historic)
+{
+    history_t *next = historic->start->next;
+
+    while (historic->start != NULL) {
+        free(historic->start->content->command);
+        free(historic->start->content);
+        free(historic->start);
+        historic->start = next;
+        if (next != NULL)
+            next = historic->start->next;
     }
 }
 
 int main(void)
 {
-    history_t *historic = malloc(sizeof(history_t));
+    int ret_val = 0;
+    breakpoints_t *historic = malloc(sizeof(breakpoints_t));
 
     if (historic == NULL)
         return 84;
     if (init_history(historic) == -1)
         return 84;
-    history(historic);
+    if (history(historic) == -1)
+        ret_val = 84;
     free_history(historic);
     free(historic);
-    return (0);
+    return ret_val;
 }
