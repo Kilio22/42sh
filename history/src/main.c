@@ -11,6 +11,7 @@
 #include "history.h"
 #include "my_stdio.h"
 #include "my_string.h"
+#include "my.h"
 
 void print_history(breakpoints_t *historic)
 {
@@ -25,6 +26,27 @@ void print_history(breakpoints_t *historic)
 timer->tm_hour, timer->tm_min, current->content->command);
         current = current->next;
     }
+}
+
+char *my_ltoa(long int nb)
+{
+    char str[50] = {0};
+    int isneg = (nb < 0) ? 1 : 0;
+    int r;
+    int i = 0;
+
+    if (nb == -2147483648)
+        return (my_strdup("-2147483648"));
+    nb = (nb < 0) ? -nb : nb;
+    do {
+        r = nb % 10;
+        nb /= 10;
+        str[i++] = r + '0';
+    } while (nb);
+    if (isneg)
+        str[i++] = '-';
+    str[i] = '\0';
+    return (my_strdup(my_revstr(str)));
 }
 
 int add_history(char *buff, breakpoints_t *historic)
@@ -103,6 +125,11 @@ void free_history(breakpoints_t *historic)
     }
 }
 
+void save_history(breakpoints_t *historic)
+{
+    int fd = open()
+}
+
 int main(void)
 {
     int ret_val = 0;
@@ -114,6 +141,7 @@ int main(void)
         return 84;
     if (history(historic) == -1)
         ret_val = 84;
+    save_history(historic);
     free_history(historic);
     free(historic);
     return ret_val;
