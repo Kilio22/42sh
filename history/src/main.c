@@ -110,10 +110,11 @@ char *str)
     timer = strtol(time, NULL, 10);
     content->content->number = number;
     content->content->timer = timer;
-    content->content->command = str;
+    content->content->command = my_strdup(str);
     content->next = NULL;
     content->old = historic->last;
-    historic->last->next = content;
+    if (historic->last != NULL)
+        historic->last->next = content;
     historic->last = content;
     if (historic->head == NULL)
         historic->head = content;
@@ -134,6 +135,8 @@ int read_history(breakpoints_t *historic, FILE *stream)
         if (content->content == NULL)
             return -1;
         fill_content(historic, content, time, str);
+        free(time);
+        free(str);
         time = get_line(stream);
         str = get_line(stream);
     }
@@ -169,6 +172,7 @@ int init_history(breakpoints_t *historic)
     int ret_val = 0;
 
     historic->head = NULL;
+    historic->last = NULL;
     if (stream == NULL) {
         ret_val = empty_history(historic);
         return ret_val;
@@ -178,6 +182,7 @@ int init_history(breakpoints_t *historic)
             ret_val = empty_history(historic);
         return ret_val;
     }
+    fclose(stream);
     return 0;
 }
 
@@ -214,6 +219,7 @@ my_strlen(current->content->command)) == -1)
         if (write(fd, "\n", 1) == -1)
             return -1;
         current = current->next;
+        free(time);
     }
     close(fd);
     return 0;
