@@ -9,17 +9,15 @@
 #include <stdlib.h>
 #include "tokenizer.h"
 
-struct token_node *create_node(int id, char *content)
+struct token_node *create_node(enum delim_ids id, struct token_node *prev)
 {
     struct token_node *new = malloc(sizeof(struct token_node));
 
     if (!new)
         return NULL;
-    new->content = strdup(content);
-    if (!new->content)
-        return NULL;
+    new->content = NULL;
     new->id = id;
     new->next = NULL;
-    new->prev = NULL;
+    new->prev = prev;
     return new;
 }
