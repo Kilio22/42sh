@@ -10,8 +10,6 @@
 
 struct token_node *get_last_node(struct token_node *head)
 {
-    if (!head)
-        return NULL;
     while (head->next)
         head = head->next;
     return head;
