@@ -9,7 +9,7 @@
 #define TOKENS_H_
 
 enum delimiter_ids {
-    ID_CMD = -1,
+    ID_TEXT = -1,
     ID_SPACE,
     ID_TAB,
     ID_SEPARATOR,
@@ -45,6 +45,10 @@ typedef struct delimiter_s {
     enum delimiter_types type;
 } delimiter_t;
 
+/* Delimiter array */
 extern const delimiter_t delim_tab[];
+
+/* Useful functions */
+ssize_t get_delim_index(char *ptr);
 
 #endif /* !TOKENS_H_ */

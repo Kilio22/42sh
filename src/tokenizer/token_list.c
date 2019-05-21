@@ -26,5 +26,5 @@ const delimiter_t delim_tab[] = {
     {"\"", "\"", ID_DQUOTES, T_CONTAINER},
     {"(", ")", ID_PARENTHESIS, T_CONTAINER},
     {"`", "`", ID_BACKTICKS, T_CONTAINER},
-    {NULL, NULL, -1, -1}
+    {NULL, NULL, ID_TEXT, -1}
 };
