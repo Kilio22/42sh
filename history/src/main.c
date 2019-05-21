@@ -5,6 +5,10 @@
 ** Main function
 */
 
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
+#include <fcntl.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <time.h>
@@ -79,12 +83,12 @@ int history(breakpoints_t *historic)
         buff = get_line(stdin);
         if (buff == NULL)
             continue;
-        if (my_strcmp("history", buff) == 0)
-            print_history(historic);
         if (my_strcmp("quit", buff) == 0)
             break;
         if (add_history(buff, historic) == -1)
             return -1;
+        if (my_strcmp("history", buff) == 0)
+            print_history(historic);
         free(buff);
     }
     free(buff);
@@ -125,9 +129,28 @@ void free_history(breakpoints_t *historic)
     }
 }
 
-void save_history(breakpoints_t *historic)
+int save_history(breakpoints_t *historic)
 {
-    int fd = open()
+    int fd = open(".history", O_CREAT | O_RDWR | O_TRUNC,
+S_IRUSR | S_IWUSR);
+    char *time;
+    history_t *current = historic->start;
+
+    while (current != NULL) {
+        time = my_ltoa(current->content->timer);
+        if (write(fd, time, my_strlen(time)) == -1)
+            return -1;
+        if (write(fd, "\n", 1) == -1)
+            return -1;
+        if (write(fd, current->content->command,
+my_strlen(current->content->command)) == -1)
+            return -1;
+        if (write(fd, "\n", 1) == -1)
+            return -1;
+        current = current->next;
+    }
+    close(fd);
+    return 0;
 }
 
 int main(void)
@@ -141,7 +164,8 @@ int main(void)
         return 84;
     if (history(historic) == -1)
         ret_val = 84;
-    save_history(historic);
+    if (save_history(historic) == -1)
+        ret_val = 84;
     free_history(historic);
     free(historic);
     return ret_val;
