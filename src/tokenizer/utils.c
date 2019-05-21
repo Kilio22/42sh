@@ -6,6 +6,16 @@
 */
 
 #include <stdlib.h>
+#include "tokenizer.h"
+
+struct token_node *get_last_node(struct token_node *head)
+{
+    if (!head)
+        return NULL;
+    while (head->next)
+        head = head->next;
+    return head;
+}
 
 char *slice_string(char **src, size_t index)
 {
