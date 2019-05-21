@@ -82,7 +82,7 @@ DEBUG_FLAGS	=	-g3 -gdwarf-4
 MAKE_RULE	=	all
 CLEAN_RULE	=	clean
 
-all:	build_libs message $(NAME)
+all:	build_libs $(NAME)
 
 message:
 	@$(LINE_RETURN)
