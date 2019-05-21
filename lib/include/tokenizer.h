@@ -17,6 +17,8 @@ struct token_node {
     enum delim_ids id;
 };
 
+struct token_node *create_token_list_from_line(char *line);
+
 struct token_node *create_node(enum delim_ids id, struct token_node *prev);
 int add_node(struct token_node *head, enum delim_ids id, char *ptr, size_t n);
 void delete_token_node_list(struct token_node *head);

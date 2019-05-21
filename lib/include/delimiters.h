@@ -51,7 +51,7 @@ typedef struct delimiter_s {
 extern const delimiter_t delim_tab[];
 
 /* Useful functions */
-ssize_t get_delim_index(char *ptr);
+size_t get_delim_index(char *ptr);
 
 #define DELIM_STR(i) (delim_tab[i].str)
 #define DELIM_END(i) (delim_tab[i].end)
