@@ -79,9 +79,39 @@ int add_history(char *buff, breakpoints_t *historic)
     return 0;
 }
 
+char *command_number(breakpoints_t *historic, int number)
+{
+    history_t *current = historic->head;
+
+    while (current->content->number != number)
+        current = current->next;
+    return my_strdup(current->content->command);
+}
+
+char *find_history(breakpoints_t *historic, char *buff)
+{
+    int number;
+    char *str = my_strdup(buff + 1);
+
+    if (my_strlen(buff) < 2)
+        return NULL;
+    if (my_str_isnum(str, false) == true) {
+        number = my_atoi(str);
+        free(str);
+        if (number > historic->last->content->number) {
+            fprintf(stderr, "!%d: Event not found\n", number);
+            return NULL;
+        }
+        return command_number(historic, number);
+    }
+    free(str);
+    return NULL;
+}
+
 int history(breakpoints_t *historic)
 {
     char *buff;
+    char *str;
 
     while (1) {
         buff = get_line(stdin);
@@ -89,6 +119,15 @@ int history(breakpoints_t *historic)
             continue;
         if (my_strcmp("quit", buff) == 0)
             break;
+        if (my_strncmp("!", buff, 1) == 0) {
+            str = find_history(historic, buff);
+            if (str != NULL) {
+                fprintf(stderr, "%s\n", str);
+                free(str);
+            }
+            free(buff);
+            continue;
+        }
         if (add_history(buff, historic) == -1)
             return -1;
         if (my_strcmp("history", buff) == 0)
@@ -127,7 +166,7 @@ int read_history(breakpoints_t *historic, FILE *stream)
     char *str = get_line(stream);
     history_t *content;
 
-    while (str != NULL && str != NULL) {
+    while (time != NULL && str != NULL) {
         content = malloc(sizeof(history_t));
         if (content == NULL)
             return -1;
@@ -180,10 +219,9 @@ int init_history(breakpoints_t *historic)
         ret_val = read_history(historic, stream);
         if (historic->head == NULL)
             ret_val = empty_history(historic);
-        return ret_val;
     }
     fclose(stream);
-    return 0;
+    return ret_val;
 }
 
 void free_history(breakpoints_t *historic)
