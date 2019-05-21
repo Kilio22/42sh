@@ -8,7 +8,9 @@
 #ifndef TOKENS_H_
 #define TOKENS_H_
 
-enum delimiter_ids {
+#include <sys/types.h>
+
+enum delim_ids {
     ID_TEXT = -1,
     ID_SPACE,
     ID_TAB,
@@ -30,7 +32,7 @@ enum delimiter_ids {
     ID_NB
 };
 
-enum delimiter_types {
+enum delim_types {
     T_WITHOUT,
     T_SEPARATOR,
     T_GET,
@@ -39,10 +41,10 @@ enum delimiter_types {
 };
 
 typedef struct delimiter_s {
-    char *delim;
+    char *str;
     char *end;
-    enum delimiter_ids id;
-    enum delimiter_types type;
+    enum delim_ids id;
+    enum delim_types type;
 } delimiter_t;
 
 /* Delimiter array */
@@ -50,5 +52,10 @@ extern const delimiter_t delim_tab[];
 
 /* Useful functions */
 ssize_t get_delim_index(char *ptr);
+
+#define DELIM_STR(i) (delim_tab[i].str)
+#define DELIM_END(i) (delim_tab[i].end)
+#define DELIM_ID(i) (delim_tab[i].id)
+#define DELIM_TYPE(i) (delim_tab[i].type)
 
 #endif /* !TOKENS_H_ */
