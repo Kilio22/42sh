@@ -86,9 +86,9 @@ int change_history(char *buff, breakpoints_t *historic)
     if (historic->head->next != NULL && historic->head->old != NULL)
         historic->head->next->old = historic->head->old;
     if (historic->head->next != NULL)
-        historic->head->old = historic->last;
+        historic->last->next = historic->head;
+    historic->head->old = historic->last;
     historic->head->next = NULL;
-    historic->last->next = historic->head;
     historic->last = historic->head;
     historic->head = head;
     return 0;
