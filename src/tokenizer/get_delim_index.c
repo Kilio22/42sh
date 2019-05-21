@@ -8,11 +8,14 @@
 #include <string.h>
 #include "delimiters.h"
 
-ssize_t get_delim_index(char *ptr)
+size_t get_delim_index(char *ptr)
 {
-    for (size_t i = 0; delim_tab[i].delim; i++) {
-        if (!strncmp(delim_tab[i].delim, ptr, strlen(delim_tab[i].delim)))
-            return i;
+    size_t i = 0;
+
+    while (delim_tab[i].str) {
+        if (!strncmp(ptr, delim_tab[i].str, strlen(delim_tab[i].str)))
+            break;
+        ++i;
     }
-    return ID_TEXT;
+    return i;
 }
