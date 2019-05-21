@@ -48,6 +48,7 @@ SRC	=	$(TOKENIZER)add_node.c	\
 		$(TOKENIZER)create_node.c	\
 		$(TOKENIZER)create_token_list_from_line.c \
 		$(TOKENIZER)delete_node.c	\
+		$(TOKENIZER)get_delim_index.c \
 		$(TOKENIZER)token_list.c \
 		$(TOKENIZER)utils.c	\
 		change_directory.c \
