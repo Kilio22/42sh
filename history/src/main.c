@@ -57,10 +57,50 @@ char *my_ltoa(long int nb)
     return (my_strdup(my_revstr(str)));
 }
 
+int is_in_history(char *buff, breakpoints_t *historic)
+{
+    history_t *current = historic->head;
+
+    while (current != NULL) {
+        if (my_strcmp(buff, current->content->command) == 0)
+            return 0;
+        current = current->next;
+    }
+    return -1;
+}
+
+int change_history(char *buff, breakpoints_t *historic)
+{
+    history_t *head = historic->head;
+    time_t timer = time(&timer);
+
+    while (historic->head != NULL) {
+        if (my_strcmp(buff, historic->head->content->command) == 0)
+            break;
+        historic->head = historic->head->next;
+    }
+    historic->head->content->timer = timer;
+    historic->head->content->number = historic->last->content->number + 1;
+    if (historic->head->old != NULL && historic->head->next != NULL)
+        historic->head->old->next = historic->head->next;
+    if (historic->head->next != NULL && historic->head->old != NULL)
+        historic->head->next->old = historic->head->old;
+    if (historic->head->next != NULL)
+        historic->head->old = historic->last;
+    historic->head->next = NULL;
+    historic->last->next = historic->head;
+    historic->last = historic->head;
+    historic->head = head;
+    return 0;
+}
+
 int add_history(char *buff, breakpoints_t *historic)
 {
-    history_t *new_historic = malloc(sizeof(history_t));
+    history_t *new_historic;
 
+    if (is_in_history(buff, historic) == 0)
+        return change_history(buff, historic);
+    new_historic = malloc(sizeof(history_t));
     if (new_historic == NULL)
         return -1;
     new_historic->content = malloc(sizeof(content_t));
