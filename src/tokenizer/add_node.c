@@ -5,15 +5,21 @@
 ** add_node
 */
 
+#include <string.h>
 #include <stdlib.h>
 #include "tokenizer.h"
 
-void add_node(struct token_node *head, int id, char *content)
+int add_node(struct token_node *head, enum delim_ids id, char *ptr, size_t n)
 {
-    struct token_node *new = create_node(id, content);
+    struct token_node *last = get_last_node(head);
+    struct token_node *new = create_node(id, last);
 
-    while (head->next)
-        head = head->next;
-    head->next = new;
-    new->prev = head;
+    if (!new)
+        return -1;
+    new->content = strndup(ptr, n);
+    if (!new->content)
+        return -1;
+    if (last)
+        last->next = new;
+    return 0;
 }
