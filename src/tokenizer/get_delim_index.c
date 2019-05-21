@@ -5,7 +5,6 @@
 ** get_delim_index
 */
 
-#include <sys/types.h>
 #include <string.h>
 #include "delimiters.h"
 
