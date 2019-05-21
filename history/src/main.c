@@ -128,10 +128,23 @@ char *command_number(breakpoints_t *historic, int number)
     return my_strdup(current->content->command);
 }
 
+char *command_str(breakpoints_t *historic, char *str)
+{
+    history_t *current = historic->head;
+
+    while (current != NULL && my_strncmp(current->content->command,
+str, my_strlen(str)) != 0)
+        current = current->next;
+    if (current == NULL)
+        return NULL;
+    return my_strdup(current->content->command);
+}
+
 char *find_history(breakpoints_t *historic, char *buff)
 {
     int number;
     char *str = my_strdup(buff + 1);
+    char *ret_str;
 
     if (my_strlen(buff) < 2)
         return NULL;
@@ -144,8 +157,9 @@ char *find_history(breakpoints_t *historic, char *buff)
         }
         return command_number(historic, number);
     }
+    ret_str = command_str(historic, str);
     free(str);
-    return NULL;
+    return ret_str;
 }
 
 int history(breakpoints_t *historic)
