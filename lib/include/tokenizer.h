@@ -17,4 +17,9 @@ struct token_node {
     enum delimiter_ids id;
 };
 
+struct token_node *create_node(int id, char *content);
+void add_node(struct token_node *head, int id, char *content);
+void delete_token_node_list(struct token_node *head);
+void delete_node(struct token_node *ptr);
+
 #endif /* !TOKENIZER_H_ */

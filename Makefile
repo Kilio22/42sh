@@ -42,10 +42,13 @@ SRC_PATH	=	$(ROOT_PATH)$(SRC_NAME)
 INCL_PATH	=	$(ROOT_PATH)$(INCL_NAME)
 TESTS_PATH	=	$(ROOT_PATH)$(TESTS_NAME)
 
-TOKENIZER	=	tokenizer
+TOKENIZER	=	tokenizer/
 
-SRC	=	$(TOKENIZER)/create_token_list_from_line.c \
-		$(TOKENIZER)/token_list.c \
+SRC	=	$(TOKENIZER)add_node.c	\
+		$(TOKENIZER)create_node.c	\
+		$(TOKENIZER)create_token_list_from_line.c \
+		$(TOKENIZER)delete_node.c	\
+		$(TOKENIZER)token_list.c \
 		change_directory.c \
 		check_command.c \
 		env_display.c \
