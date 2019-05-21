@@ -85,23 +85,3 @@ struct token_node *create_token_list_from_line(char *line)
     }
     return head;
 }
-
-/*
-
-echo "oui"
-0123456789
--> n = 4 ---> 'echo'
-
- "oui"
-012345
--> n = 0 ---> NOTHING
-
-"oui"
-01234
--> n = 0 ---> '"'
----
-oui"
-0123
--> end_n = 3
----
-*/
