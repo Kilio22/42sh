@@ -22,4 +22,8 @@ void add_node(struct token_node *head, int id, char *content);
 void delete_token_node_list(struct token_node *head);
 void delete_node(struct token_node *ptr);
 
+/* UTILS */
+char *slice_string(char **src, size_t index);
+char *cut_string(char **src, size_t index);
+
 #endif /* !TOKENIZER_H_ */
