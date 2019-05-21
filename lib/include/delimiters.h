@@ -45,6 +45,6 @@ typedef struct delimiter_s {
     enum delimiter_types type;
 } delimiter_t;
 
-extern const delimiter_t *delim_tab[];
+extern const delimiter_t delim_tab[];
 
 #endif /* !TOKENS_H_ */

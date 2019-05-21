@@ -8,7 +8,7 @@
 #include <stddef.h>
 #include "delimiters.h"
 
-const delimiter_t *delim_tab[] = {
+const delimiter_t delim_tab[] = {
     {" ", "", ID_SPACE, T_WITHOUT},
     {"\t", "", ID_TAB, T_WITHOUT},
     {";", "", ID_SEPARATOR, T_SEPARATOR},
