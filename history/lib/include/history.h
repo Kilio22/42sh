@@ -23,7 +23,7 @@ typedef struct history_s {
 } history_t;
 
 typedef struct breakpoints_s {
-    history_t *start;
+    history_t *head;
     history_t *last;
 } breakpoints_t;
 

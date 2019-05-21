@@ -8,6 +8,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
+#include <stdbool.h>
 #include <fcntl.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -19,15 +20,18 @@
 
 void print_history(breakpoints_t *historic)
 {
-    history_t *current = historic->start;
+    history_t *current = historic->head;
     struct tm *timer;
 
     while (current != NULL) {
         timer = localtime(&(current->content->timer));
         if (timer == NULL)
             continue;
-        my_printf("%d  %d:%d   %s\n", current->content->number,
+        my_printf("%d\t%d:", current->content->number,
 timer->tm_hour, timer->tm_min, current->content->command);
+        if (timer->tm_min < 10)
+            my_putchar('0');
+        my_printf("%d\t%s\n", timer->tm_min, current->content->command);
         current = current->next;
     }
 }
@@ -95,37 +99,99 @@ int history(breakpoints_t *historic)
     return 0;
 }
 
+void fill_content(breakpoints_t *historic, history_t *content, char *time,
+char *str)
+{
+    static int number = 1;
+    time_t timer;
+
+    if (my_str_isnum(time, false) == false)
+        return;
+    timer = strtol(time, NULL, 10);
+    content->content->number = number;
+    content->content->timer = timer;
+    content->content->command = str;
+    content->next = NULL;
+    content->old = historic->last;
+    historic->last->next = content;
+    historic->last = content;
+    if (historic->head == NULL)
+        historic->head = content;
+    number++;
+}
+
+int read_history(breakpoints_t *historic, FILE *stream)
+{
+    char *time = get_line(stream);
+    char *str = get_line(stream);
+    history_t *content;
+
+    while (str != NULL && str != NULL) {
+        content = malloc(sizeof(history_t));
+        if (content == NULL)
+            return -1;
+        content->content = malloc(sizeof(content_t));
+        if (content->content == NULL)
+            return -1;
+        fill_content(historic, content, time, str);
+        time = get_line(stream);
+        str = get_line(stream);
+    }
+    return 0;
+}
+
+int empty_history(breakpoints_t *historic)
+{
+    history_t *content = malloc(sizeof(history_t));
+    time_t timer;
+
+    if (content == NULL)
+        return -1;
+    content->next = NULL;
+    content->old = NULL;
+    content->content = malloc(sizeof(content_t));
+    if (content->content == NULL)
+        return -1;
+    content->content->command = my_strdup("./42sh");
+    if (content->content->command == NULL)
+        return -1;
+    content->content->number = 0;
+    content->content->timer = time(&timer);
+    historic->head = content;
+    historic->last = content;
+    return 0;
+}
+
 int init_history(breakpoints_t *historic)
 {
-    historic->start = malloc(sizeof(history_t));
-    if (historic->start == NULL)
-        return -1;
-    historic->start->old = NULL;
-    historic->start->next = NULL;
-    historic->start->content = malloc(sizeof(content_t));
-    if (historic->start->content == NULL)
-        return -1;
-    historic->start->content->number = 0;
-    if (time(&(historic->start->content->timer)) == -1)
-        return -1;
-    historic->start->content->command = my_strdup("./42sh");
-    if (historic->start->content->command == NULL)
-        return -1;
-    historic->last = historic->start;
+    FILE *stream = fopen(".history", "r");
+    time_t timer = time(&timer);
+    int ret_val = 0;
+
+    historic->head = NULL;
+    if (stream == NULL) {
+        ret_val = empty_history(historic);
+        return ret_val;
+    } else {
+        ret_val = read_history(historic, stream);
+        if (historic->head == NULL)
+            ret_val = empty_history(historic);
+        return ret_val;
+    }
     return 0;
 }
 
 void free_history(breakpoints_t *historic)
 {
-    history_t *next = historic->start->next;
+    history_t *next = historic->head->next;
 
-    while (historic->start != NULL) {
-        free(historic->start->content->command);
-        free(historic->start->content);
-        free(historic->start);
-        historic->start = next;
+    while (historic->head != NULL) {
+        free(historic->head->content->command);
+        free(historic->head->content);
+        free(historic->head);
+        historic->head = next;
         if (next != NULL)
-            next = historic->start->next;
+            next = historic->head->next;
     }
 }
 
@@ -134,7 +200,7 @@ int save_history(breakpoints_t *historic)
     int fd = open(".history", O_CREAT | O_RDWR | O_TRUNC,
 S_IRUSR | S_IWUSR);
     char *time;
-    history_t *current = historic->start;
+    history_t *current = historic->head;
 
     while (current != NULL) {
         time = my_ltoa(current->content->timer);
