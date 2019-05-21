@@ -16,13 +16,11 @@ void delete_node(struct token_node *ptr)
 
 void delete_token_node_list(struct token_node *head)
 {
-    struct token_node *tmp = NULL;
+    struct token_node *tmp = head;
 
-    while (head->next) {
-        tmp = head;
+    while (head) {
         head = head->next;
         delete_node(tmp);
-        tmp = NULL;
+        tmp = head;
     }
-    delete_node(head);
 }
