@@ -24,7 +24,15 @@ static char *command_number(breakpoints_t *historic, int number)
 static char *command_str(breakpoints_t *historic, char *str)
 {
     history_t *current = historic->head;
+    char *new_str;
+    char *ret_str;
 
+    if (my_strncmp(str, "!", 1) == 0) {
+        new_str = my_strdup(str + 1);
+        ret_str = my_strdup(historic->last->content->command);
+        ret_str = my_strcat(ret_str, new_str);
+        return ret_str;
+    }
     while (current != NULL && my_strncmp(current->content->command,
 str, my_strlen(str)) != 0)
         current = current->next;
