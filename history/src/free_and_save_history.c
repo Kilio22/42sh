@@ -11,6 +11,7 @@
 #include <fcntl.h>
 #include <stdlib.h>
 #include "history.h"
+#include "my_string.h"
 #include "my.h"
 
 static char *my_ltoa(long int nb)
