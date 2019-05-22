@@ -68,7 +68,6 @@ SRC	=	$(TOKENIZER)add_node.c	\
 		recursive_execution.c \
 		restore_var.c \
 		run_commands.c \
-		separate_words.c \
 		update_pwd_variable.c
 
 SRC_LIB	=	stdio my string

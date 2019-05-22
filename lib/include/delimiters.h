@@ -11,7 +11,6 @@
 #include <sys/types.h>
 
 enum delim_ids {
-    ID_TEXT = -1,
     ID_SPACE,
     ID_TAB,
     ID_SEPARATOR,
@@ -29,6 +28,7 @@ enum delim_ids {
     ID_DQUOTES,
     ID_PARENTHESIS,
     ID_BACKTICKS,
+    ID_TEXT,
     ID_NB
 };
 

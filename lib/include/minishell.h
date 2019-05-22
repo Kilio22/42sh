@@ -24,7 +24,6 @@ typedef struct my_environement_s {
 
 /* PROMPT */
 char *read_prompt(void);
-char *separate_words(char *line);
 char **get_prompt(my_env_t *env);
 char ***get_commands(my_env_t *env);
 

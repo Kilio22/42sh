@@ -8,11 +8,12 @@
 #include <stddef.h>
 #include <unistd.h>
 #include <stdlib.h>
+#include <string.h>
 #include "my.h"
 #include "my_stdio.h"
 #include "my_string.h"
 #include "minishell.h"
-#include <string.h>
+#include "tokenizer.h"
 
 char *get_dirname(void)
 {
@@ -33,7 +34,7 @@ char *read_prompt(void)
     line = get_next_line(0);
     if (!line)
         return (NULL);
-    return separate_words(line);
+    return line;
 }
 
 char **get_prompt(my_env_t *env)
@@ -50,6 +51,14 @@ char **get_prompt(my_env_t *env)
         free(line_prompt);
         return get_prompt(env);
     }
+    struct token_node *nodelist = create_token_list_from_line(line_prompt);
+    if (!nodelist)
+        exit(84);
+    while (nodelist) {
+        printf("{%s}\t%d\n", nodelist->content, nodelist->id);
+        nodelist = nodelist->next;
+    }
+    exit(0);
     prompt = my_str_towordarray(line_prompt, ";");
     free(line_prompt);
     if (!prompt)
