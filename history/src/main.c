@@ -177,6 +177,7 @@ int history(breakpoints_t *historic)
             str = find_history(historic, buff);
             if (str != NULL) {
                 fprintf(stderr, "%s\n", str);
+                add_history(str, historic);
                 free(str);
             }
             free(buff);
