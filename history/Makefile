@@ -42,7 +42,10 @@ SRC_PATH	=	$(ROOT_PATH)$(SRC_NAME)
 INCL_PATH	=	$(ROOT_PATH)$(INCL_NAME)
 TESTS_PATH	=	$(ROOT_PATH)$(TESTS_NAME)
 
-SRC	=	get_line.c
+SRC	=	get_line.c	\
+		find_in_history.c	\
+		add_history.c	\
+		init_history.c
 
 SRC_LIB	=	stdio my string
 
