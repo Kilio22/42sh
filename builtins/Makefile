@@ -42,25 +42,7 @@ SRC_PATH	=	$(ROOT_PATH)$(SRC_NAME)
 INCL_PATH	=	$(ROOT_PATH)$(INCL_NAME)
 TESTS_PATH	=	$(ROOT_PATH)$(TESTS_NAME)
 
-SRC	=	change_directory.c \
-		check_command.c \
-		env_display.c \
-		env_operations.c \
-		env_set.c \
-		env_unset.c \
-		execute_prompt.c \
-		exit_shell.c \
-		get_commands.c \
-		get_prompt.c \
-		global_constants.c \
-		loop_shell.c \
-		my_cut_array.c \
-		my_str_to_path_array.c \
-		recursive_execution.c \
-		restore_var.c \
-		run_commands.c \
-		separate_words.c \
-		update_pwd_variable.c
+SRC	=
 
 SRC_LIB	=	stdio my string
 
