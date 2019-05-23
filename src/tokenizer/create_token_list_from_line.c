@@ -8,6 +8,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include "parser.h"
 #include "tokenizer.h"
 
 static ssize_t get_container_end(char *ptr, char *end)
@@ -74,6 +75,8 @@ struct token_node *create_token_list_from_line(char *line)
     size_t delim_idx;
     size_t i = 0;
 
+    if (!head)
+        return NULL;
     while (line[i]) {
         delim_idx = get_delim_index(line + i);
         while (line[i] && DELIM_ID(delim_idx) == ID_TEXT)
@@ -83,5 +86,7 @@ struct token_node *create_token_list_from_line(char *line)
         line += i;
         i = 0;
     }
+    if (check_syntax(head) == -1)
+        return NULL;
     return head;
 }
