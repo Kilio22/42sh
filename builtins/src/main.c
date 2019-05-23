@@ -168,7 +168,11 @@ void my_which(int argc, char *argv[], char *env[])
 
 void my_whoami(void)
 {
-    printf("%s\n", getlogin());
+    char *whoami = getlogin();
+
+    if (whoami == NULL)
+        return;
+    printf("%s\n", whoami);
 }
 
 void print_arg_yes(int argc, char *argv[], int i)
