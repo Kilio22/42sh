@@ -14,22 +14,23 @@
 
 const char *my_builtins[][2] = {
     {"cd", "change the current working directory"},
-    {"env", "display the env"},
-    {"yes", "loop and display y or the args"},
-    {"echo", "display the given arguments"},
+    {"env", "displays the env"},
+    {"yes", "loop and displays y or the args"},
+    {"echo", "displays the given arguments"},
     {"exit", "exit the shell with the given return value"},
     {"snake", "launch the snake game"},
-    {"where", "display all known instances of command."},
-    {"which", "display the real command that the shell execute"},
+    {"where", "displays all known instances of command."},
+    {"which", "displays the real command that the shell execute"},
     {"setenv", "set a new env variable or change an existing one"},
-    {"history", "display the history of commands"},
-    {"builtins", "display all shell built-in"},
+    {"whoami", "displays who you are"},
+    {"history", "displays the history of commands"},
+    {"builtins", "displays all shell built-in"},
     {"unsetenv", "unset one or more env variable(s)"}
 };
 
 void display_builtins(void)
 {
-    for (int i = 0; i < 12; i++) {
+    for (int i = 0; i < 13; i++) {
         my_printf("%s", my_builtins[i][0]);
         if (my_strlen(my_builtins[i][0]) < 8)
             my_printf("\t");
@@ -39,7 +40,7 @@ void display_builtins(void)
 
 bool is_a_builtin(const char *str)
 {
-    for (int i = 0; i < 12; i++)
+    for (int i = 0; i < 13; i++)
         if (my_strcmp(str, my_builtins[i][0]) == 0)
             return true;
     return false;
@@ -165,6 +166,11 @@ void my_which(int argc, char *argv[], char *env[])
     }
 }
 
+void my_whoami(void)
+{
+    printf("%s\n", getlogin());
+}
+
 void print_arg_yes(int argc, char *argv[], int i)
 {
     printf("%s", argv[i]);
@@ -206,5 +212,8 @@ int main(int argc, char *argv[], char *env[])
     }
     if (my_strcmp(argv[1], "yes") == 0) {
         my_yes(argc - 1, argv + 1);
+    }
+    if (my_strcmp(argv[1], "whoami") == 0) {
+        my_whoami();
     }
 }
