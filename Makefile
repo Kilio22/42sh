@@ -54,6 +54,7 @@ SRC	=	$(TOKENIZER)add_node.c	\
 		$(TOKENIZER)get_delim_index.c \
 		$(TOKENIZER)token_list.c \
 		$(TOKENIZER)utils.c	\
+		$(PARSER)check_redirections.c	\
 		$(PARSER)delete_pipe.c	\
 		$(PARSER)delete_separators.c	\
 		$(PARSER)parser_utils.c	\

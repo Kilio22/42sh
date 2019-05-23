@@ -19,6 +19,7 @@ enum cmd_types {
 
 struct pipe_s {
     struct token_node *token_list;
+    char *redirections[6];
     struct pipe_s *next;
     struct pipe_s *prev;
 };
@@ -39,5 +40,7 @@ struct cmd_s *get_last_cmd(struct cmd_s *head);
 struct cmd_s *delete_separators(struct cmd_s *list);
 struct pipe_s *pipe_token_list(struct token_node *token);
 struct pipe_s *delete_pipe(struct pipe_s *list);
+int check_pipe_redirections(struct pipe_s *pipe);
+int check_already_redirect(struct pipe_s *pipe, int idx1, int idx2);
 
 #endif /* !PARSER_H_ */
