@@ -20,6 +20,7 @@ static struct cmd_s *init_cmd_list(struct token_node *tokens)
         return NULL;
     list->next = NULL;
     list->prev = NULL;
+    list->pipe = NULL;
     if (DELIM_TYPE(tokens->id) == T_SEPARATOR)
         list->token_list = NULL;
     else
@@ -39,6 +40,7 @@ static int add_cmd(struct cmd_s *list, struct token_node *add)
         return -1;
     new->next = NULL;
     new->id = add->id - 2;
+    new->pipe = NULL;
     if (DELIM_TYPE(add->id) == T_SEPARATOR &&
 (!add->next || DELIM_TYPE(add->next->id) == T_SEPARATOR))
         new->token_list = NULL;
