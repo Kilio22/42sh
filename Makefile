@@ -43,14 +43,23 @@ INCL_PATH	=	$(ROOT_PATH)$(INCL_NAME)
 TESTS_PATH	=	$(ROOT_PATH)$(TESTS_NAME)
 
 TOKENIZER	=	tokenizer/
+PARSER	=	parser/
 
 SRC	=	$(TOKENIZER)add_node.c	\
+		$(TOKENIZER)check_separators.c	\
+		$(TOKENIZER)check_syntax.c	\
 		$(TOKENIZER)create_node.c	\
 		$(TOKENIZER)create_token_list_from_line.c \
 		$(TOKENIZER)delete_node.c	\
 		$(TOKENIZER)get_delim_index.c \
 		$(TOKENIZER)token_list.c \
 		$(TOKENIZER)utils.c	\
+		$(PARSER)delete_pipe.c	\
+		$(PARSER)delete_separators.c	\
+		$(PARSER)parser_utils.c	\
+		$(PARSER)pipe_parser.c	\
+		$(PARSER)separate_token_list.c	\
+		$(PARSER)separate_cmd_list.c	\
 		change_directory.c \
 		check_command.c \
 		env_display.c \

@@ -14,6 +14,7 @@
 #include "my_string.h"
 #include "minishell.h"
 #include "tokenizer.h"
+#include "parser.h"
 
 char *get_dirname(void)
 {
@@ -37,6 +38,37 @@ char *read_prompt(void)
     return line;
 }
 
+void print_pipe(struct pipe_s *cmd)
+{
+    printf("----LES PIPES----\n");
+    while (cmd) {
+        printf("\\\\\\\\\\CHANGEMENT DE PIPE\\\\\\\\\\\n");
+        while (cmd->token_list) {
+        printf("ID = %d\n", cmd->token_list->id);
+        printf("CONTENT = %s\n", cmd->token_list->content);
+            cmd->token_list = cmd->token_list->next;
+        }
+        cmd = cmd->next;
+    }
+}
+
+void print_list(struct cmd_s *cmd)
+{
+    while (cmd) {
+        printf("NEW LIST NODE WITH ID %d\n", cmd->id);
+        print_pipe(cmd->pipe);
+        printf("----SORTIE DES PIPES----\n");
+        while (cmd->token_list) {
+            printf("ID = %d\n", cmd->token_list->id);
+            printf("CONTENT = %s\n", cmd->token_list->content);
+            if (cmd->token_list->prev)
+                printf("%s\n", cmd->token_list->prev->content);
+            cmd->token_list = cmd->token_list->next;
+        }
+        cmd = cmd->next;
+    }
+}
+
 char **get_prompt(my_env_t *env)
 {
     char *line_prompt = read_prompt();
@@ -54,10 +86,16 @@ char **get_prompt(my_env_t *env)
     struct token_node *nodelist = create_token_list_from_line(line_prompt);
     if (!nodelist)
         exit(84);
-    while (nodelist) {
+    struct cmd_s *cmd = separate_token_list(nodelist);
+    if (!cmd)
+        exit(84);
+    if (pipe_parser(cmd) == -1)
+        exit(84);
+   /*  while (nodelist) {
         printf("{%s}\t%d\n", nodelist->content, nodelist->id);
         nodelist = nodelist->next;
-    }
+    } */
+    print_list(cmd);
     exit(0);
     prompt = my_str_towordarray(line_prompt, ";");
     free(line_prompt);
