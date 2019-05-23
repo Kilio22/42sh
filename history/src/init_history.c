@@ -53,6 +53,8 @@ static int read_history(breakpoints_t *historic, FILE *stream)
         time = get_line(stream);
         str = get_line(stream);
     }
+    free(time);
+    free(str);
     return 0;
 }
 

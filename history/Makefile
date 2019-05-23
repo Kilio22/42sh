@@ -46,7 +46,8 @@ SRC	=	get_line.c	\
 		find_in_history.c	\
 		add_history.c	\
 		init_history.c	\
-		free_and_save_history.c
+		free_and_save_history.c	\
+		replace_string_history.c
 
 SRC_LIB	=	stdio my string
 
