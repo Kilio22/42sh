@@ -48,6 +48,10 @@ void print_pipe(struct pipe_s *cmd)
         printf("CONTENT = %s\n", cmd->token_list->content);
             cmd->token_list = cmd->token_list->next;
         }
+        printf("REDIRECTION\n");
+        for (int i = 0; i < 6; i++)
+            if (cmd->redirections[i])
+                printf("%s\n", cmd->redirections[i]);
         cmd = cmd->next;
     }
 }
