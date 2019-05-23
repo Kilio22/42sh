@@ -16,19 +16,22 @@ struct pipe_s *pipe)
 {
     if (token->id >= 7 && token->id <= 10) {
         if (!token->next || token->next->id != ID_TEXT)
-            return fprintf(stderr, "Missing name for redirect.1\n"), -1;
+            return fprintf(stderr, "Missing name for redirect.\n"), -1;
         else if (check_already_redirect(pipe, 0, 4) == -1 || pipe->next)
             return fprintf(stderr, "Ambiguous output redirect.\n"), -1;
         else
             pipe->redirections[token->id - 7] = strdup(token->next->content);
     } else {
-        if (!token->prev || token->prev->id != ID_TEXT)
-            return fprintf(stderr, "Missing name for redirect.2\n"), -1;
+        if (!token->next || token->next->id != ID_TEXT)
+            return fprintf(stderr, "Missing name for redirect.\n"), -1;
         else if (check_already_redirect(pipe, 5, 6) == -1 || pipe->prev)
             return fprintf(stderr, "Ambiguous input redirect.\n"), -1;
         else
-            pipe->redirections[token->id - 7] = strdup(token->prev->content);
+            pipe->redirections[token->id - 7] = strdup(token->next->content);
     }
+    token->prev->next = token->next->next;
+    if (token->next->next)
+        token->next->next->prev = token->prev;
     return 0;
 }
 
@@ -39,12 +42,19 @@ struct pipe_s *pipe)
         return 0;
     if (!(*head)->next || (*head)->next->id != ID_TEXT)
         return fprintf(stderr, "Missing name for redirect.\n"), -1;
-    if (pipe->prev && (*head)->id >= 11 && (*head)->id <= 12)
+    if ((*head)->id >= 11 && (*head)->id <= 12 && (pipe->prev
+|| check_already_redirect(pipe, 5, 6) == -1))
         return fprintf(stderr, "Ambiguous input redirect.\n"), -1;
-    if (!(*head)->next->next || (*head)->next->next->id != ID_TEXT)
+    else if ((*head)->id >= 7 && (*head)->id <= 10 && (pipe->next
+|| check_already_redirect(pipe, 0, 4) == -1))
+        return fprintf(stderr, "Ambiguous output redirect.\n"), -1;
+    if (!(*head)->next->next)
         return fprintf(stderr, "Invalid null command.\n"), -1;
     pipe->redirections[(*head)->id - 7] = strdup((*head)->next->content);
-    (*head) = (*head)->next;
+    (*head) = (*head)->next->next;
+    pipe->token_list = (*head);
+    if ((*head) && (*head)->id >= 7 && (*head)->id <= 12)
+        return check_first_redirections(head, pipe);
     return 0;
 }
 
