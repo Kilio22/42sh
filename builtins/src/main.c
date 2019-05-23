@@ -15,19 +15,21 @@
 const char *my_builtins[][2] = {
     {"cd", "change the current working directory"},
     {"env", "display the env"},
+    {"yes", "loop and display y or the args"},
     {"echo", "display the given arguments"},
     {"exit", "exit the shell with the given return value"},
     {"snake", "launch the snake game"},
     {"where", "display all known instances of command."},
     {"which", "display the real command that the shell execute"},
     {"setenv", "set a new env variable or change an existing one"},
+    {"history", "display the history of commands"},
     {"builtins", "display all shell built-in"},
     {"unsetenv", "unset one or more env variable(s)"}
 };
 
 void display_builtins(void)
 {
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < 12; i++) {
         my_printf("%s", my_builtins[i][0]);
         if (my_strlen(my_builtins[i][0]) < 8)
             my_printf("\t");
@@ -37,7 +39,7 @@ void display_builtins(void)
 
 bool is_a_builtin(const char *str)
 {
-    for (int i = 0; i < 10; i++)
+    for (int i = 0; i < 12; i++)
         if (my_strcmp(str, my_builtins[i][0]) == 0)
             return true;
     return false;
@@ -163,6 +165,32 @@ void my_which(int argc, char *argv[], char *env[])
     }
 }
 
+void print_arg_yes(int argc, char *argv[], int i)
+{
+    printf("%s", argv[i]);
+    if (i + 1 < argc)
+        printf(" ");
+}
+
+void my_yes(int argc, char *argv[])
+{
+    int i = 1;
+
+    if (argc == 1) {
+        while (1)
+            printf("y\n");
+        return;
+    }
+    while (1) {
+        while (i < argc) {
+            print_arg_yes(argc, argv, i);
+            i++;
+        }
+        i = 1;
+        printf("\n");
+    }    
+}
+
 int main(int argc, char *argv[], char *env[])
 {
     if (argc < 2)
@@ -175,5 +203,8 @@ int main(int argc, char *argv[], char *env[])
     }
     if (my_strcmp(argv[1], "where") == 0) {
         my_where(argc - 1, argv + 1, env);
+    }
+    if (my_strcmp(argv[1], "yes") == 0) {
+        my_yes(argc - 1, argv + 1);
     }
 }
