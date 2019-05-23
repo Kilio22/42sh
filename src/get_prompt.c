@@ -61,8 +61,6 @@ void print_list(struct cmd_s *cmd)
         while (cmd->token_list) {
             printf("ID = %d\n", cmd->token_list->id);
             printf("CONTENT = %s\n", cmd->token_list->content);
-            if (cmd->token_list->prev)
-                printf("%s\n", cmd->token_list->prev->content);
             cmd->token_list = cmd->token_list->next;
         }
         cmd = cmd->next;
