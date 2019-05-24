@@ -46,8 +46,6 @@ TOKENIZER	=	tokenizer/
 PARSER	=	parser/
 
 SRC	=	$(TOKENIZER)add_node.c	\
-		$(TOKENIZER)check_separators.c	\
-		$(TOKENIZER)check_syntax.c	\
 		$(TOKENIZER)create_node.c	\
 		$(TOKENIZER)create_token_list_from_line.c \
 		$(TOKENIZER)delete_node.c	\
@@ -55,6 +53,8 @@ SRC	=	$(TOKENIZER)add_node.c	\
 		$(TOKENIZER)token_list.c \
 		$(TOKENIZER)utils.c	\
 		$(PARSER)check_redirections.c	\
+		$(PARSER)check_separators.c	\
+		$(PARSER)check_syntax.c	\
 		$(PARSER)delete_pipe.c	\
 		$(PARSER)delete_separators.c	\
 		$(PARSER)parser_utils.c	\
