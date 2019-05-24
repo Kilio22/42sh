@@ -28,6 +28,7 @@ int full_alias(void);
 void free_path(char **path);
 bool is_a_builtin(const char *str);
 int find_var_index(char *var, char **env);
+int echo(struct my_shell *shell, char **av);
 int my_yes(struct my_shell *shell, char **av);
 int my_which(int argc, char **av, char **env);
 int my_where(struct my_shell *shell, char **av);

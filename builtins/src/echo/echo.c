@@ -74,9 +74,3 @@ int echo(struct my_shell *shell, char **av)
     if (params.newline == true && params.first_str != -1)
         my_putchar('\n');
 }
-
-int main(int ac, const char *av[])
-{
-    echo(ac, av);
-    return (0);
-}
