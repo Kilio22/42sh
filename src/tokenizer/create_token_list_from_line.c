@@ -56,32 +56,39 @@ static int add_token_node(struct token_node *head, char *ptr,
     return 0;
 }
 
-static struct token_node *create_token_list_head(void)
+static size_t find_next_delim_index(char *line)
 {
-    struct token_node *head = malloc(sizeof(struct token_node));
+    size_t i = 0;
+    size_t delim = get_delim_index(line);
 
-    if (!head)
-        return NULL;
-    head->content = NULL;
-    head->id = ID_TEXT;
-    head->next = NULL;
-    head->prev = NULL;
-    return head;
+    while (line[i]) {
+        // if (DELIM_ID(delim) == ID_SQUOTES || DELIM_ID(delim) == ID_DQUOTES) {
+
+        // }
+        if (DELIM_TYPE(delim) == T_INHIBITOR) {
+            RM_CHAR(line, i);
+            delim = get_delim_index(line + ++i);
+            continue;
+        }
+        if (DELIM_ID(delim) != ID_TEXT)
+            break;
+        delim = get_delim_index(line + ++i);
+    }
+    return i;
 }
 
 struct token_node *create_token_list_from_line(char *line)
 {
     struct token_node *head = create_token_list_head();
-    size_t delim_idx;
     size_t i = 0;
 
     if (!head)
         return NULL;
-    while (line[i]) {
-        delim_idx = get_delim_index(line + i);
-        while (line[i] && DELIM_ID(delim_idx) == ID_TEXT)
-            delim_idx = get_delim_index(line + ++i);
-        if (add_token_node(head, line, delim_idx, &i) == -1)
+    while (*line) {
+        i = find_next_delim_index(line);
+        // if (i == -1)
+        //     return NULL;
+        if (add_token_node(head, line, get_delim_index(line + i), &i) == -1)
             return NULL;
         line += i;
         i = 0;
@@ -90,3 +97,11 @@ struct token_node *create_token_list_from_line(char *line)
         return NULL;
     return head;
 }
+
+
+/*
+
+echo "\"oui"\" == echo "\" + oui + "\" = \oui\
+* les dans les guillemets sont pas effectifs
+
+*/

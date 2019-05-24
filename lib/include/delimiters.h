@@ -24,10 +24,11 @@ enum delim_ids {
     ID_RREDIRECTION,
     ID_DB_LREDIRECTION,
     ID_LREDIRECTION,
+    ID_BACKTICKS,
     ID_SQUOTES,
     ID_DQUOTES,
     ID_PARENTHESIS,
-    ID_BACKTICKS,
+    ID_BACKSLASH,
     ID_TEXT,
     ID_NB
 };
@@ -37,6 +38,7 @@ enum delim_types {
     T_SEPARATOR,
     T_GET,
     T_CONTAINER,
+    T_INHIBITOR,
     T_NB
 };
 

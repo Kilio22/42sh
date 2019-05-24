@@ -15,6 +15,8 @@ static void delete_token_sep(struct token_node **token_list)
 {
     struct token_node *tmp;
 
+    if (!(*token_list))
+        return;
     tmp = (*token_list)->next;
     if ((*token_list) && (*token_list)->next)
         (*token_list)->next->prev = NULL;

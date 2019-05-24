@@ -11,13 +11,15 @@
 
 static struct pipe_s *init_pipe_list(struct token_node *tokens)
 {
-    struct pipe_s *list = malloc(sizeof(struct cmd_s));
+    struct pipe_s *list = malloc(sizeof(struct pipe_s));
     struct token_node *head = tokens;
 
-    if (!list)
+    if (!list || !tokens)
         return NULL;
     list->next = NULL;
     list->prev = NULL;
+    for (int i = 0; i < 6; i++)
+        list->redirections[i] = NULL;
     if (tokens->id == ID_PIPE)
         list->token_list = NULL;
     else
@@ -36,11 +38,12 @@ static struct pipe_s *get_last_pipe(struct pipe_s *head)
 
 static int add_pipe(struct pipe_s *list, struct token_node *add)
 {
-    struct pipe_s *new = new = malloc(sizeof(struct cmd_s));
+    struct pipe_s *new;
     struct pipe_s *last = get_last_pipe(list);
 
     if (!add)
         return 0;
+    new = malloc(sizeof(struct pipe_s));
     if (!new)
         return -1;
     new->next = NULL;
@@ -48,6 +51,8 @@ static int add_pipe(struct pipe_s *list, struct token_node *add)
         new->token_list = NULL;
     else
         new->token_list = add->next;
+    for (int i = 0; i < 6; i++)
+        new->redirections[i] = NULL;
     new->prev = last;
     last->next = new;
     return 0;

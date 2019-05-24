@@ -22,9 +22,10 @@ const delimiter_t delim_tab[] = {
     {">", "", ID_RREDIRECTION, T_GET},
     {"<<", "", ID_DB_LREDIRECTION, T_GET},
     {"<", "", ID_LREDIRECTION, T_GET},
+    {"`", "`", ID_BACKTICKS, T_CONTAINER},
     {"'", "'", ID_SQUOTES, T_CONTAINER},
     {"\"", "\"", ID_DQUOTES, T_CONTAINER},
     {"(", ")", ID_PARENTHESIS, T_CONTAINER},
-    {"`", "`", ID_BACKTICKS, T_CONTAINER},
+    {"\\", "", ID_BACKSLASH, T_INHIBITOR},
     {NULL, NULL, ID_TEXT, T_WITHOUT}
 };

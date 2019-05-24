@@ -48,6 +48,10 @@ void print_pipe(struct pipe_s *cmd)
         printf("CONTENT = %s\n", cmd->token_list->content);
             cmd->token_list = cmd->token_list->next;
         }
+        printf("REDIRECTION\n");
+        for (int i = 0; i < 6; i++)
+            if (cmd->redirections[i])
+                printf("%s\n", cmd->redirections[i]);
         cmd = cmd->next;
     }
 }
@@ -61,8 +65,6 @@ void print_list(struct cmd_s *cmd)
         while (cmd->token_list) {
             printf("ID = %d\n", cmd->token_list->id);
             printf("CONTENT = %s\n", cmd->token_list->content);
-            if (cmd->token_list->prev)
-                printf("%s\n", cmd->token_list->prev->content);
             cmd->token_list = cmd->token_list->next;
         }
         cmd = cmd->next;
@@ -91,10 +93,6 @@ char **get_prompt(my_env_t *env)
         exit(84);
     if (pipe_parser(cmd) == -1)
         exit(84);
-   /*  while (nodelist) {
-        printf("{%s}\t%d\n", nodelist->content, nodelist->id);
-        nodelist = nodelist->next;
-    } */
     print_list(cmd);
     exit(0);
     prompt = my_str_towordarray(line_prompt, ";");
