@@ -59,9 +59,10 @@ static void print_strings(echo_t *params, int ac, const char *av[])
     }
 }
 
-void echo(int ac, const char *av[])
+void echo(struct my_shell *shell, char **av)
 {
     echo_t params;
+    int ac = my_strarraylen(av);
 
     init_echo(&params);
     if (ac == 1) {

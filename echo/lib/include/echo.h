@@ -18,5 +18,6 @@ typedef struct echo_s {
 
 void init_echo(echo_t *params);
 void parse_flags(echo_t *params, int ac, const char *av[]);
+void echo(struct my_shell *shell, char **av);
 
 #endif /* !ECHO_H_ */
