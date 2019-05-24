@@ -17,7 +17,7 @@ int check_pipe(struct token_node *head)
         if (head->id != ID_PIPE)
             continue;
         if (!head->prev || !head->next)
-            return fprintf(stderr, "Invalid null command.\n"),-1;
+            return fprintf(stderr, "Invalid null command.\n"), -1;
     }
     return 0;
 }

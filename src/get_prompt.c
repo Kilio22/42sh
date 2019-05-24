@@ -93,10 +93,6 @@ char **get_prompt(my_env_t *env)
         exit(84);
     if (pipe_parser(cmd) == -1)
         exit(84);
-   /*  while (nodelist) {
-        printf("{%s}\t%d\n", nodelist->content, nodelist->id);
-        nodelist = nodelist->next;
-    } */
     print_list(cmd);
     exit(0);
     prompt = my_str_towordarray(line_prompt, ";");
