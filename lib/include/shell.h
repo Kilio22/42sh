@@ -22,6 +22,14 @@ struct my_shell {
     ret_t n_return;
 };
 
+struct builtins_s {
+    char *name;
+    char *desc;
+    int (*ptr)(struct my_shell *, char **);
+};
+
+extern const struct builtins_s *builtins[];
+
 /* Shell manipulation */
 struct my_shell *create_my_shell(char const *env[]);
 void destroy_my_shell(struct my_shell *shell);
@@ -30,7 +38,7 @@ void exit_shell(struct my_shell *shell, unsigned char exit_code);
 /* Command execution */
 int loop_shell(struct my_shell *shell);
 int execute_line(struct my_shell *shell, char *line);
-int execute_command(struct my_shell *shell, struct cmd_s *command);
+int execute_command(struct my_shell *shell, struct pipe_s *commands);
 
 /* Useful functions (maybe) */
 char *my_getenv(struct my_shell *shell, const char *name);
