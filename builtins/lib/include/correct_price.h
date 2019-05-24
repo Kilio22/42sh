@@ -19,7 +19,5 @@ typedef struct game_s {
 int get_name(game_t *correct_price);
 int start_game(game_t *game);
 char *get_line(FILE *stream);
-int correct_price(struct my_shell *shell __attribute__((unused)),
-char **av __attribute__((unused)));
 
 #endif /* !CORRECT_PRICE_H_ */

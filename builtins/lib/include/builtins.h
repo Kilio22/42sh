@@ -44,5 +44,7 @@ int find_alias(struct alias_s alias[MAX_ALIAS], char *name);
 char *my_strcat_freeleft(const char *left, const char *right);
 void display_one_alias(struct alias_s alias[MAX_ALIAS], char *name);
 int display_builtins(struct my_shell *shell __attribute__((unused)), char **av);
+int correct_price(struct my_shell *shell __attribute__((unused)),
+char **av __attribute__((unused)));
 
 #endif /* !BUILTINS_H_ */
