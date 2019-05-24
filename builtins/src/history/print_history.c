@@ -21,7 +21,7 @@
 
 int print_history(struct my_shell *shell, char **av __attribute__((unused)))
 {
-    history_t *current = shell->history->head;
+    struct history_s *current = shell->history->head;
     struct tm *timer;
 
     while (current != NULL) {

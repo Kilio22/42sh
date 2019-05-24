@@ -8,10 +8,11 @@
 #include <stdlib.h>
 #include "history.h"
 #include "my_string.h"
+#include "builtins.h"
 
-static int is_in_history(char *buff, breakpoints_t *historic)
+static int is_in_history(char *buff, struct breakpoints_s *historic)
 {
-    history_t *current = historic->head;
+    struct history_s *current = historic->head;
 
     while (current != NULL) {
         if (my_strcmp(buff, current->content->command) == 0)
@@ -21,9 +22,9 @@ static int is_in_history(char *buff, breakpoints_t *historic)
     return -1;
 }
 
-static int change_history(char *buff, breakpoints_t *historic)
+static int change_history(char *buff, struct breakpoints_s *historic)
 {
-    history_t *head = historic->head;
+    struct history_s *head = historic->head;
     time_t timer = time(&timer);
 
     while (historic->head != NULL) {
@@ -46,16 +47,16 @@ static int change_history(char *buff, breakpoints_t *historic)
     return 0;
 }
 
-int add_history(char *buff, breakpoints_t *historic)
+int add_history(char *buff, struct breakpoints_s *historic)
 {
-    history_t *new_historic;
+    struct history_s *new_historic;
 
     if (is_in_history(buff, historic) == 0)
         return change_history(buff, historic);
-    new_historic = malloc(sizeof(history_t));
+    new_historic = malloc(sizeof(struct history_s));
     if (new_historic == NULL)
         return -1;
-    new_historic->content = malloc(sizeof(content_t));
+    new_historic->content = malloc(sizeof(struct content_s));
     if (new_historic->content == NULL)
         return -1;
     if (time(&(new_historic->content->timer)) == -1)

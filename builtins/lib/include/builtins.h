@@ -12,22 +12,22 @@
 
 #define MAX_ALIAS 400
 
-typedef struct content_s {
+struct content_s {
     int number;
     time_t timer;
     char *command;
-} content_t;
+};
 
-typedef struct history_s {
-    content_t *content;
+struct history_s {
+    struct content_s *content;
     struct history_s *old;
     struct history_s *next;
-} history_t;
+};
 
-typedef struct breakpoints_s {
-    history_t *head;
-    history_t *last;
-} breakpoints_t;
+struct breakpoints_s {
+    struct history_s *head;
+    struct history_s *last;
+};
 
 struct alias_s {
     char *name;

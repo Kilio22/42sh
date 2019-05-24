@@ -10,6 +10,7 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <stdlib.h>
+#include "builtins.h"
 #include "history.h"
 #include "my_string.h"
 #include "my.h"
@@ -33,9 +34,9 @@ static char *my_ltoa(long int nb)
     return (my_strdup(my_revstr(str)));
 }
 
-void free_history(breakpoints_t *historic)
+void free_history(struct breakpoints_s *historic)
 {
-    history_t *next = historic->head->next;
+    struct history_s *next = historic->head->next;
 
     while (historic->head != NULL) {
         free(historic->head->content->command);
@@ -47,12 +48,12 @@ void free_history(breakpoints_t *historic)
     }
 }
 
-int save_history(breakpoints_t *historic)
+int save_history(struct breakpoints_s *historic)
 {
     int fd = open(".history", O_CREAT | O_RDWR | O_TRUNC,
 S_IRUSR | S_IWUSR);
     char *time;
-    history_t *current = historic->head;
+    struct history_s *current = historic->head;
 
     while (current != NULL) {
         time = my_ltoa(current->content->timer);

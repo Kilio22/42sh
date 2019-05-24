@@ -9,6 +9,7 @@
 #include <string.h>
 #include <my_string.h>
 #include "history.h"
+#include "builtins.h"
 
 static char *my_strcat_freeleft(const char *left, const char *right)
 {
@@ -32,7 +33,8 @@ static char *error_and_return(char *flag, char *end)
     return NULL;
 }
 
-static char *check_flag(breakpoints_t *historic, char *flag, char **str_global)
+static char *check_flag(struct breakpoints_s *historic, char *flag,
+char **str_global)
 {
     char *end;
     char *end1;
@@ -57,7 +59,7 @@ my_strdup(historic->last->content->command));
     }
 }
 
-int replace_str_history(struct token_node *node, breakpoints_t *historic)
+int replace_str_history(struct token_node *node, struct breakpoints_s *historic)
 {
     char *str_global = my_strdup("");
     char *begin = node->content;

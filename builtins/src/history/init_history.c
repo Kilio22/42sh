@@ -9,11 +9,12 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include "history.h"
+#include "builtins.h"
 #include "my_string.h"
 #include "my.h"
 
-static void fill_content(breakpoints_t *historic, history_t *content,
-char *time, char *str)
+static void fill_content(struct breakpoints_s *historic,
+struct history_s *content, char *time, char *str)
 {
     static int number = 1;
     time_t timer;
@@ -34,17 +35,17 @@ char *time, char *str)
     number++;
 }
 
-static int read_history(breakpoints_t *historic, FILE *stream)
+static int read_history(struct breakpoints_s *historic, FILE *stream)
 {
     char *time = get_line(stream);
     char *str = get_line(stream);
-    history_t *content;
+    struct history_s *content;
 
     while (time != NULL && str != NULL) {
-        content = malloc(sizeof(history_t));
+        content = malloc(sizeof(struct history_s));
         if (content == NULL)
             return -1;
-        content->content = malloc(sizeof(content_t));
+        content->content = malloc(sizeof(struct content_s));
         if (content->content == NULL)
             return -1;
         fill_content(historic, content, time, str);
@@ -58,16 +59,16 @@ static int read_history(breakpoints_t *historic, FILE *stream)
     return 0;
 }
 
-static int empty_history(breakpoints_t *historic)
+static int empty_history(struct breakpoints_s *historic)
 {
-    history_t *content = malloc(sizeof(history_t));
+    struct history_s *content = malloc(sizeof(struct history_s));
     time_t timer;
 
     if (content == NULL)
         return -1;
     content->next = NULL;
     content->old = NULL;
-    content->content = malloc(sizeof(content_t));
+    content->content = malloc(sizeof(struct content_s));
     if (content->content == NULL)
         return -1;
     content->content->command = my_strdup("./42sh");
@@ -80,7 +81,7 @@ static int empty_history(breakpoints_t *historic)
     return 0;
 }
 
-int init_history(breakpoints_t *historic)
+int init_history(struct breakpoints_s *historic)
 {
     FILE *stream = fopen(".history", "r");
     time_t timer = time(&timer);

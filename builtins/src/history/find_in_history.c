@@ -9,21 +9,22 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include "history.h"
+#include "builtins.h"
 #include "my_string.h"
 #include "my.h"
 
-static char *command_number(breakpoints_t *historic, int number)
+static char *command_number(struct breakpoints_s *historic, int number)
 {
-    history_t *current = historic->head;
+    struct history_s *current = historic->head;
 
     while (current->content->number != number)
         current = current->next;
     return my_strdup(current->content->command);
 }
 
-static char *command_str(breakpoints_t *historic, char *str)
+static char *command_str(struct breakpoints_s *historic, char *str)
 {
-    history_t *current = historic->last;
+    struct history_s *current = historic->last;
 
     while (current != NULL && my_strncmp(current->content->command,
 str, my_strlen(str)) != 0)
@@ -33,7 +34,7 @@ str, my_strlen(str)) != 0)
     return my_strdup(current->content->command);
 }
 
-char *find_history(breakpoints_t *historic, char *buff)
+char *find_history(struct breakpoints_s *historic, char *buff)
 {
     int number;
     char *str = my_strdup(buff + 1);
