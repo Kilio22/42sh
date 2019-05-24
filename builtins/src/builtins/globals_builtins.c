@@ -20,5 +20,6 @@ const char *my_builtins[][2] = {
     {"history", "displays the history of commands"},
     {"unalias", "remove one or more aliases"},
     {"builtins", "displays all shell built-in"},
-    {"unsetenv", "unset one or more env variable(s)"}
+    {"unsetenv", "unset one or more env variable(s)"},
+    {"correct_price", "launch the correct price game"}
 };
