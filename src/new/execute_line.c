@@ -12,7 +12,7 @@ static struct cmd_s *get_next_command(struct cmd_s *command, ret_t n_return)
 {
     if (!command->next)
         return NULL;
-    if ((command->next->id == CMD_AND && n_return != SUCCESS_RETURN) || 
+    if ((command->next->id == CMD_AND && n_return != SUCCESS_RETURN) ||
 (command->next->id == CMD_OR && n_return == SUCCESS_RETURN)) {
         command = command->next;
         while (command && command->id != CMD_NORMAL)
@@ -27,10 +27,9 @@ static int execute_command_list(struct my_shell *shell, struct cmd_s *command)
     while (command) {
         if (!command->pipe) {
             command = command->next;
-            shell->n_return = 0;
             continue;
         } else
-            execute_command(shell, command); // ! return value not checked
+            execute_command(shell, command->pipe); // ! return value not checked
         command = get_next_command(command, shell->n_return);
     }
     return 0;
@@ -45,6 +44,8 @@ int execute_line(struct my_shell *shell, char *line)
         return -1;
     commands = separate_token_list(token_head);
     if (!commands)
+        return -1;
+    if (pipe_parser(commands) == -1)
         return -1;
     execute_command_list(shell, commands); // ! return value not checked
     delete_token_node_list(token_head);
