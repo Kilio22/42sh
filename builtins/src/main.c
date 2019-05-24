@@ -12,25 +12,219 @@
 #include "my_stdio.h"
 #include "my_string.h"
 
+#define MAX_ALIAS 400
+
+typedef struct alias_s {
+    char *name;
+    char *command;
+} alias_t;
+
+void init_alias(alias_t alias[MAX_ALIAS])
+{
+    int i = 0;
+
+    for (; i < MAX_ALIAS; i++)
+        alias[i].name = NULL;
+}
+
+int find_alias(alias_t alias[MAX_ALIAS], char *name)
+{
+    int i = 0;
+
+    for (; i < MAX_ALIAS; i++) {
+        if (alias[i].name == NULL)
+            return i;
+        if (my_strcmp(name, alias[i].name) == 0)
+            return i;
+    }
+    return -1;
+}
+
+void unalias_all(alias_t alias[MAX_ALIAS])
+{
+    for (int i = 0; i < MAX_ALIAS; i++) {
+        if (alias[i].name == NULL)
+            continue;
+        free(alias[i].name);
+        free(alias[i].command);
+        alias[i].name = NULL;
+    }
+}
+
+int unalias(alias_t alias[MAX_ALIAS], int index)
+{
+    int last_index = 0;
+    char *tmp;
+
+    for (; last_index < 400; last_index++)
+        if (alias[last_index].name == NULL)
+            break;
+    last_index--;
+    tmp = alias[last_index].name;
+    alias[last_index].name = alias[index].name;
+    alias[index].name = tmp;
+    tmp = alias[last_index].command;
+    alias[last_index].command = alias[index].command;
+    alias[index].command = tmp;
+    free(alias[last_index].name);
+    free(alias[last_index].command);
+    alias[last_index].name = NULL;
+    return 0;
+}
+
+int my_unalias(int ac, char *av[], alias_t alias[MAX_ALIAS])
+{
+    int alias_ind;
+
+    if (ac == 1) {
+        fprintf(stderr, "unalias: Too few arguments.\n");
+        return -1;
+    }
+    for (int i = 1; i < ac; i++) {
+        if (my_strcmp("*", av[i]) == 0) {
+            unalias_all(alias);
+            return 0;
+        }
+        alias_ind = find_alias(alias, av[i]);
+        if (alias_ind == -1 || alias[alias_ind].name == NULL)
+            continue;
+        if (unalias(alias, alias_ind) == -1) {
+            fprintf(stderr, "unalias: error.\n");
+            return -1;
+        }
+    }
+    return 0;
+}
+
+void display_aliases(alias_t alias[MAX_ALIAS])
+{
+    for (int i = 0; i < MAX_ALIAS; i++) {
+        if (alias[i].name == NULL)
+            break;
+        printf("%s\t%s\n", alias[i].name, alias[i].command);
+    }
+}
+
+void display_one_alias(alias_t alias[MAX_ALIAS], char *name)
+{
+    int index = find_alias(alias, name);
+
+    if (index == -1 || alias[index].name == NULL)
+        return;
+    printf("%s\n", alias[index].command);
+}
+
+int full_alias(void)
+{
+    fprintf(stderr, "alias: Too many aliases.\n");
+    return -1;
+}
+
+char *my_strcat_freeleft(const char *left, const char *right)
+{
+    size_t len = my_strlen(left);
+    char *new = malloc(len + my_strlen(right) + 1);
+
+    if (!left || !right || !new)
+        return (NULL);
+    my_strcpy(new, left);
+    my_strcpy(&new[len], right);
+    free((char *) left);
+    return (new);
+}
+
+int new_alias(int ac, char *name, char **cmd, alias_t alias[MAX_ALIAS])
+{
+    char *new_cmd = my_strdup("");
+    int index = find_alias(alias, name);
+
+    if (new_cmd == NULL)
+        return -1;
+    for (int i = 0; i < ac; i++) {
+        new_cmd = my_strcat_freeleft(new_cmd, cmd[i]);
+        if (new_cmd == NULL)
+            return -1;
+        if (i + 1 < ac)
+            new_cmd = my_strcat_freeleft(new_cmd, " ");
+        if (new_cmd == NULL)
+            return -1;
+    }
+    alias[index].name = my_strdup(name);
+    alias[index].command = my_strdup(new_cmd);
+    if (alias[index].name == NULL || alias[index].command == NULL)
+        return -1;
+    free(new_cmd);
+    return 0;
+}
+
+int change_alias(int ac, int index, char **cmd, alias_t alias[MAX_ALIAS])
+{
+    char *new_cmd = my_strdup("");
+
+    if (new_cmd == NULL)
+        return -1;
+    for (int i = 0; i < ac; i++) {
+        new_cmd = my_strcat_freeleft(new_cmd, cmd[i]);
+        if (new_cmd == NULL)
+            return -1;
+        if (i + 1 < ac)
+            new_cmd = my_strcat_freeleft(new_cmd, " ");
+        if (new_cmd == NULL)
+            return -1;
+    }
+    free(alias[index].command);
+    alias[index].command = my_strdup(new_cmd);
+    if (alias[index].command == NULL)
+        return -1;
+    return 0;
+}
+
+int add_alias(int ac, char *name, char **cmd, alias_t alias[MAX_ALIAS])
+{
+    int index = find_alias(alias, name);
+
+    if (index == -1)
+        return full_alias();
+    else if (alias[index].name == NULL) {
+        return new_alias(ac, name, cmd, alias);
+    } else {
+        return change_alias(ac, index, cmd, alias);
+    }
+}
+
+int my_alias(int ac, char *av[], alias_t alias[MAX_ALIAS])
+{
+    if (ac == 1)
+        display_aliases(alias);
+    else if (ac == 2) {
+        display_one_alias(alias, av[1]);
+    } else {
+        return add_alias(ac - 2, av[1], av + 2, alias);
+    }
+    return 0;
+}
+
 const char *my_builtins[][2] = {
     {"cd", "change the current working directory"},
     {"env", "displays the env"},
     {"yes", "loop and displays y or the args"},
     {"echo", "displays the given arguments"},
     {"exit", "exit the shell with the given return value"},
+    {"alias", "display aliases, or add a new one for a command"},
     {"snake", "launch the snake game"},
     {"where", "displays all known instances of command."},
     {"which", "displays the real command that the shell execute"},
     {"setenv", "set a new env variable or change an existing one"},
     {"whoami", "displays who you are"},
     {"history", "displays the history of commands"},
+    {"unalias", "remove one or more aliases"},
     {"builtins", "displays all shell built-in"},
     {"unsetenv", "unset one or more env variable(s)"}
 };
 
 void display_builtins(void)
 {
-    for (int i = 0; i < 13; i++) {
+    for (int i = 0; i < 15; i++) {
         my_printf("%s", my_builtins[i][0]);
         if (my_strlen(my_builtins[i][0]) < 8)
             my_printf("\t");
@@ -40,7 +234,7 @@ void display_builtins(void)
 
 bool is_a_builtin(const char *str)
 {
-    for (int i = 0; i < 13; i++)
+    for (int i = 0; i < 15; i++)
         if (my_strcmp(str, my_builtins[i][0]) == 0)
             return true;
     return false;
@@ -68,19 +262,6 @@ int find_var_index(char *var, char **env)
             return (i);
     }
     return (-1);
-}
-
-char *my_strcat_freeleft(const char *left, const char *right)
-{
-    size_t len = my_strlen(left);
-    char *new = malloc(len + my_strlen(right) + 1);
-
-    if (!left || !right || !new)
-        return (NULL);
-    my_strcpy(new, left);
-    my_strcpy(&new[len], right);
-    free((char *) left);
-    return (new);
 }
 
 void free_path(char **path)
@@ -203,6 +384,9 @@ void my_yes(int argc, char *argv[])
 
 int main(int argc, char *argv[], char *env[])
 {
+    alias_t alias[MAX_ALIAS];
+
+    init_alias(alias);
     if (argc < 2)
         return 84;
     if (my_strcmp(argv[1], "builtins") == 0) {
@@ -219,5 +403,14 @@ int main(int argc, char *argv[], char *env[])
     }
     if (my_strcmp(argv[1], "whoami") == 0) {
         my_whoami();
+    }
+    if (my_strcmp(argv[1], "alias") == 0) {
+        my_alias(argc - 1, argv + 1, alias);
+        my_alias(1, NULL, alias);
+        my_unalias(argc - 1, argv + 1, alias);
+        my_alias(1, NULL, alias);
+    }
+    if (my_strcmp(argv[1], "unalias") == 0) {
+        my_unalias(argc - 1, argv + 1, alias);
     }
 }
