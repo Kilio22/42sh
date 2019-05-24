@@ -9,7 +9,7 @@
 #include <unistd.h>
 #include "snake.h"
 
-int read_input(game_t *snake)
+static int read_input(game_t *snake)
 {
     int ret_val = 0;
     char buff[20];
@@ -22,7 +22,7 @@ int read_input(game_t *snake)
     return ret_val;
 }
 
-int window_loop(game_t *snake)
+static int window_loop(game_t *snake)
 {
     int ret_val = 0;
 
@@ -46,12 +46,13 @@ int window_loop(game_t *snake)
     return close_window(0);
 }
 
-int main(void)
+int snake(struct my_shell *shell __attribute__((unused)),
+char **av __attribute__((unused)))
 {
     int ret_val;
 
     game_t snake = init_game();
     ret_val = window_loop(&snake);
     save_snake(&snake);
-    return (ret_val == 1) ? 84 : 0;
+    return (ret_val == 1) ? -1 : 0;
 }

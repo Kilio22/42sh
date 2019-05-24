@@ -80,4 +80,7 @@ void check_size_window(void);
 //display_map.c
 int print_map(game_t *snake);
 
+int snake(struct my_shell *shell __attribute__((unused)),
+char **av __attribute__((unused)));
+
 #endif /* !SNAKE_H_ */
