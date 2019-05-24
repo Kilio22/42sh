@@ -14,21 +14,26 @@
 static int check_red_type_conditions(struct token_node **token,
 struct pipe_s *pipe)
 {
-    if ((*token)->id >= 7 && (*token)->id <= 10) {
+    if ((*token)->id >= ID_DB_FULL_RREDIRECTION && (*token)->id
+<= ID_RREDIRECTION) {
         if (!(*token)->next || (*token)->next->id != ID_TEXT)
             return fprintf(stderr, "Missing name for redirect.\n"), -1;
         else if (check_already_redirect(pipe, 0, 4) == -1 || pipe->next)
             return fprintf(stderr, "Ambiguous output redirect.\n"), -1;
         else
-            pipe->redirections[(*token)->id - 7] = strdup((*token)->next->content);
+            pipe->redirections[(*token)->id - ID_DB_FULL_RREDIRECTION] =
+strdup((*token)->next->content);
     } else {
         if (!(*token)->next || (*token)->next->id != ID_TEXT)
             return fprintf(stderr, "Missing name for redirect.\n"), -1;
         else if (check_already_redirect(pipe, 5, 6) == -1 || pipe->prev)
             return fprintf(stderr, "Ambiguous input redirect.\n"), -1;
         else
-            pipe->redirections[(*token)->id - 7] = strdup((*token)->next->content);
+            pipe->redirections[(*token)->id - ID_DB_FULL_RREDIRECTION] =
+strdup((*token)->next->content);
     }
+    if (!pipe->redirections[(*token)->id - ID_DB_FULL_RREDIRECTION])
+        return -1;
     return 0;
 }
 
@@ -53,10 +58,12 @@ struct pipe_s *pipe)
 {
     if (!(*head)->next || (*head)->next->id != ID_TEXT)
         return fprintf(stderr, "Missing name for redirect.\n"), -1;
-    if ((*head)->id >= 11 && (*head)->id <= 12 && (pipe->prev
+    if ((*head)->id >= ID_DB_LREDIRECTION
+&& (*head)->id <= ID_LREDIRECTION && (pipe->prev
 || check_already_redirect(pipe, 5, 6) == -1))
         return fprintf(stderr, "Ambiguous input redirect.\n"), -1;
-    else if ((*head)->id >= 7 && (*head)->id <= 10 && (pipe->next
+    else if ((*head)->id >= ID_DB_FULL_RREDIRECTION &&
+(*head)->id <= ID_RREDIRECTION && (pipe->next
 || check_already_redirect(pipe, 0, 4) == -1))
         return fprintf(stderr, "Ambiguous output redirect.\n"), -1;
     if (!(*head)->next->next)
@@ -67,17 +74,21 @@ struct pipe_s *pipe)
 static int check_first_redirections(struct token_node **head,
 struct pipe_s *pipe)
 {
-    if ((*head)->id < 7 || (*head)->id > 12)
+    if ((*head)->id < ID_DB_FULL_RREDIRECTION || (*head)->id > ID_LREDIRECTION)
         return 0;
     if (check_first_conditions(head, pipe) == -1)
         return -1;
-    pipe->redirections[(*head)->id - 7] = strdup((*head)->next->content);
+    pipe->redirections[(*head)->id - ID_DB_FULL_RREDIRECTION]
+= strdup((*head)->next->content);
+    if (!pipe->redirections[(*head)->id - ID_DB_FULL_RREDIRECTION])
+        return -1;
     (*head) = (*head)->next->next;
     free((*head)->prev->prev);
     free((*head)->prev);
     (*head)->prev = NULL;
     pipe->token_list = (*head);
-    if ((*head) && (*head)->id >= 7 && (*head)->id <= 12)
+    if ((*head) && (*head)->id >= ID_DB_FULL_RREDIRECTION &&
+(*head)->id <= ID_LREDIRECTION)
         return check_first_redirections(head, pipe);
     return 0;
 }
@@ -91,7 +102,7 @@ int check_redirections(struct token_node *head, struct pipe_s *pipe)
     if (check_first_redirections(&head, pipe) == -1)
         return -1;
     for (; head; head = head->next) {
-        if (head->id >= 7 && head->id <= 12)
+        if (head->id >= ID_DB_FULL_RREDIRECTION && head->id <= ID_LREDIRECTION)
             n_return = check_redirections_type(&head, pipe);
         if (n_return == -1)
             return -1;
