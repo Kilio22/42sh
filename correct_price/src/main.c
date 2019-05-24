@@ -17,7 +17,7 @@
 #include "my.h"
 #include "correct_price.h"
 
-void manage_price_diff(game_t *correct_price, int price)
+static void manage_price_diff(game_t *correct_price, int price)
 {
     if (price < 0 || price > 99999) {
         my_printf("Argument invalide.\n");
@@ -29,7 +29,7 @@ void manage_price_diff(game_t *correct_price, int price)
         my_printf("C'est MOINS !!!\n\n");
 }
 
-int loop_game(game_t *correct_price)
+static int loop_game(game_t *correct_price)
 {
     char *buff;
     int price;
@@ -54,7 +54,7 @@ int loop_game(game_t *correct_price)
     return 0;
 }
 
-void save_new_highscore(game_t *correct_price)
+static void save_new_highscore(game_t *correct_price)
 {
     int fd = open("highscore.txt", O_CREAT | O_RDWR | O_TRUNC,
 S_IRUSR | S_IWUSR);
@@ -72,7 +72,7 @@ S_IRUSR | S_IWUSR);
     return;
 }
 
-void end_game(game_t *correct_price)
+static void end_game(game_t *correct_price)
 {
     correct_price->find = time(NULL) - correct_price->start;
     my_printf("\nET C'EST GA GNÉ !!!\n");
@@ -88,19 +88,20 @@ correct_price->highscore == 0) {
     my_printf("un nouveau Juste Prix :D\n\n");
 }
 
-int main(void)
+int correct_price(struct my_shell *shell __attribute__((unused)),
+char **av __attribute__((unused)))
 {
     game_t correct_price;
 
     srand(time(0));
     if (system("clear") == -1)
-        return 84;
+        return -1;
     if (start_game(&correct_price) == -1)
-        return 84;
+        return -1;
     if (get_name(&correct_price) == -1)
-        return 84;
+        return -1;
     if (loop_game(&correct_price) == -1)
-        return 84;
+        return -1;
     end_game(&correct_price);
     free(correct_price.name);
     return (0);
