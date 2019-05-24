@@ -5,6 +5,8 @@
 ** builtins
 */
 
+#include <stdbool.h>
+
 #ifndef BUILTINS_H_
 #define BUILTINS_H_
 
