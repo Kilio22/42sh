@@ -38,11 +38,12 @@ static struct pipe_s *get_last_pipe(struct pipe_s *head)
 
 static int add_pipe(struct pipe_s *list, struct token_node *add)
 {
-    struct pipe_s *new = malloc(sizeof(struct pipe_s));
+    struct pipe_s *new;
     struct pipe_s *last = get_last_pipe(list);
 
     if (!add)
         return 0;
+    new = malloc(sizeof(struct pipe_s));
     if (!new)
         return -1;
     new->next = NULL;
