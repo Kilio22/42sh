@@ -11,6 +11,7 @@
 void init_echo(echo_t *params)
 {
     params->newline = true;
+    params->backslash = true;
     params->first_str = 1;
 }
 
