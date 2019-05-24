@@ -21,3 +21,15 @@ char *my_strcat(const char *left, const char *right)
     free((char *) right);
     return (new);
 }
+
+char *my_strcat_nofree(const char *left, const char *right)
+{
+    size_t len = my_strlen(left);
+    char *new = malloc(len + my_strlen(right) + 1);
+
+    if (!left || !right || !new)
+        return (NULL);
+    my_strcpy(new, left);
+    my_strcpy(&new[len], right);
+    return (new);
+}
