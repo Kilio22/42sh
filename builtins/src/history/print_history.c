@@ -17,10 +17,11 @@
 #include "my_stdio.h"
 #include "my_string.h"
 #include "my.h"
+#include "builtins.h"
 
-void print_history(breakpoints_t *historic)
+int print_history(struct my_shell *shell, char **av __attribute__((unused)))
 {
-    history_t *current = historic->head;
+    history_t *current = shell->history->head;
     struct tm *timer;
 
     while (current != NULL) {
@@ -36,27 +37,5 @@ void print_history(breakpoints_t *historic)
         my_printf("%d\t%s\n", timer->tm_min, current->content->command);
         current = current->next;
     }
-}
-
-int main(void)
-{
-    struct token_node *node = malloc(sizeof(struct token_node));
-    breakpoints_t *historic = malloc(sizeof(breakpoints_t));
-
-    if (historic == NULL)
-        return 84;
-    if (node == NULL)
-        return 84;
-    node->content = my_strdup("!l -l | !c");
-    if (init_history(historic) == -1)
-        return 84;
-    printf("ALLO %s\n", node->content);
-    if (replace_str_history(node, historic) == -1)
-        return 84;
-    printf("ALHUILE %s\n", node->content);
-    free(node->content);
-    free(node);
-    free_history(historic);
-    free(historic);
     return 0;
 }
