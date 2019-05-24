@@ -56,16 +56,18 @@ int my_whoami(struct my_shell *shell, char **av);
 int my_alias(struct my_shell *shell, char *av[]);
 void free_alias(struct alias_s alias[MAX_ALIAS]);
 void init_alias(struct alias_s alias[MAX_ALIAS]);
+int my_setenv(struct my_shell *shell, char **av);
 int my_unalias(struct my_shell *shell, char **av);
+int my_unsetenv(struct my_shell *shell, char **av);
 void display_aliases(struct alias_s alias[MAX_ALIAS]);
 int find_alias(struct alias_s alias[MAX_ALIAS], char *name);
 char *my_strcat_freeleft(const char *left, const char *right);
 void display_one_alias(struct alias_s alias[MAX_ALIAS], char *name);
+int print_history(struct my_shell *shell, char **av __attribute__((unused)));
 int display_builtins(struct my_shell *shell __attribute__((unused)), char **av);
 int correct_price(struct my_shell *shell __attribute__((unused)),
 char **av __attribute__((unused)));
 int snake(struct my_shell *shell __attribute__((unused)),
 char **av __attribute__((unused)));
-int print_history(struct my_shell *shell, char **av __attribute__((unused)));
 
 #endif /* !BUILTINS_H_ */
