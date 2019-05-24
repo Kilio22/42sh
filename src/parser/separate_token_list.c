@@ -16,7 +16,7 @@ static struct cmd_s *init_cmd_list(struct token_node *tokens)
     struct cmd_s *list = malloc(sizeof(struct cmd_s));
     struct token_node *head = tokens;
 
-    if (!list)
+    if (!list || !tokens)
         return NULL;
     list->next = NULL;
     list->prev = NULL;
@@ -31,11 +31,12 @@ static struct cmd_s *init_cmd_list(struct token_node *tokens)
 
 static int add_cmd(struct cmd_s *list, struct token_node *add)
 {
-    struct cmd_s *new = new = malloc(sizeof(struct cmd_s));
+    struct cmd_s *new;
     struct cmd_s *last = get_last_cmd(list);
 
     if (!add)
         return 0;
+    new = malloc(sizeof(struct cmd_s));
     if (!new)
         return -1;
     new->next = NULL;
