@@ -6,28 +6,12 @@
 */
 
 #include <stdbool.h>
+#include "history.h"
 
 #ifndef BUILTINS_H_
 #define BUILTINS_H_
 
 #define MAX_ALIAS 400
-
-struct content_s {
-    int number;
-    time_t timer;
-    char *command;
-};
-
-struct history_s {
-    struct content_s *content;
-    struct history_s *old;
-    struct history_s *next;
-};
-
-struct breakpoints_s {
-    struct history_s *head;
-    struct history_s *last;
-};
 
 struct alias_s {
     char *name;

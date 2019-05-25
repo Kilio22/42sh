@@ -11,8 +11,23 @@
 #ifndef HISTORY_H_
 #define HISTORY_H_
 
-struct token_node {
-    char *content;
+extern struct token_node;
+
+struct content_s {
+    int number;
+    time_t timer;
+    char *command;
+};
+
+struct history_s {
+    struct content_s *content;
+    struct history_s *old;
+    struct history_s *next;
+};
+
+struct breakpoints_s {
+    struct history_s *head;
+    struct history_s *last;
 };
 
 char *get_line(FILE *stream);
