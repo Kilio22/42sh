@@ -51,8 +51,7 @@ int execute_line(struct my_shell *shell, char *line);
 pid_t execute_command(struct my_shell *shell, struct pipe_s *pipes, pid_t pgid);
 ret_t get_command_status(struct my_shell *shell, struct pipe_s *p, pid_t pgid);
 void execute_child(struct my_shell *shell, struct pipe_s *pipes, char **av);
-void my_execve(struct my_shell *shell, struct pipe_s *pipes, char **av,
-                char *name);
+void my_execve(struct my_shell *shell, char **av, char *bin_name);
 int setup_io(struct pipe_s *pipes);
 
 /* Useful functions (maybe) */

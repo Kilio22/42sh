@@ -11,13 +11,10 @@
 #include <errno.h>
 #include "shell.h"
 
-void my_execve(struct my_shell *shell, struct pipe_s *pipes, char **av,
-                char *bin_name)
+void my_execve(struct my_shell *shell, char **av, char *bin_name)
 {
     char *bonus = "";
 
-    if (setup_io(pipes) == -1)
-        _exit(1);
     execve(bin_name, av, shell->env);
     if (errno == ENOEXEC)
         bonus = " Wrong Architecture.";
