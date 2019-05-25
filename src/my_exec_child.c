@@ -28,24 +28,23 @@ static ret_t execute_parenthesises(struct my_shell *shell, struct pipe_s *pipes)
     if (pid == -1)
         return 1;
     if (pid == 0) {
-        printf("Executing %s\n", pipes->token_list->content);
         _exit(execute_line(shell, pipes->token_list->content));
     } else {
         waitpid(pid, &wstatus, 0);
         ret = analyse_exit_status(wstatus);
     }
-    return printf("%d\n", ret), ret;
+    return ret;
 }
 
 void execute_child(struct my_shell *shell, struct pipe_s *pipes, char **av)
 {
     char *bin_name = NULL;
 
-    ignore_signals(false);
     if (setup_io(pipes) == -1)
         _exit(1);
     if (pipes->token_list->id == ID_PARENTHESIS)
         _exit(execute_parenthesises(shell, pipes));
+    ignore_signals(false);
     if (is_builtin(av[0]))
         _exit(execute_builtin(av, shell));
     if (strchr(av[0], '/'))

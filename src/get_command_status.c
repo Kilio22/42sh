@@ -47,10 +47,8 @@ ret_t get_command_status(struct my_shell *shell, struct pipe_s *p, pid_t pgid)
     if (is_builtin(p->token_list->content) && !p->next)
         return pgid;
     set_foreground_pgrp(pgid);
-    printf("[WAIT] PID: %d\n", pid_of_last);
     if (waitpid(pid_of_last, &wstatus, 0) == -1)
         return -1;
-    printf("[WAIT] Done !\n");
     ret = analyse_exit_status(wstatus);
     killpg(pgid, SIGKILL);
     set_foreground_pgrp(shell->pgid);

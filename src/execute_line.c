@@ -32,12 +32,10 @@ static int execute_command_list(struct my_shell *shell, struct cmd_s *command)
             command = command->next;
             continue;
         } else {
-            printf("[COMMAND] ID: %d\n", command->id);
             pgid = execute_command(shell, command->pipe, pgid);
             if (pgid == -1)
-                return puts("[COMMAND] Failure"), 1;
+                return 1;
             ret = get_command_status(shell, command->pipe, pgid);
-            printf("[COMMAND] Ret: %u\n", ret);
         }
         command = get_next_command(command, ret);
     }
