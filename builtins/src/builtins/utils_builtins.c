@@ -8,6 +8,7 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include "builtins.h"
+#include "shell.h"
 
 char *my_strcat_freeleft(const char *left, const char *right)
 {
@@ -24,8 +25,8 @@ char *my_strcat_freeleft(const char *left, const char *right)
 
 bool is_a_builtin(const char *str)
 {
-    for (int i = 0; i < 16; i++)
-        if (my_strcmp(str, my_builtins[i][0]) == 0)
+    for (int i = 0; i < 15; i++)
+        if (my_strcmp(str, builtins[i].name) == 0)
             return true;
     return false;
 }
