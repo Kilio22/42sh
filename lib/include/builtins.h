@@ -45,5 +45,7 @@ int print_history(struct my_shell *shell, char **av);
 int display_builtins(struct my_shell *shell, char **av);
 int correct_price(struct my_shell *shell, char **av);
 int snake(struct my_shell *shell, char **av);
+int my_env(struct my_shell *shell, char **av);
+int my_cd(struct my_shell *shell, char **av);
 
 #endif /* !BUILTINS_H_ */

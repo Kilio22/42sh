@@ -35,6 +35,18 @@ static int find_where_path(char *command, char **env)
     return occ;
 }
 
+static int is_an_alias(char *name, struct my_shell *shell)
+{
+    int index = find_alias(shell->aliases, name);
+
+    if (index == -1 || shell->aliases[index].name == NULL)
+        return 0;
+    else {
+        my_printf("%s is aliased to %s\n", name, shell->aliases[index].command);
+        return 1;
+    }
+}
+
 int my_where(struct my_shell *shell, char **av)
 {
     int occ = 0;
@@ -45,6 +57,7 @@ int my_where(struct my_shell *shell, char **av)
         return -1;
     }
     for (size_t i = 1; i < (size_t) ac; i++) {
+        occ += is_an_alias(av[i], shell);
         if (is_a_builtin(av[i]) == true) {
             my_printf("%s is a shell built-in\n");
             occ++;
