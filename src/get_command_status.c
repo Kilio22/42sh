@@ -31,15 +31,23 @@ static int analyse_exit_status(int wstatus)
     return (signal_index + 129);
 }
 
+static pid_t get_pid_of_last(struct pipe_s *p)
+{
+    while (p->next)
+        p = p->next;
+    return p->pid;
+}
+
 ret_t get_command_status(struct my_shell *shell, struct pipe_s *p, pid_t pgid)
 {
     ret_t n_return;
     int wstatus;
+    pid_t pid_of_last = get_pid_of_last(p);
 
     if (is_builtin(p->token_list->content) && !p->next)
         return shell->n_return;
     set_foreground_pgrp(pgid);
-    if (waitpid(pgid, &wstatus, WUNTRACED) == -1)
+    if (waitpid(pid_of_last, &wstatus, 0) == -1)
         return -1;
     n_return = analyse_exit_status(wstatus);
     killpg(pgid, SIGKILL);
