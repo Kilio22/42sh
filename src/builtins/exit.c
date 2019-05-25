@@ -12,7 +12,7 @@
 #include "my.h"
 #include "shell.h"
 
-static void exit_shell(struct my_shell *shell, ret_t ret_val)
+void exit_shell(struct my_shell *shell, ret_t ret_val)
 {
     free_alias(shell->aliases);
     free_history(shell->history);

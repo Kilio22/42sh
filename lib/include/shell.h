@@ -43,7 +43,7 @@ extern const char *constants_sig[];
 /* Shell manipulation */
 struct my_shell *create_my_shell(char const **env);
 void destroy_my_shell(struct my_shell *shell);
-void exit_shell(struct my_shell *shell, unsigned char exit_code);
+void exit_shell(struct my_shell *shell, ret_t ret_val);
 
 /* Command execution */
 int loop_shell(struct my_shell *shell);
