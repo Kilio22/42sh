@@ -14,7 +14,7 @@ int execute_builtin(char **av, struct my_shell *shell)
     if (idx < 0)
         return -1;
     if (builtins[idx].ptr(shell, av) == -1) {
-        shell->n_return = 2;
+        shell->n_return = 1;
         return 0;
     }
     shell->n_return = 0;
