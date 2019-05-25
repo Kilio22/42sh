@@ -6,11 +6,18 @@
 */
 
 #include <stdlib.h>
+#include <unistd.h>
 #include "shell.h"
 
 static char *get_prompt(void)
 {
-    return get_line(stdin);
+    char *line;
+
+    if (isatty(STDIN_FILENO))
+        write(STDOUT_FILENO, "$ > ", 4);
+    line = get_line(stdin);
+    printf("GOT: %s\n", line);
+    return line;
 }
 
 int loop_shell(struct my_shell *shell)
