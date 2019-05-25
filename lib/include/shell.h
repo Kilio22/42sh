@@ -71,4 +71,7 @@ int check_redirections_files(struct pipe_s *pipes);
 /* PATH managment */
 char *get_cmd_path(char *cmd, struct my_shell *shell);
 
+int destroy_pipe(struct pipe_s *p);
+int delete_command(struct cmd_s *cmd);
+
 #endif /* !SHELL_H_ */

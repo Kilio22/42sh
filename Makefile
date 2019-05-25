@@ -96,6 +96,7 @@ SRC	=	$(BUILTINS)echo/echo.c \
 		$(UTILS)set_foreground_pgrp.c \
 		builtins_constants.c \
 		create_my_shell.c \
+		delete_command.c \
 		destroy_my_shell.c \
 		do_redirections.c \
 		execute_builtin.c \
