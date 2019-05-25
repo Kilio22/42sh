@@ -52,11 +52,11 @@ int execute_line(struct my_shell *shell, char *line)
         return -1;
     commands = separate_token_list(token_head);
     if (!commands)
-        return -1;
+        return shell->n_return = 1, -1;
     if (pipe_parser(commands) == -1)
-        return -1;
+        return shell->n_return = 1, -1;
     if (execute_command_list(shell, commands) == -1)
-        return -1;
+        return shell->n_return = 1, -1;
     if (delete_command(commands) == -1)
         return -1;
     return 0;
