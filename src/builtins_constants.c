@@ -8,8 +8,8 @@
 #include "shell.h"
 
 const struct builtins_s builtins[] = {
-    {"cd", "change the current working directory", NULL},
-    {"env", "displays the env", NULL},
+    {"cd", "change the current working directory", my_cd},
+    {"env", "displays the env", my_env},
     {"yes", "loop and displays y or the args", my_yes},
     {"echo", "displays the given arguments", echo},
     {"exit", "exit the shell with the given return value", NULL},

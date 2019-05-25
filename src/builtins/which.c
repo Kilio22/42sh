@@ -38,13 +38,18 @@ static void find_which_path(char *command, char **env)
 int my_which(struct my_shell *shell, char **av)
 {
     int ac = my_strarraylen(av);
+    int alias;
 
     if (ac < 2) {
         fprintf(stderr, "%s: Too few arguments.\n", av[0]);
         return -1;
     }
     for (size_t i = 1; i < (size_t) ac; i++) {
-        if (is_a_builtin(av[i]) == true)
+        alias = find_alias(shell->aliases, av[i]);
+        if (alias != -1 && shell->aliases[alias].name != NULL)
+            my_printf("%s: \t aliased to %s\n", av[i],
+shell->aliases[alias].command);
+        else if (is_a_builtin(av[i]) == true)
             my_printf("%s: shell built-in command.\n");
         else
             find_which_path(av[i], shell->env);

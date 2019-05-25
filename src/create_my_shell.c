@@ -25,6 +25,17 @@ static char **dup_env(char **env)
     return new_env;
 }
 
+static int init_history_and_alias(struct my_shell *shell)
+{
+    shell->history = malloc(sizeof(struct breakpoints_s));
+    if (shell->history == NULL)
+        return -1;
+    if (init_history(shell->history) == -1)
+        return -1;
+    init_alias(shell->aliases);
+    return 0;
+}
+
 struct my_shell *create_my_shell(char const **env)
 {
     struct my_shell *shell = malloc(sizeof(struct my_shell));
@@ -44,5 +55,7 @@ shell->fd_save[SAVE_STDERR] == -1)
     if (shell->pgid == -1)
         return NULL;
     shell->n_return = 0;
+    if (init_history_and_alias(shell) == -1)
+        return NULL;
     return shell;
 }

@@ -16,7 +16,7 @@
 #include "my_string.h"
 
 
-int check_chdir_error(const char *path)
+static int check_chdir_error(const char *path)
 {
     DIR *dir;
 
@@ -31,7 +31,7 @@ int check_chdir_error(const char *path)
     return 0;
 }
 
-int change_dir(struct my_shell *shell, char *path)
+static int change_dir(struct my_shell *shell, char *path)
 {
     char old_pwd[PATH_MAX] = {0};
     char pwd[PATH_MAX] = {0};
@@ -52,7 +52,7 @@ int change_dir(struct my_shell *shell, char *path)
     return 0;
 }
 
-int cd_to_home(struct my_shell *shell)
+static int cd_to_home(struct my_shell *shell)
 {
     struct passwd *pw = getpwuid(getuid());
 
@@ -61,7 +61,7 @@ int cd_to_home(struct my_shell *shell)
     return change_dir(shell, pw->pw_dir);
 }
 
-int cd_old(struct my_shell *shell)
+static int cd_old(struct my_shell *shell)
 {
     char *old_pwd = my_getenv(shell, "OLDPWD");
 
@@ -73,6 +73,7 @@ int cd_old(struct my_shell *shell)
 int my_cd(struct my_shell *shell, char **av)
 {
     size_t len = my_strarraylen(av);
+
     if (len > 2)
         return fprintf(stderr, TOO_MANY_CD), -1;
     if (len == 1 || (len == 2 && !strcmp("~", av[1])))
@@ -81,4 +82,5 @@ int my_cd(struct my_shell *shell, char **av)
         return cd_old(shell);
     if (len == 2)
         return change_dir(shell, av[1]);
+    return 0;
 }
