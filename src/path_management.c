@@ -16,7 +16,7 @@ static int restore_path(struct my_shell *shell)
 
     if (confstr(_CS_PATH, buffer, 1024) == 0)
         return -1;
-    return my_setenv(shell, "PATH", buffer);
+    return set_env(shell, "PATH", buffer);
 }
 
 char *get_cmd_path(char *cmd, struct my_shell *shell)

@@ -9,7 +9,6 @@
 #include "builtins.h"
 #include "my_stdio.h"
 #include "my_string.h"
-#include "setenv.h"
 #include "my.h"
 
 static char *get_name(char *env)
@@ -54,7 +53,7 @@ static int new_env(struct my_shell *shell, char *name, char *val)
         return -1;
 }
 
-static int set_env(struct my_shell *shell, char *name, char *val)
+int set_env(struct my_shell *shell, char *name, char *val)
 {
     char *env_name;
 

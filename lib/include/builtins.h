@@ -34,9 +34,11 @@ struct alias_s {
     char *command;
 };
 
+extern struct my_shell;
 extern const char *my_builtins[][2];
 
 int full_alias(void);
+int is_alphanum(char *str);
 void free_path(char **path);
 bool is_a_builtin(const char *str);
 int find_var_index(char *var, char **env);
@@ -49,6 +51,7 @@ int my_alias(struct my_shell *shell, char *av[]);
 void free_alias(struct alias_s alias[MAX_ALIAS]);
 void init_alias(struct alias_s alias[MAX_ALIAS]);
 int my_setenv(struct my_shell *shell, char **av);
+int set_env(struct my_shell *shell, char *name, char *val);
 int my_unalias(struct my_shell *shell, char **av);
 int my_unsetenv(struct my_shell *shell, char **av);
 void display_aliases(struct alias_s alias[MAX_ALIAS]);
