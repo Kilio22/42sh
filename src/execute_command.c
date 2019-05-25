@@ -77,9 +77,9 @@ struct pipe_s *pipes)
         shell->n_return = 1;
     if (dup2(shell->fd_save[0], STDIN_FILENO) == -1)
         return fprintf(stderr, "%s\n", strerror(errno));
-    if (dup2(shell->fd_save[0], STDOUT_FILENO) == -1)
+    if (dup2(shell->fd_save[1], STDOUT_FILENO) == -1)
         return fprintf(stderr, "%s\n", strerror(errno));
-    if (dup2(shell->fd_save[0], STDERR_FILENO) == -1)
+    if (dup2(shell->fd_save[2], STDERR_FILENO) == -1)
         return fprintf(stderr, "%s\n", strerror(errno));
     ignore_signals(true);
     return 0;
@@ -91,6 +91,8 @@ pid_t execute_command(struct my_shell *shell, struct pipe_s *pipes, pid_t pgid)
 
     if (!av)
         return -1;
+    if (is_builtin(av[0]) && !pipes->next)
+        return execute_builtin_in_shell(av, shell, pipes);
     while (pipes) {
         if (is_builtin(av[0]) && !pipes->next)
             return execute_builtin_in_shell(av, shell, pipes);
