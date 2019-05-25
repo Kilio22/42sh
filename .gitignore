@@ -136,3 +136,4 @@ flycheck_*.el
 unit_test*
 vgcore*
 42sh
+oldsrc

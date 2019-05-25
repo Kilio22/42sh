@@ -42,25 +42,73 @@ SRC_PATH	=	$(ROOT_PATH)$(SRC_NAME)
 INCL_PATH	=	$(ROOT_PATH)$(INCL_NAME)
 TESTS_PATH	=	$(ROOT_PATH)$(TESTS_NAME)
 
-SRC	=	change_directory.c \
-		check_command.c \
-		env_display.c \
-		env_operations.c \
-		env_set.c \
-		env_unset.c \
-		execute_prompt.c \
-		exit_shell.c \
-		get_commands.c \
-		get_prompt.c \
-		global_constants.c \
+BUILTINS	=	builtins/
+TOKENIZER	=	tokenizer/
+PARSER	=	parser/
+UTILS	=	utils/
+
+SRC	=	$(BUILTINS)echo/echo.c \
+		$(BUILTINS)echo/flag_parsing.c \
+		$(BUILTINS)history/add_history.c \
+		$(BUILTINS)history/find_in_history.c \
+		$(BUILTINS)history/free_and_save_history.c \
+		$(BUILTINS)history/init_history.c \
+		$(BUILTINS)history/print_history.c \
+		$(BUILTINS)history/replace_string_history.c \
+		$(BUILTINS)setenv/setenv.c \
+		$(BUILTINS)setenv/str_valid.c \
+		$(BUILTINS)alias.c \
+		$(BUILTINS)builtins.c \
+		$(BUILTINS)cd.c \
+		$(BUILTINS)disp_alias.c \
+		$(BUILTINS)env.c \
+		$(BUILTINS)exit.c \
+		$(BUILTINS)unalias.c \
+		$(BUILTINS)unsetenv.c \
+		$(BUILTINS)utils_alias.c \
+		$(BUILTINS)utils_builtins.c \
+		$(BUILTINS)where.c \
+		$(BUILTINS)which.c \
+		$(BUILTINS)whoami.c \
+		$(BUILTINS)yes.c \
+		$(TOKENIZER)add_node.c \
+		$(TOKENIZER)create_node.c \
+		$(TOKENIZER)create_token_list_from_line.c \
+		$(TOKENIZER)create_token_list_head.c \
+		$(TOKENIZER)delete_node.c \
+		$(TOKENIZER)get_delim_index.c \
+		$(TOKENIZER)token_list.c \
+		$(TOKENIZER)utils.c \
+		$(PARSER)check_redirections.c \
+		$(PARSER)check_separators.c \
+		$(PARSER)check_syntax.c \
+		$(PARSER)delete_pipe.c \
+		$(PARSER)delete_separators.c \
+		$(PARSER)parser_utils.c \
+		$(PARSER)pipe_parser.c \
+		$(PARSER)separate_token_list.c \
+		$(PARSER)separate_cmd_list.c \
+		$(UTILS)get_builtin_idx.c \
+		$(UTILS)get_line.c \
+		$(UTILS)is_builtin.c \
+		$(UTILS)my_getenv_index.c \
+		$(UTILS)my_getenv.c \
+		$(UTILS)set_foreground_pgrp.c \
+		builtins_constants.c \
+		create_my_shell.c \
+		delete_command.c \
+		destroy_my_shell.c \
+		do_redirections.c \
+		execute_builtin.c \
+		execute_command.c \
+		execute_line.c \
+		get_command_status.c \
 		loop_shell.c \
-		my_cut_array.c \
-		my_str_to_path_array.c \
-		recursive_execution.c \
-		restore_var.c \
-		run_commands.c \
-		separate_words.c \
-		update_pwd_variable.c
+		my_exec_child.c \
+		my_execve.c \
+		path_management.c \
+		mdr.c \
+		signal_constants.c
 
 SRC_LIB	=	stdio my string
 
@@ -78,7 +126,7 @@ DEBUG_FLAGS	=	-g3 -gdwarf-4
 MAKE_RULE	=	all
 CLEAN_RULE	=	clean
 
-all:	build_libs message $(NAME)
+all:	build_libs $(NAME)
 
 message:
 	@$(LINE_RETURN)

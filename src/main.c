@@ -5,18 +5,21 @@
 ** Main function
 */
 
-#include <sys/types.h>
-#include <unistd.h>
 #include <stdlib.h>
-#include "my.h"
-#include "my_stdio.h"
-#include "my_string.h"
-#include "minishell.h"
+#include "shell.h"
 
-int main(int argc, char *argv[], char *env[])
+void signal_ign(bool mdr);
+
+int main(int argc, char const *argv[], char const *env[])
 {
-    (void) argc;
-    (void) argv;
-    loop_shell(init_my_env(env));
-    return (0);
+    struct my_shell *shell;
+
+    if (argc > 1)
+        fprintf(stderr, "%s doesn't take any arguments.\n", argv[0]);
+    shell = create_my_shell(env);
+    signal_ign(true);
+    if (!shell)
+        return 84;
+    srand(time(NULL));
+    return loop_shell(shell);
 }
