@@ -16,7 +16,7 @@ void signal_ign(bool mdr);
 static int exec_direct_cmd(struct my_shell *shell, struct pipe_s *p, char **av)
 {
     if (access(av[0], F_OK) == -1)
-        return fprintf(stderr, "%s: Command not found.\n", av[0]), -1;
+        return fprintf(stderr, "%s: Command not found.\n", av[0]), 1;
     return my_execve(shell, p, av, av[0]);
 }
 
@@ -28,7 +28,7 @@ int execute_child(struct my_shell *shell, struct pipe_s *pipes, char **av)
     if (is_builtin(av[0]))
         exit(execute_builtin(av, shell));
     if (strchr(av[0], '/'))
-        return exec_direct_cmd(shell, pipes, av);
+        exit(exec_direct_cmd(shell, pipes, av));
     bin_name = get_cmd_path(av[0], shell);
     if (!bin_name) {
         fprintf(stderr, "%s: Command not found.\n", av[0]);

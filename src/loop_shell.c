@@ -22,6 +22,7 @@ static char *get_prompt(void)
 int loop_shell(struct my_shell *shell)
 {
     char *prompt;
+    unsigned char n_return = 0;
 
     while (true) {
         prompt = get_prompt();
@@ -30,8 +31,9 @@ int loop_shell(struct my_shell *shell)
         if (execute_line(shell, prompt) == -1)
             return 84;
     }
+    n_return = shell->n_return;
     free_alias(shell->aliases);
     free_history(shell->history);
     destroy_my_shell(shell);
-    return 0;
+    return n_return;
 }
