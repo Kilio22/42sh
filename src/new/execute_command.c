@@ -7,6 +7,7 @@
 
 #include <unistd.h>
 #include <string.h>
+#include <errno.h>
 #include <stdlib.h>
 #include <fcntl.h>
 #include "my.h"
@@ -53,7 +54,7 @@ int check_pipes_for_cmd(char ***av, struct pipe_s *pipes)
     (*av) = NULL;
     if (pipes->next) {
         if (pipe(pipefd) == -1)
-            return -1;
+            return fprintf(stderr, strerror(errno)), -1;
         pipes->fd[1] = pipefd[1];
         pipes->next->fd[0] = pipefd[0];
     }
