@@ -42,25 +42,41 @@ SRC_PATH	=	$(ROOT_PATH)$(SRC_NAME)
 INCL_PATH	=	$(ROOT_PATH)$(INCL_NAME)
 TESTS_PATH	=	$(ROOT_PATH)$(TESTS_NAME)
 
-SRC	=	change_directory.c \
-		check_command.c \
-		env_display.c \
-		env_operations.c \
-		env_set.c \
-		env_unset.c \
-		execute_prompt.c \
+TOKENIZER	=	tokenizer/
+PARSER	=	parser/
+
+SRC	=	$(TOKENIZER)add_node.c	\
+		$(TOKENIZER)create_node.c	\
+		$(TOKENIZER)create_token_list_from_line.c \
+		$(TOKENIZER)create_token_list_head.c \
+		$(TOKENIZER)delete_node.c	\
+		$(TOKENIZER)get_delim_index.c \
+		$(TOKENIZER)token_list.c \
+		$(TOKENIZER)utils.c	\
+		$(PARSER)check_redirections.c	\
+		$(PARSER)check_separators.c	\
+		$(PARSER)check_syntax.c	\
+		$(PARSER)delete_pipe.c	\
+		$(PARSER)delete_separators.c	\
+		$(PARSER)parser_utils.c	\
+		$(PARSER)pipe_parser.c	\
+		$(PARSER)separate_token_list.c	\
+		$(PARSER)separate_cmd_list.c	\
+		builtins_constants.c \
+		create_my_shell.c \
+		destroy_my_shell.c \
+		do_redirections.c \
+		execute_builtin.c \
+		execute_command.c \
+		execute_line.c \
 		exit_shell.c \
-		get_commands.c \
+		get_command_status.c \
 		get_prompt.c \
-		global_constants.c \
 		loop_shell.c \
-		my_cut_array.c \
-		my_str_to_path_array.c \
-		recursive_execution.c \
-		restore_var.c \
-		run_commands.c \
-		separate_words.c \
-		update_pwd_variable.c
+		my_exec_child.c \
+		my_execve.c \
+		path_management.c \
+		signal_constants.c
 
 SRC_LIB	=	stdio my string
 
@@ -78,7 +94,7 @@ DEBUG_FLAGS	=	-g3 -gdwarf-4
 MAKE_RULE	=	all
 CLEAN_RULE	=	clean
 
-all:	build_libs message $(NAME)
+all:	build_libs $(NAME)
 
 message:
 	@$(LINE_RETURN)

@@ -30,6 +30,7 @@ char *my_strncpy(char *dest, const char *src, size_t n);
 char *my_strdup(const char *s);
 char *my_strndup(const char *s, size_t n);
 char *my_strcat(const char *left, const char *right);
+char *my_strcat_nofree(const char *left, const char *right);
 char *my_strncat(const char *left, const char *right, size_t n);
 char *my_strcpycat(char *dest, const char *src);
 char *my_stralloc(size_t size, char c);

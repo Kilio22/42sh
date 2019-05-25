@@ -51,7 +51,7 @@ OBJ	=	$(SRCS:.c=.o)
 CFLAGS	=	-Wall -Wextra -Werror -I $(INCLUDE_PATH)
 DEBUG_FLAGS	=	-g3 -gdwarf-4
 
-all:	message $(NAME)
+all:	$(NAME)
 
 message:
 	@$(LINE_RETURN)
@@ -64,9 +64,10 @@ message:
 	@$(LINE_RETURN)
 
 $(NAME):	$(OBJ)
-	@ar rc ./lib$(NAME).a $(OBJ) && \
-		$(ECHO) $(BOLD_T)$(GREEN_C)"\n[✔] COMPILED:" $(DEFAULT)$(LIGHT_GREEN) "lib$(NAME).a" $(DEFAULT) || \
-		$(ECHO) $(RED_C)$(BOLD_T)"[✘] "$(UNDLN_T)"BUILD FAILED:" $(LIGHT_RED) "lib$(NAME).a"$(DEFAULT)
+	@ar rc ./lib$(NAME).a $(OBJ)
+	# && \
+	# 	$(ECHO) $(BOLD_T)$(GREEN_C)"\n[✔] COMPILED:" $(DEFAULT)$(LIGHT_GREEN) "lib$(NAME).a" $(DEFAULT) || \
+	# 	$(ECHO) $(RED_C)$(BOLD_T)"[✘] "$(UNDLN_T)"BUILD FAILED:" $(LIGHT_RED) "lib$(NAME).a"$(DEFAULT)
 
 clean:
 	@$(RM) $(OBJ)
