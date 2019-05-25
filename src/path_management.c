@@ -6,6 +6,7 @@
 */
 
 #include <unistd.h>
+#include <string.h>
 #include <stdlib.h>
 #include "my_string.h"
 #include "shell.h"
@@ -32,9 +33,13 @@ char *get_cmd_path(char *cmd, struct my_shell *shell)
             return NULL;
     }
     diff_path = my_str_towordarray(path, ":");
+    if (!diff_path)
+        return NULL;
     for (size_t i = 0; diff_path[i]; i++) {
+        if (diff_path[i][strlen(diff_path[i]) - 1] != '/')
+            diff_path[i] = my_strcat_freeleft(diff_path[i], "/");
         path = my_strcat_nofree(diff_path[i], cmd);
-        if (access(path, F_OK))
+        if (!access(path, F_OK))
             return path;
         free(path);
     }
