@@ -103,7 +103,7 @@ SRC	=	$(BUILTINS)echo/echo.c \
 		execute_command.c \
 		execute_line.c \
 		get_command_status.c \
-		handle_signals.c	\
+		handle_signals.c \
 		loop_shell.c \
 		my_exec_child.c \
 		my_execve.c \

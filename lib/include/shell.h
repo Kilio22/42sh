@@ -60,6 +60,7 @@ char *my_getenv(struct my_shell *shell, const char *name);
 ssize_t my_getenv_index(struct my_shell *shell, const char *name);
 char *get_line(FILE *f_stream);
 int set_foreground_pgrp(pid_t pgrp);
+void ignore_signals(bool flag);
 
 /* Builtins */
 ssize_t get_builtin_idx(char *cmd);
@@ -72,6 +73,7 @@ int check_redirections_files(struct pipe_s *pipes);
 /* PATH managment */
 char *get_cmd_path(char *cmd, struct my_shell *shell);
 
+/* Destroy stuff */
 int destroy_pipe(struct pipe_s *p);
 int delete_command(struct cmd_s *cmd);
 int destroy_pipe_fds(struct pipe_s *p);

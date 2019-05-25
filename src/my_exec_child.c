@@ -11,8 +11,6 @@
 #include <string.h>
 #include "shell.h"
 
-void signal_ign(bool mdr);
-
 static int exec_direct_cmd(struct my_shell *shell, struct pipe_s *p, char **av)
 {
     if (access(av[0], F_OK) == -1)
@@ -24,7 +22,7 @@ void execute_child(struct my_shell *shell, struct pipe_s *pipes, char **av)
 {
     char *bin_name = NULL;
 
-    signal_ign(false);
+    ignore_signals(false);
     if (is_builtin(av[0]))
         _exit(execute_builtin(av, shell));
     if (strchr(av[0], '/'))

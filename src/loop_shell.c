@@ -24,6 +24,7 @@ int loop_shell(struct my_shell *shell)
     char *prompt;
     ret_t n_return = 0;
 
+    ignore_signals(true);
     while (true) {
         prompt = get_prompt();
         if (!prompt)
