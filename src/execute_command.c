@@ -27,7 +27,7 @@ static char **get_av(struct pipe_s *pipe)
     av[0] = NULL;
     tokens = pipe->token_list;
     for (; tokens; tokens = tokens->next) {
-        av = my_realloc_array(av, tokens->content);
+        av = my_realloc_array(av, strdup(tokens->content));
         if (!av)
             return NULL;
     }
