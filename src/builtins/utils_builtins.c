@@ -26,7 +26,7 @@ char *my_strcat_freeleft(const char *left, const char *right)
 
 bool is_a_builtin(const char *str)
 {
-    for (int i = 0; i < 15; i++)
+    for (int i = 0; builtins[i].name != NULL; i++)
         if (my_strcmp(str, builtins[i].name) == 0)
             return true;
     return false;

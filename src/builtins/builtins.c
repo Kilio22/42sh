@@ -18,7 +18,7 @@ int display_builtins(struct my_shell *shell __attribute__((unused)), char **av)
     if (ac != 1) {
         fprintf(stderr, "builtins: too much arguments\n");
     }
-    for (int i = 0; i < 15; i++) {
+    for (int i = 0; builtins[i].name != NULL; i++) {
         my_printf("%s", builtins[i].name);
         if (my_strlen(builtins[i].name) < 8)
             my_printf("\t");
