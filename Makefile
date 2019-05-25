@@ -79,7 +79,7 @@ SRC	=	$(BUILTINS)echo/echo.c \
 		$(TOKENIZER)get_delim_index.c \
 		$(TOKENIZER)token_list.c \
 		$(TOKENIZER)utils.c \
-		$(PARSER)check_redirections_type_conditions.c \
+		$(PARSER)check_red_type_cond.c \
 		$(PARSER)check_redirections.c \
 		$(PARSER)check_separators.c \
 		$(PARSER)check_syntax.c \
