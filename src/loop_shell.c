@@ -16,7 +16,6 @@ static char *get_prompt(void)
     if (isatty(STDIN_FILENO))
         write(STDOUT_FILENO, "$ > ", 4);
     line = get_line(stdin);
-    printf("GOT: %s\n", line);
     return line;
 }
 

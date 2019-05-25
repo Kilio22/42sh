@@ -37,10 +37,10 @@ ret_t get_command_status(struct my_shell *shell, struct pipe_s *p, pid_t pgid)
 
     if (is_builtin(p->token_list->content) && !p->next)
         return shell->n_return;
-    set_foreground_pgid(pgid);
+    set_foreground_pgrp(pgid);
     if (waitpid(pgid, &wstatus, WUNTRACED) == -1)
         return -1;
     n_return = analyse_exit_status(wstatus);
-    set_foreground_pgid(shell->pgid);
+    set_foreground_pgrp(shell->pgid);
     return n_return;
 }

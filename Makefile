@@ -92,7 +92,7 @@ SRC	=	$(BUILTINS)echo/echo.c \
 		$(UTILS)is_builtin.c \
 		$(UTILS)my_getenv_index.c \
 		$(UTILS)my_getenv.c \
-		$(UTILS)set_foreground_pgid.c \
+		$(UTILS)set_foreground_pgrp.c \
 		builtins_constants.c \
 		create_my_shell.c \
 		destroy_my_shell.c \
@@ -106,6 +106,7 @@ SRC	=	$(BUILTINS)echo/echo.c \
 		my_exec_child.c \
 		my_execve.c \
 		path_management.c \
+		mdr.c \
 		signal_constants.c
 
 SRC_LIB	=	stdio my string
