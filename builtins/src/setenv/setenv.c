@@ -23,7 +23,7 @@ static char *get_name(char *env)
     return (str);
 }
 
-static int modif_env(char **env, int i, char *val, char *env_name)
+static int modif_env(struct my_shell *shell, int i, char *val, char *env_name)
 {
     char *new_name = my_strcat_nofree(env_name, "=");
 
@@ -32,15 +32,15 @@ static int modif_env(char **env, int i, char *val, char *env_name)
     new_name = my_strcat_freeleft(new_name, val);
     if (new_name == NULL)
         return -1;
-    free(env[i]);
-    env[i] = my_strdup(new_name);
-    if (env[i] == NULL)
+    free(shell->env[i]);
+    shell->env[i] = my_strdup(new_name);
+    if (shell->env[i] == NULL)
         return -1;
     free(new_name);
     return 0;
 }
 
-static int new_env(char **env, char *name, char *val)
+static int new_env(struct my_shell *shell, char *name, char *val)
 {
     char *new_name = my_strcat_nofree(name, "=");
 
@@ -49,12 +49,12 @@ static int new_env(char **env, char *name, char *val)
     new_name = my_strcat_freeleft(new_name, val);
     if (new_name == NULL)
         return -1;
-    env = my_realloc_array(env, new_name);
-    if (env == NULL)
+    shell->env = my_realloc_array(shell->env, new_name);
+    if (shell->env == NULL)
         return -1;
 }
 
-static int set_env(char **env, char *name, char *val)
+static int set_env(struct my_shell *shell, char *name, char *val)
 {
     char *env_name;
 
@@ -63,14 +63,14 @@ static int set_env(char **env, char *name, char *val)
         fprintf(stderr, " contain alphanumeric characters.\n");
         return -1;
     }
-    for (int i = 0; env[i] != NULL; i++) {
-        env_name = get_name(env[i]);
+    for (int i = 0; shell->env[i] != NULL; i++) {
+        env_name = get_name(shell->env[i]);
         if (env_name == NULL)
             continue;
         if (my_strcmp(env_name, name) == 0)
-            return modif_env(env, i, val, env_name);
+            return modif_env(shell, i, val, env_name);
     }
-    return new_env(env, name, val);
+    return new_env(shell, name, val);
 }
 
 int my_setenv(struct my_shell *shell, char **av)
@@ -80,9 +80,9 @@ int my_setenv(struct my_shell *shell, char **av)
     if (ac == 1)
         my_show_wordarray(shell->env);
     if (ac == 2)
-        return set_env(shell->env, av[1], "");
+        return set_env(shell, av[1], "");
     if (ac == 3)
-        return set_env(shell->env, av[1], av[2]);
+        return set_env(shell, av[1], av[2]);
     if (ac > 3)
         fprintf(stderr, "setenv: Too many arguments.\n");
     return -1;
