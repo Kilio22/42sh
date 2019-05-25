@@ -30,7 +30,7 @@ int my_yes(struct my_shell *shell, char **av);
 int my_which(struct my_shell *shell, char **av);
 int my_where(struct my_shell *shell, char **av);
 int my_whoami(struct my_shell *shell, char **av);
-int my_alias(struct my_shell *shell, char *av[]);
+int my_alias(struct my_shell *shell, char **av);
 void free_alias(struct alias_s alias[MAX_ALIAS]);
 void init_alias(struct alias_s alias[MAX_ALIAS]);
 int my_setenv(struct my_shell *shell, char **av);

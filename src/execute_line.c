@@ -50,7 +50,6 @@ int execute_line(struct my_shell *shell, char *line)
 
     if (!token_head)
         return -1;
-    free(line);
     commands = separate_token_list(token_head);
     if (!commands)
         return -1;

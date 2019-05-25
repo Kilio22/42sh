@@ -103,11 +103,12 @@ SRC	=	$(BUILTINS)echo/echo.c \
 		execute_command.c \
 		execute_line.c \
 		get_command_status.c \
+		handle_signals.c	\
 		loop_shell.c \
 		my_exec_child.c \
 		my_execve.c \
 		path_management.c \
-		mdr.c \
+		setup_io.c \
 		signal_constants.c
 
 SRC_LIB	=	stdio my string
@@ -119,7 +120,7 @@ OBJ	=	$(SRCS:.c=.o)
 LIBRARIES	=	$(SRC_LIB:%=-l%)
 LIB_PATHS_FLAG	=	$(LIB_PATHS:%=-L$(ROOT_PATH)%)
 
-CFLAGS	=	-Wall -Wextra -Werror -I $(INCL_PATH)
+CFLAGS	=	-W -Wall -Wextra -Werror -I $(INCL_PATH)
 LDFLAGS	=	$(LIB_PATHS_FLAG) $(LIBRARIES)
 DEBUG_FLAGS	=	-g3 -gdwarf-4
 

@@ -5,15 +5,17 @@
 ** yes
 */
 
+#include <unistd.h>
+#include <string.h>
 #include <stdio.h>
 #include "my_string.h"
 #include "shell.h"
 
 static void print_arg_yes(int argc, char **av, int i)
 {
-    printf("%s", av[i]);
+    write(1, av[i], strlen(av[i]));
     if (i + 1 < argc)
-        printf(" ");
+        putchar(' ');
 }
 
 int my_yes(struct my_shell *shell __attribute__((unused)), char **av)
@@ -23,7 +25,7 @@ int my_yes(struct my_shell *shell __attribute__((unused)), char **av)
 
     if (ac == 1) {
         while (1)
-            printf("y\n");
+            puts("y");
         return 0;
     }
     while (1) {
@@ -32,7 +34,7 @@ int my_yes(struct my_shell *shell __attribute__((unused)), char **av)
             i++;
         }
         i = 1;
-        printf("\n");
+        putchar('\n');
     }
     return 0;
 }

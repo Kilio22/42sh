@@ -71,7 +71,7 @@ struct alias_s alias[MAX_ALIAS])
     }
 }
 
-int my_alias(struct my_shell *shell, char *av[])
+int my_alias(struct my_shell *shell, char **av)
 {
     int ac = my_strarraylen(av);
 
