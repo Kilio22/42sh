@@ -15,7 +15,7 @@ int my_env(struct my_shell *shell, char **av)
     int ac = my_strarraylen(av);
 
     if (ac != 1) {
-        fprintf(2, "env: '%s': No such file or directory\n", av[1]);
+        fprintf(stderr, "env: '%s': No such file or directory\n", av[1]);
         return -1;
     } else {
         my_show_wordarray(shell->env);
