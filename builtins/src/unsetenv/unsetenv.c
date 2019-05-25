@@ -38,17 +38,17 @@ static int find_index(char **env, char *name)
     return (good_index);
 }
 
-static char **unset_env(char **env, char *name)
+static char **unset_env(struct my_shell *shell, char *name)
 {
-    int index = find_index(env, name);
+    int index = find_index(shell->env, name);
 
     if (index == -2)
         return -1;
     else if (index == -1)
         return 0;
     else {
-        env = my_remove_ptr_fromarray(env, env[index]);
-        if (env == NULL)
+        shell->env = my_remove_ptr_fromarray(shell->env, shell->env[index]);
+        if (shell->env == NULL)
             return -1;
     }
     return 0;
@@ -63,7 +63,7 @@ int my_unsetenv(struct my_shell *shell, char **av)
         fprintf(stderr, "unsetenv: Too few arguments.\n");
         return -1;
     for (int i = 1; i < ac; i++) {
-        ret_val = unset_env(shell->env, av[i]);
+        ret_val = unset_env(shell, av[i]);
         if (ret_val == -1)
             return -1;
     }
