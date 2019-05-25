@@ -46,6 +46,7 @@ void free_history(struct breakpoints_s *historic)
         if (next != NULL)
             next = historic->head->next;
     }
+    free(historic);
 }
 
 int save_history(struct breakpoints_s *historic)
