@@ -30,6 +30,7 @@ struct builtins_s {
 };
 
 extern const struct builtins_s *builtins[];
+extern const char *constants_sig[];
 
 /* Shell manipulation */
 struct my_shell *create_my_shell(char const *env[]);
@@ -40,6 +41,9 @@ void exit_shell(struct my_shell *shell, unsigned char exit_code);
 int loop_shell(struct my_shell *shell);
 int execute_line(struct my_shell *shell, char *line);
 pid_t execute_command(struct my_shell *shell, struct pipe_s *pipes, pid_t pgid);
+ret_t get_command_status(struct my_shell *shell, struct cmd_s *cmd, pid_t pgid);
+int execute_child(struct my_shell *shell, struct pipe_s *pipes, char **av);
+int my_execve(struct my_shell *shell, struct pipe_s *pipes, char **av);
 
 /* Useful functions (maybe) */
 char *my_getenv(struct my_shell *shell, const char *name);
@@ -54,10 +58,6 @@ int execute_builtin(char **av, struct my_shell *shell);
 
 /* Redirections */
 void check_redirections_files(struct pipe_s *pipes);
-
-/* Execution */
-int execute_child(struct my_shell *shell, struct pipe_s *pipes, char **av);
-int my_execve(struct my_shell *shell, struct pipe_s *pipes, char **av);
 
 /* PATH managment */
 char *get_cmd_path(char *cmd, struct my_shell *shell);
