@@ -9,7 +9,7 @@
 #include <unistd.h>
 #include <signal.h>
 
-void signal_ign(bool flag)
+void ignore_signals(bool flag)
 {
     if (!isatty(STDIN_FILENO))
         return;

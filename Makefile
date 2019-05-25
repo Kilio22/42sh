@@ -79,6 +79,7 @@ SRC	=	$(BUILTINS)echo/echo.c \
 		$(TOKENIZER)get_delim_index.c \
 		$(TOKENIZER)token_list.c \
 		$(TOKENIZER)utils.c \
+		$(PARSER)check_redirections_type_conditions.c \
 		$(PARSER)check_redirections.c \
 		$(PARSER)check_separators.c \
 		$(PARSER)check_syntax.c \
@@ -103,7 +104,7 @@ SRC	=	$(BUILTINS)echo/echo.c \
 		execute_command.c \
 		execute_line.c \
 		get_command_status.c \
-		handle_signals.c	\
+		handle_signals.c \
 		loop_shell.c \
 		my_exec_child.c \
 		my_execve.c \

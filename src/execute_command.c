@@ -66,15 +66,34 @@ int check_pipes_for_cmd(struct pipe_s *pipes)
     return 0;
 }
 
+int execute_builtin_in_shell(char **av, struct my_shell *shell,
+struct pipe_s *pipes)
+{
+    ignore_signals(false);
+    check_redirections_files(pipes);
+    if (setup_io(pipes) == -1)
+        return 0;
+    if (builtins[get_builtin_idx(av[0])].ptr(shell, av) == -1)
+        shell->n_return = 1;
+    if (dup2(shell->fd_save[0], STDIN_FILENO) == -1)
+        return fprintf(stderr, "%s\n", strerror(errno));
+    if (dup2(shell->fd_save[0], STDOUT_FILENO) == -1)
+        return fprintf(stderr, "%s\n", strerror(errno));
+    if (dup2(shell->fd_save[0], STDERR_FILENO) == -1)
+        return fprintf(stderr, "%s\n", strerror(errno));
+    ignore_signals(true);
+    return 0;
+}
+
 pid_t execute_command(struct my_shell *shell, struct pipe_s *pipes, pid_t pgid)
 {
     char **av = get_av(pipes);
 
     if (!av)
         return -1;
-    if (is_builtin(av[0]) && !pipes->next)
-        return execute_builtin(av, shell);
     while (pipes) {
+        if (is_builtin(av[0]) && !pipes->next)
+            return execute_builtin_in_shell(av, shell, pipes);
         if (check_pipes_for_cmd(pipes) == -1)
             return -1;
         pgid = execute_pipe(shell, pipes, av, pgid);
