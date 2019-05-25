@@ -34,14 +34,6 @@ struct alias_s {
     char *command;
 };
 
-struct my_shell {
-    char **env;
-    int fd_save[FD_SAVE_NB];
-    ret_t n_return;
-    struct alias_s aliases[MAX_ALIAS];
-    struct breakpoints_s *history;
-};
-
 extern const char *my_builtins[][2];
 
 int full_alias(void);
@@ -63,11 +55,9 @@ void display_aliases(struct alias_s alias[MAX_ALIAS]);
 int find_alias(struct alias_s alias[MAX_ALIAS], char *name);
 char *my_strcat_freeleft(const char *left, const char *right);
 void display_one_alias(struct alias_s alias[MAX_ALIAS], char *name);
-int print_history(struct my_shell *shell, char **av __attribute__((unused)));
-int display_builtins(struct my_shell *shell __attribute__((unused)), char **av);
-int correct_price(struct my_shell *shell __attribute__((unused)),
-char **av __attribute__((unused)));
-int snake(struct my_shell *shell __attribute__((unused)),
-char **av __attribute__((unused)));
+int print_history(struct my_shell *shell, char **av);
+int display_builtins(struct my_shell *shell, char **av);
+int correct_price(struct my_shell *shell, char **av);
+int snake(struct my_shell *shell, char **av);
 
 #endif /* !BUILTINS_H_ */
