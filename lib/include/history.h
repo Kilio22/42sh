@@ -28,6 +28,8 @@ struct breakpoints_s {
     struct history_s *last;
 };
 
+struct token_node;
+
 char *get_line(FILE *stream);
 int init_history(struct breakpoints_s *historic);
 int save_history(struct breakpoints_s *historic);

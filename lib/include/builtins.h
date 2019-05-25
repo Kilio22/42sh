@@ -7,6 +7,7 @@
 
 #include <stdbool.h>
 #include "history.h"
+#include "echo.h"
 
 #ifndef BUILTINS_H_
 #define BUILTINS_H_

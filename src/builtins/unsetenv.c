@@ -62,6 +62,7 @@ int my_unsetenv(struct my_shell *shell, char **av)
     if (ac == 1) {
         fprintf(stderr, "unsetenv: Too few arguments.\n");
         return -1;
+    }
     for (int i = 1; i < ac; i++) {
         ret_val = unset_env(shell, av[i]);
         if (ret_val == -1)

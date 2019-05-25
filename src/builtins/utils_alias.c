@@ -7,6 +7,7 @@
 
 #include <stdlib.h>
 #include "shell.h"
+#include "my_string.h"
 
 void free_alias(struct alias_s alias[MAX_ALIAS])
 {

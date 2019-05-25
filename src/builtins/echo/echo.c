@@ -7,11 +7,11 @@
 
 #include <stdbool.h>
 #include "my_stdio.h"
-#include "echo.h"
+#include "shell.h"
 #include "my_string.h"
 #include "my.h"
 
-static int loop_print_flags(const char *str, int index)
+static int loop_print_flags(char *str, int index)
 {
     char flags[] = "\\abefnrtv";
     char outputs[] = "\\\a\b\e\f\n\r\t\v";
@@ -25,7 +25,7 @@ static int loop_print_flags(const char *str, int index)
     return 0;
 }
 
-static void parse_str_and_print(echo_t *params, const char *str)
+static void parse_str_and_print(echo_t *params, char *str)
 {
     int i = 0;
 
@@ -43,7 +43,7 @@ static void parse_str_and_print(echo_t *params, const char *str)
     }
 }
 
-static void print_strings(echo_t *params, int ac, const char *av[])
+static void print_strings(echo_t *params, int ac, char **av)
 {
     int i = params->first_str;
 
@@ -59,7 +59,7 @@ static void print_strings(echo_t *params, int ac, const char *av[])
     }
 }
 
-int echo(struct my_shell *shell, char **av)
+int echo(struct my_shell *shell __attribute__((unused)), char **av)
 {
     echo_t params;
     int ac = my_strarraylen(av);
@@ -67,10 +67,11 @@ int echo(struct my_shell *shell, char **av)
     init_echo(&params);
     if (ac == 1) {
         my_putstr("\n");
-        return;
+        return 0;
     }
     parse_flags(&params, ac, av);
     print_strings(&params, ac, av);
     if (params.newline == true && params.first_str != -1)
         my_putchar('\n');
+    return 0;
 }

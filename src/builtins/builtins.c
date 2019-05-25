@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include "shell.h"
 #include "my_string.h"
+#include "my_stdio.h"
 #include "shell.h"
 
 int display_builtins(struct my_shell *shell __attribute__((unused)), char **av)

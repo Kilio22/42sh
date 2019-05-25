@@ -15,7 +15,7 @@ void init_echo(echo_t *params)
     params->first_str = 1;
 }
 
-void parse_flags(echo_t *params, int ac, const char *av[])
+void parse_flags(echo_t *params, int ac, char **av)
 {
     int i = 1;
 

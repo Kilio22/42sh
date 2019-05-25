@@ -52,7 +52,6 @@ SRC	=	$(BUILTINS)echo/echo.c \
 		$(BUILTINS)history/add_history.c \
 		$(BUILTINS)history/find_in_history.c \
 		$(BUILTINS)history/free_and_save_history.c \
-		$(BUILTINS)history/get_line.c \
 		$(BUILTINS)history/init_history.c \
 		$(BUILTINS)history/print_history.c \
 		$(BUILTINS)history/replace_string_history.c \

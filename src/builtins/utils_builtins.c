@@ -8,7 +8,8 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include "shell.h"
-#include "shell.h"
+#include "my.h"
+#include "my_string.h"
 
 char *my_strcat_freeleft(const char *left, const char *right)
 {

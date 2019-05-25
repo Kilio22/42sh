@@ -5,6 +5,7 @@
 ** setenv
 */
 
+#include <stdlib.h>
 #include <stdio.h>
 #include "shell.h"
 #include "my_stdio.h"
@@ -51,6 +52,7 @@ static int new_env(struct my_shell *shell, char *name, char *val)
     shell->env = my_realloc_array(shell->env, new_name);
     if (shell->env == NULL)
         return -1;
+    return 0;
 }
 
 int set_env(struct my_shell *shell, char *name, char *val)

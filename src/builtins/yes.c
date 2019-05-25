@@ -16,7 +16,7 @@ static void print_arg_yes(int argc, char **av, int i)
         printf(" ");
 }
 
-int my_yes(struct my_shell *shell, char **av)
+int my_yes(struct my_shell *shell __attribute__((unused)), char **av)
 {
     int ac = my_strarraylen(av);
     int i = 1;
@@ -24,7 +24,7 @@ int my_yes(struct my_shell *shell, char **av)
     if (ac == 1) {
         while (1)
             printf("y\n");
-        return;
+        return 0;
     }
     while (1) {
         while (i < ac) {
@@ -33,5 +33,6 @@ int my_yes(struct my_shell *shell, char **av)
         }
         i = 1;
         printf("\n");
-    }    
+    }
+    return 0;
 }

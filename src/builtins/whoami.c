@@ -5,12 +5,13 @@
 ** whoami
 */
 
+#include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include "my_string.h"
 #include "shell.h"
 
-int my_whoami(struct my_shell *shell, char **av)
+int my_whoami(struct my_shell *shell __attribute__((unused)), char **av)
 {
     int ac = my_strarraylen(av);
     char *whoami = getlogin();

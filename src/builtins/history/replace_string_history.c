@@ -11,19 +11,6 @@
 #include "history.h"
 #include "shell.h"
 
-static char *my_strcat_freeleft(const char *left, const char *right)
-{
-    size_t len = my_strlen(left);
-    char *new = malloc(len + my_strlen(right) + 1);
-
-    if (!left || !right || !new)
-        return (NULL);
-    my_strcpy(new, left);
-    my_strcpy(&new[len], right);
-    free((char *) left);
-    return (new);
-}
-
 static char *error_and_return(char *flag, char *end)
 {
     char *new_str = my_strndup(flag, end - flag);
