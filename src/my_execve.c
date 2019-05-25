@@ -31,17 +31,18 @@ static int setup_io(struct pipe_s *pipes)
     return 0;
 }
 
-int my_execve(struct my_shell *shell, struct pipe_s *pipes, char **av, char *path)
+int my_execve(struct my_shell *shell, struct pipe_s *pipes, char **av,
+                char *bin_name)
 {
     char *bonus = "";
 
     if (setup_io(pipes) == -1)
         return -1;
-    execve(path, av, shell->env);
+    execve(bin_name, av, shell->env);
     if (errno == ENOEXEC)
         bonus = " Wrong Architecture.";
-    fprintf(stderr, "%s: %s.%s\n", path, strerror(errno), bonus);
-    free(path);
+    fprintf(stderr, "%s: %s.%s\n", bin_name, strerror(errno), bonus);
+    free(bin_name);
     exit(1);
     return -1;
 }

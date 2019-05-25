@@ -51,13 +51,14 @@ int execute_line(struct my_shell *shell, char *line);
 pid_t execute_command(struct my_shell *shell, struct pipe_s *pipes, pid_t pgid);
 ret_t get_command_status(struct my_shell *shell, struct pipe_s *p, pid_t pgid);
 int execute_child(struct my_shell *shell, struct pipe_s *pipes, char **av);
-int my_execve(struct my_shell *shell, struct pipe_s *pipes, char **av, char *path);
+int my_execve(struct my_shell *shell, struct pipe_s *pipes, char **av,
+                char *name);
 
 /* Useful functions (maybe) */
 char *my_getenv(struct my_shell *shell, const char *name);
 ssize_t my_getenv_index(struct my_shell *shell, const char *name);
 char *get_line(FILE *f_stream);
-int set_foreground_pgid(pid_t pgid);
+int set_foreground_pgrp(pid_t pgrp);
 
 /* Builtins */
 ssize_t get_builtin_idx(char *cmd);
