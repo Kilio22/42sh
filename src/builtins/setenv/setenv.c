@@ -32,7 +32,6 @@ static int modif_env(struct my_shell *shell, int i, char *val, char *env_name)
     new_name = my_strcat_freeleft(new_name, val);
     if (new_name == NULL)
         return -1;
-    free(shell->env[i]);
     shell->env[i] = my_strdup(new_name);
     if (shell->env[i] == NULL)
         return -1;
