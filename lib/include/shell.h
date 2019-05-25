@@ -50,9 +50,10 @@ int loop_shell(struct my_shell *shell);
 int execute_line(struct my_shell *shell, char *line);
 pid_t execute_command(struct my_shell *shell, struct pipe_s *pipes, pid_t pgid);
 ret_t get_command_status(struct my_shell *shell, struct pipe_s *p, pid_t pgid);
-int execute_child(struct my_shell *shell, struct pipe_s *pipes, char **av);
-int my_execve(struct my_shell *shell, struct pipe_s *pipes, char **av,
+void execute_child(struct my_shell *shell, struct pipe_s *pipes, char **av);
+void my_execve(struct my_shell *shell, struct pipe_s *pipes, char **av,
                 char *name);
+int setup_io(struct pipe_s *pipes);
 
 /* Useful functions (maybe) */
 char *my_getenv(struct my_shell *shell, const char *name);
@@ -73,5 +74,6 @@ char *get_cmd_path(char *cmd, struct my_shell *shell);
 
 int destroy_pipe(struct pipe_s *p);
 int delete_command(struct cmd_s *cmd);
+int destroy_pipe_fds(struct pipe_s *p);
 
 #endif /* !SHELL_H_ */

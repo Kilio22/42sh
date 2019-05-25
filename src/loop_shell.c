@@ -28,8 +28,9 @@ int loop_shell(struct my_shell *shell)
         prompt = get_prompt();
         if (!prompt)
             break;
-        if (execute_line(shell, prompt) == -1)
-            return 84;
+        /* if ( */execute_line(shell, prompt);/*  == -1) */
+            // return 84;
+        free(prompt);
     }
     n_return = shell->n_return;
     free_alias(shell->aliases);

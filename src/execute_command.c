@@ -45,9 +45,10 @@ pid_t execute_pipe(struct my_shell *shell, struct pipe_s *pipes, char **av,
             pgid = pipes->pid;
         setpgid(pipes->pid, pgid);
     }
-    if (pipes->pid == 0)
-        if (execute_child(shell, pipes, av) == -1)
-            exit(1);
+    if (pipes->pid == 0) {
+        execute_child(shell, pipes, av);
+        _exit(1);
+    }
     return pgid;
 }
 
@@ -77,6 +78,8 @@ pid_t execute_command(struct my_shell *shell, struct pipe_s *pipes, pid_t pgid)
         if (check_pipes_for_cmd(pipes) == -1)
             return -1;
         pgid = execute_pipe(shell, pipes, av, pgid);
+        if (destroy_pipe_fds(pipes) == -1)
+            return -1;
         pipes = pipes->next;
         my_free_fields(av);
         av = get_av(pipes);
