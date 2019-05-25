@@ -9,6 +9,7 @@
 #include <sys/wait.h>
 #include <unistd.h>
 #include <string.h>
+#include <signal.h>
 #include "shell.h"
 
 static int analyse_exit_status(int wstatus)
@@ -41,6 +42,7 @@ ret_t get_command_status(struct my_shell *shell, struct pipe_s *p, pid_t pgid)
     if (waitpid(pgid, &wstatus, WUNTRACED) == -1)
         return -1;
     n_return = analyse_exit_status(wstatus);
+    killpg(pgid, SIGKILL);
     set_foreground_pgrp(shell->pgid);
     return n_return;
 }

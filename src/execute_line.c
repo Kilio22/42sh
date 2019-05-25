@@ -33,7 +33,7 @@ static int execute_command_list(struct my_shell *shell, struct cmd_s *command)
         // } else if (command->id == ID_PARENTHESIS) {
         //     execute_line()
         } else {
-            pgid = execute_command(shell, command->pipe, pgid); // ! return value not checked
+            pgid = execute_command(shell, command->pipe, pgid);
             if (pgid == -1)
                 return -1;
             shell->n_return = get_command_status(shell, command->pipe, pgid);
@@ -56,8 +56,9 @@ int execute_line(struct my_shell *shell, char *line)
         return -1;
     if (pipe_parser(commands) == -1)
         return -1;
-    execute_command_list(shell, commands); // ! return value not checked
-    delete_token_node_list(token_head);
-    // delete_command(); // TODO: code this
+    if (execute_command_list(shell, commands) == -1)
+        return -1;
+    if (delete_command(commands) == -1)
+        return -1;
     return 0;
 }
