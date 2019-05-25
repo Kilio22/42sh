@@ -23,8 +23,10 @@ void init_alias(struct alias_s alias[MAX_ALIAS])
 {
     int i = 0;
 
-    for (; i < MAX_ALIAS; i++)
+    for (; i < MAX_ALIAS; i++) {
         alias[i].name = NULL;
+        alias[i].command = NULL;
+    }
 }
 
 int find_alias(struct alias_s alias[MAX_ALIAS], char *name)

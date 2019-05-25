@@ -39,6 +39,7 @@ static int unalias(struct alias_s alias[MAX_ALIAS], int index)
     free(alias[last_index].name);
     free(alias[last_index].command);
     alias[last_index].name = NULL;
+    alias[last_index].command = NULL;
     return 0;
 }
 
