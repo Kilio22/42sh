@@ -17,7 +17,7 @@ static void exit_shell(struct my_shell *shell, ret_t ret_val)
     free_alias(shell->aliases);
     free_history(shell->history);
     destroy_my_shell(shell);
-    if (isatty(stdin) == 1)
+    if (isatty(STDIN_FILENO) == 1)
         my_printf("exit\n");
     exit(ret_val);
 }
