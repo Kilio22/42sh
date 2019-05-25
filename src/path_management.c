@@ -6,14 +6,13 @@
 */
 
 #include <unistd.h>
+#include <stdlib.h>
 #include "my_string.h"
-#include "parser.h"
 #include "shell.h"
 
 static int restore_path(struct my_shell *shell)
 {
     char buffer[1024] = {0};
-    size_t len = 0;
 
     if (confstr(_CS_PATH, buffer, 1024) == 0)
         return -1;

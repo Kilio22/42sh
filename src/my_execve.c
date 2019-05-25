@@ -6,8 +6,9 @@
 */
 
 #include <unistd.h>
+#include <stdlib.h>
+#include <string.h>
 #include <errno.h>
-#include "parser.h"
 #include "shell.h"
 
 static int setup_io(struct pipe_s *pipes)

@@ -30,12 +30,13 @@ static int analyse_exit_status(int wstatus)
     return (signal_index + 129);
 }
 
-ret_t get_command_status(struct my_shell *shell, struct cmd_s *cmd, pid_t pgid)
+ret_t get_command_status(struct my_shell *shell, struct pipe_s *p, pid_t pgid)
 {
     ret_t n_return;
     int wstatus;
 
-    // ! if only builting then NO
+    if (is_builtin(p->token_list->content) && !p->next)
+        return shell->n_return;
     set_foreground_pgid(pgid);
     if (waitpid(pgid, &wstatus, WUNTRACED) == -1)
         return -1;

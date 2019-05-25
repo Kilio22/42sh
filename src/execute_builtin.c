@@ -5,7 +5,6 @@
 ** execute_builtins
 */
 
-#include "parser.h"
 #include "shell.h"
 
 int execute_builtin(char **av, struct my_shell *shell)

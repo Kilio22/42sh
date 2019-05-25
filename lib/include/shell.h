@@ -8,11 +8,13 @@
 #ifndef SHELL_H_
 #define SHELL_H_
 
+#include <sys/types.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdio.h>
 #include "enums.h"
 #include "defines.h"
+#include "parser.h"
 
 typedef unsigned char ret_t;
 
@@ -29,11 +31,11 @@ struct builtins_s {
     int (*ptr)(struct my_shell *, char **);
 };
 
-extern const struct builtins_s *builtins[];
+extern const struct builtins_s builtins[];
 extern const char *constants_sig[];
 
 /* Shell manipulation */
-struct my_shell *create_my_shell(char const *env[]);
+struct my_shell *create_my_shell(char const **env);
 void destroy_my_shell(struct my_shell *shell);
 void exit_shell(struct my_shell *shell, unsigned char exit_code);
 
@@ -41,7 +43,7 @@ void exit_shell(struct my_shell *shell, unsigned char exit_code);
 int loop_shell(struct my_shell *shell);
 int execute_line(struct my_shell *shell, char *line);
 pid_t execute_command(struct my_shell *shell, struct pipe_s *pipes, pid_t pgid);
-ret_t get_command_status(struct my_shell *shell, struct cmd_s *cmd, pid_t pgid);
+ret_t get_command_status(struct my_shell *shell, struct pipe_s *p, pid_t pgid);
 int execute_child(struct my_shell *shell, struct pipe_s *pipes, char **av);
 int my_execve(struct my_shell *shell, struct pipe_s *pipes, char **av);
 
@@ -57,7 +59,7 @@ bool is_builtin(char *cmd);
 int execute_builtin(char **av, struct my_shell *shell);
 
 /* Redirections */
-void check_redirections_files(struct pipe_s *pipes);
+int check_redirections_files(struct pipe_s *pipes);
 
 /* PATH managment */
 char *get_cmd_path(char *cmd, struct my_shell *shell);

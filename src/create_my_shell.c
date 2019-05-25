@@ -7,11 +7,12 @@
 
 #include <sys/types.h>
 #include <unistd.h>
+#include <stdlib.h>
 #include "my.h"
 #include "my_string.h"
 #include "shell.h"
 
-static char **dup_env(char const *env[])
+static char **dup_env(char **env)
 {
     size_t len = my_strarraylen(env);
     char **new_env = malloc(sizeof(char *) * (len + 1));
@@ -24,13 +25,13 @@ static char **dup_env(char const *env[])
     return new_env;
 }
 
-struct my_shell *create_my_shell(char const *env[])
+struct my_shell *create_my_shell(char const **env)
 {
     struct my_shell *shell = malloc(sizeof(struct my_shell));
 
     if (!shell)
         return NULL;
-    shell->env = dup_env(env);
+    shell->env = dup_env((char **) env);
     if (!shell->env)
         return NULL;
     shell->fd_save[SAVE_STDIN] = dup(STDIN_FILENO);

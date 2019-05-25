@@ -7,10 +7,10 @@
 
 #include <unistd.h>
 #include <fcntl.h>
+#include <stdlib.h>
 #include <string.h>
 #include <errno.h>
 #include "my_string.h"
-#include "parser.h"
 #include "shell.h"
 
 static int do_right_redirections(struct pipe_s *pipes, int i)
@@ -45,6 +45,7 @@ static int do_db_lredir(struct pipe_s *pipes, int i)
 {
     int pipefd[2];
     char *line = NULL;
+    ssize_t len;
     char *full_line = get_input_line();
 
     if (!full_line || strcmp(full_line, pipes->redirections[i]))
@@ -54,12 +55,11 @@ strcmp(line, pipes->redirections[i])) {
         full_line = my_strcat(full_line, "\n");
         full_line = my_strcat(full_line, line);
     }
-    if (pipe(pipefd) == -1)
-        return fprintf(stderr, strerror(errno)), -1;
-    if (write(pipefd[1], full_line, strlen(full_line)) != strlen(full_line))
-        return fprintf(stderr, strerror(errno)), -1;
+    len = strlen(full_line);
+    if (pipe(pipefd) == -1 || write(pipefd[1], full_line, len) != len)
+        return fprintf(stderr, "%s.\n", strerror(errno)), -1;
     if (close(pipefd[1]) == -1)
-        return fprintf(stderr, strerror(errno)), -1;
+        return fprintf(stderr, "%s.\n", strerror(errno)), -1;
     pipes->fd[0] = pipefd[0];
     free(full_line);
     return 0;

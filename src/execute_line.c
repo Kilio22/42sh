@@ -5,7 +5,6 @@
 ** execute_line
 */
 
-#include "parser.h"
 #include "shell.h"
 
 static struct cmd_s *get_next_command(struct cmd_s *command, ret_t n_return)
@@ -36,7 +35,7 @@ static int execute_command_list(struct my_shell *shell, struct cmd_s *command)
             pgid = execute_command(shell, command->pipe, pgid); // ! return value not checked
             if (pgid == -1)
                 return -1;
-            shell->n_return = get_command_status(shell, command, pgid);
+            shell->n_return = get_command_status(shell, command->pipe, pgid);
         }
         command = get_next_command(command, shell->n_return);
     }

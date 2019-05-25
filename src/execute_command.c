@@ -12,7 +12,6 @@
 #include <fcntl.h>
 #include "my.h"
 #include "my_string.h"
-#include "parser.h"
 #include "shell.h"
 
 static char **get_av(struct pipe_s *pipe)
@@ -52,13 +51,13 @@ pid_t execute_pipe(struct my_shell *shell, struct pipe_s *pipes, char **av,
     return pgid;
 }
 
-int check_pipes_for_cmd(char **av, struct pipe_s *pipes)
+int check_pipes_for_cmd(struct pipe_s *pipes)
 {
     int pipefd[2];
 
     if (pipes->next) {
         if (pipe(pipefd) == -1)
-            return fprintf(stderr, strerror(errno)), -1;
+            return fprintf(stderr, "%s.\n", strerror(errno)), -1;
         pipes->fd[1] = pipefd[1];
         pipes->next->fd[0] = pipefd[0];
     }
@@ -68,16 +67,14 @@ int check_pipes_for_cmd(char **av, struct pipe_s *pipes)
 
 pid_t execute_command(struct my_shell *shell, struct pipe_s *pipes, pid_t pgid)
 {
-    int pipefd[2];
-    int n_return = 0;
     char **av = get_av(pipes);
 
     if (!av)
         return -1;
     if (is_builtin(av[0]) && !pipes->next)
-        return exec_builtin(av, shell);
+        return execute_builtin(av, shell);
     while (pipes) {
-        if (check_pipes_for_cmd(av, pipes) == -1)
+        if (check_pipes_for_cmd(pipes) == -1)
             return -1;
         pgid = execute_pipe(shell, pipes, av, pgid);
         if (shell->n_return != 0)
