@@ -5,6 +5,7 @@
 ** separate_cmd_list
 */
 
+#include <unistd.h>
 #include <stdlib.h>
 #include "tokenizer.h"
 #include "parser.h"
@@ -24,6 +25,10 @@ static struct pipe_s *init_pipe_list(struct token_node *tokens)
         list->token_list = NULL;
     else
         list->token_list = head;
+    list->fd[0] = STDIN_FILENO;
+    list->fd[1] = STDOUT_FILENO;
+    list->fd[2] = STDERR_FILENO;
+    head->prev = NULL;
     return list;
 }
 
@@ -55,6 +60,9 @@ static int add_pipe(struct pipe_s *list, struct token_node *add)
         new->redirections[i] = NULL;
     new->prev = last;
     last->next = new;
+    new->fd[0] = STDIN_FILENO;
+    new->fd[1] = STDOUT_FILENO;
+    new->fd[2] = STDERR_FILENO;
     return 0;
 }
 

@@ -20,6 +20,8 @@ enum cmd_types {
 struct pipe_s {
     struct token_node *token_list;
     char *redirections[6];
+    int fd[3];
+    pid_t pid;
     struct pipe_s *next;
     struct pipe_s *prev;
 };
