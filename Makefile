@@ -45,23 +45,23 @@ TESTS_PATH	=	$(ROOT_PATH)$(TESTS_NAME)
 TOKENIZER	=	tokenizer/
 PARSER	=	parser/
 
-SRC	=	$(TOKENIZER)add_node.c	\
-		$(TOKENIZER)create_node.c	\
+SRC	=	$(TOKENIZER)add_node.c \
+		$(TOKENIZER)create_node.c \
 		$(TOKENIZER)create_token_list_from_line.c \
 		$(TOKENIZER)create_token_list_head.c \
-		$(TOKENIZER)delete_node.c	\
+		$(TOKENIZER)delete_node.c \
 		$(TOKENIZER)get_delim_index.c \
 		$(TOKENIZER)token_list.c \
-		$(TOKENIZER)utils.c	\
-		$(PARSER)check_redirections.c	\
-		$(PARSER)check_separators.c	\
-		$(PARSER)check_syntax.c	\
-		$(PARSER)delete_pipe.c	\
-		$(PARSER)delete_separators.c	\
-		$(PARSER)parser_utils.c	\
-		$(PARSER)pipe_parser.c	\
-		$(PARSER)separate_token_list.c	\
-		$(PARSER)separate_cmd_list.c	\
+		$(TOKENIZER)utils.c \
+		$(PARSER)check_redirections.c \
+		$(PARSER)check_separators.c \
+		$(PARSER)check_syntax.c \
+		$(PARSER)delete_pipe.c \
+		$(PARSER)delete_separators.c \
+		$(PARSER)parser_utils.c \
+		$(PARSER)pipe_parser.c \
+		$(PARSER)separate_token_list.c \
+		$(PARSER)separate_cmd_list.c \
 		builtins_constants.c \
 		create_my_shell.c \
 		destroy_my_shell.c \
@@ -71,7 +71,6 @@ SRC	=	$(TOKENIZER)add_node.c	\
 		execute_line.c \
 		exit_shell.c \
 		get_command_status.c \
-		get_prompt.c \
 		loop_shell.c \
 		my_exec_child.c \
 		my_execve.c \
