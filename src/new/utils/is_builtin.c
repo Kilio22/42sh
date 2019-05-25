@@ -11,9 +11,7 @@
 
 bool is_builtin(char *cmd)
 {
-    if (!cmd)
-        exit(1);
-    for (ssize_t i = 0; builtins[i]; i++)
+    for (size_t i = 0; builtins[i]; i++)
         if (!strcmp(cmd, builtins[i]->name))
             return true;
     return false;
