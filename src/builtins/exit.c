@@ -5,6 +5,7 @@
 ** exit
 */
 
+#include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include "my_stdio.h"
@@ -26,9 +27,9 @@ static int check_exit_code(char *ret_val)
 {
     if (my_str_isnum(ret_val, true) == false) {
         if (ret_val[0] != '-' && (ret_val[0] < '0' || ret_val[0] > '9'))
-            my_printf("exit: Expression Syntax.\n");
+            fprintf(stderr, "exit: Expression Syntax.\n");
         else
-            my_printf("exit: Badly formed number.\n");
+            fprintf(stderr, "exit: Badly formed number.\n");
         return -1;
     }
     return 0;
@@ -45,7 +46,7 @@ int my_exit(struct my_shell *shell, char **av)
             return -1;
         exit_shell(shell, atoi(av[1]));
     } else {
-        my_printf("exit: Expression Syntax.\n");
+        fprintf(stderr, "exit: Expression Syntax.\n");
         return -1;
     }
     return 0;
