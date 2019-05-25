@@ -7,6 +7,7 @@
 
 #include <stdio.h>
 #include <unistd.h>
+#include <wait.h>
 #include <stdlib.h>
 #include <string.h>
 #include "shell.h"
@@ -18,6 +19,24 @@ static int exec_direct_cmd(struct my_shell *shell, char **av)
     return my_execve(shell, av, av[0]), 1;
 }
 
+static ret_t execute_parenthesises(struct my_shell *shell, struct pipe_s *pipes)
+{
+    pid_t pid = fork();
+    int wstatus;
+    ret_t ret;
+
+    if (pid == -1)
+        return 1;
+    if (pid == 0) {
+        printf("Executing %s\n", pipes->token_list->content);
+        _exit(execute_line(shell, pipes->token_list->content));
+    } else {
+        waitpid(pid, &wstatus, 0);
+        ret = analyse_exit_status(wstatus);
+    }
+    return printf("%d\n", ret), ret;
+}
+
 void execute_child(struct my_shell *shell, struct pipe_s *pipes, char **av)
 {
     char *bin_name = NULL;
@@ -25,6 +44,8 @@ void execute_child(struct my_shell *shell, struct pipe_s *pipes, char **av)
     ignore_signals(false);
     if (setup_io(pipes) == -1)
         _exit(1);
+    if (pipes->token_list->id == ID_PARENTHESIS)
+        _exit(execute_parenthesises(shell, pipes));
     if (is_builtin(av[0]))
         _exit(execute_builtin(av, shell));
     if (strchr(av[0], '/'))

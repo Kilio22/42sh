@@ -12,7 +12,7 @@
 #include <signal.h>
 #include "shell.h"
 
-static int analyse_exit_status(int wstatus)
+int analyse_exit_status(int wstatus)
 {
     int signal_index;
 
@@ -23,7 +23,7 @@ static int analyse_exit_status(int wstatus)
     if (WIFSTOPPED(wstatus))
         signal_index = WSTOPSIG(wstatus) - 1;
     if (signal_index < 0 || signal_index > 32)
-        return fputs("Unknown signal caught.\n", stderr), 0;
+        return fputs("Unknown signal caught.\n", stderr), 1;
     fputs(constants_sig[signal_index], stderr);
     if (WCOREDUMP(wstatus))
         fputs(" (core dumped)", stderr);
@@ -40,17 +40,19 @@ static pid_t get_pid_of_last(struct pipe_s *p)
 
 ret_t get_command_status(struct my_shell *shell, struct pipe_s *p, pid_t pgid)
 {
-    ret_t n_return;
+    ret_t ret;
     int wstatus;
     pid_t pid_of_last = get_pid_of_last(p);
 
     if (is_builtin(p->token_list->content) && !p->next)
-        return shell->n_return;
+        return pgid;
     set_foreground_pgrp(pgid);
+    printf("[WAIT] PID: %d\n", pid_of_last);
     if (waitpid(pid_of_last, &wstatus, 0) == -1)
         return -1;
-    n_return = analyse_exit_status(wstatus);
+    printf("[WAIT] Done !\n");
+    ret = analyse_exit_status(wstatus);
     killpg(pgid, SIGKILL);
     set_foreground_pgrp(shell->pgid);
-    return n_return;
+    return ret;
 }

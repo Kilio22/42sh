@@ -29,10 +29,10 @@ int loop_shell(struct my_shell *shell)
         prompt = get_prompt();
         if (!prompt)
             break;
-        execute_line(shell, prompt);
+        n_return = execute_line(shell, prompt);
+        shell->n_return = n_return;
         free(prompt);
     }
-    n_return = shell->n_return;
     free_alias(shell->aliases);
     free_history(shell->history);
     destroy_my_shell(shell);
