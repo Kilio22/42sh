@@ -26,9 +26,12 @@ int loop_shell(struct my_shell *shell)
     while (true) {
         prompt = get_prompt();
         if (!prompt)
-            return 84;
+            break;
         if (execute_line(shell, prompt) == -1)
             return 84;
     }
+    free_alias(shell->aliases);
+    free_history(shell->history);
+    destroy_my_shell(shell);
     return 0;
 }

@@ -30,7 +30,10 @@ int execute_child(struct my_shell *shell, struct pipe_s *pipes, char **av)
     if (strchr(av[0], '/'))
         return exec_direct_cmd(shell, pipes, av);
     bin_name = get_cmd_path(av[0], shell);
-    if (!bin_name)
-        return fprintf(stderr, "%s: Command not found.\n", av[0]), -1;
+    if (!bin_name) {
+        fprintf(stderr, "%s: Command not found.\n", av[0]);
+        destroy_my_shell(shell);
+        exit(1);
+    }
     return my_execve(shell, pipes, av, bin_name);
 }
