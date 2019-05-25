@@ -22,14 +22,13 @@ static char *get_prompt(void)
 int loop_shell(struct my_shell *shell)
 {
     char *prompt;
-    unsigned char n_return = 0;
+    ret_t n_return = 0;
 
     while (true) {
         prompt = get_prompt();
         if (!prompt)
             break;
-        /* if ( */execute_line(shell, prompt);/*  == -1) */
-            // return 84;
+        execute_line(shell, prompt);
         free(prompt);
     }
     n_return = shell->n_return;
