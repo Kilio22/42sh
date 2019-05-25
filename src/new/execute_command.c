@@ -35,23 +35,27 @@ static char **get_av(struct pipe_s *pipe)
     return av;
 }
 
-pid_t execute_pipe(struct my_shell *shell, struct pipe_s *pipes, char **av)
+pid_t execute_pipe(struct my_shell *shell, struct pipe_s *pipes, char **av,
+                    pid_t pgid)
 {
-    pid_t pid = fork();
-
-    if (pid < 0)
+    pipes->pid = fork();
+    if (pipes->pid < 0)
         return -1;
-    if (pid == 0)
-        execute_child(shell, pipes, av);
-    return pid;
+    if (pipes->pid != 0) {
+        if (!pipes->prev)
+            pgid = pipes->pid;
+        setpgid(pipes->pid, pgid);
+    }
+    if (pipes->pid == 0)
+        if (execute_child(shell, pipes, av) == -1)
+            exit(1);
+    return pgid;
 }
 
-int check_pipes_for_cmd(char ***av, struct pipe_s *pipes)
+int check_pipes_for_cmd(char **av, struct pipe_s *pipes)
 {
     int pipefd[2];
 
-    my_free_fields((*av));
-    (*av) = NULL;
     if (pipes->next) {
         if (pipe(pipefd) == -1)
             return fprintf(stderr, strerror(errno)), -1;
@@ -59,16 +63,12 @@ int check_pipes_for_cmd(char ***av, struct pipe_s *pipes)
         pipes->next->fd[0] = pipefd[0];
     }
     check_redirections_files(pipes);
-    (*av) = get_av(pipes);
-    if (!(*av))
-        return -1;
     return 0;
 }
 
 pid_t execute_command(struct my_shell *shell, struct pipe_s *pipes, pid_t pgid)
 {
     int pipefd[2];
-    pid_t pid;
     int n_return = 0;
     char **av = get_av(pipes);
 
@@ -77,12 +77,14 @@ pid_t execute_command(struct my_shell *shell, struct pipe_s *pipes, pid_t pgid)
     if (is_builtin(av[0]) && !pipes->next)
         return exec_builtin(av, shell);
     while (pipes) {
-        if (check_pipes_for_cmd(&av, pipes) == -1)
+        if (check_pipes_for_cmd(av, pipes) == -1)
             return -1;
-        pid = execute_pipe(shell, pipes, av);
+        pgid = execute_pipe(shell, pipes, av, pgid);
         if (shell->n_return != 0)
             return -1;
         pipes = pipes->next;
+        my_free_fields(av);
+        av = get_av(pipes);
     }
-    return pid;
+    return pgid;
 }

@@ -8,7 +8,7 @@
 #include "parser.h"
 #include "shell.h"
 
-int exec_builtin(char **av, struct my_shell *shell)
+int execute_builtin(char **av, struct my_shell *shell)
 {
     ssize_t idx = get_builtin_idx(av[0]);
 

@@ -10,17 +10,18 @@
 #include "shell.h"
 #include "parser.h"
 
-static int exec_direct_cmd(char **av, struct my_shell *shell)
+static int exec_direct_cmd(struct my_shell *shell, struct pipe_s *p, char **av)
 {
-    if (access(av[0], F_OK) == -1 || access(av[0], X_OK))
+    if (access(av[0], F_OK) == -1)
         return fprintf(stderr, "%s: Command not found.\n"), -1;
-    return my_execve(av, shell);
+    return my_execve(shell, p, av);
 }
 
 int execute_child(struct my_shell *shell, struct pipe_s *pipes, char **av)
 {
-    char new_av = NULL;
+    char *new_av = NULL;
 
+    // ! remettre les signaux
     if (is_builtin(av[0]))
         exit(exec_builtin(av, shell));
     if (strchr(av[0], '/'))
@@ -32,5 +33,5 @@ int execute_child(struct my_shell *shell, struct pipe_s *pipes, char **av)
     }
     free(av[0]);
     av[0] = new_av;
-    return my_execve(av, shell);
+    return my_execve(shell, pipes, av);
 }

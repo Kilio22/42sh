@@ -5,6 +5,7 @@
 ** create_my_shell
 */
 
+#include <sys/types.h>
 #include <unistd.h>
 #include "my.h"
 #include "my_string.h"
@@ -37,6 +38,9 @@ struct my_shell *create_my_shell(char const *env[])
     shell->fd_save[SAVE_STDERR] = dup(STDERR_FILENO);
     if (shell->fd_save[SAVE_STDIN] == -1 || shell->fd_save[SAVE_STDOUT] == -1 ||
 shell->fd_save[SAVE_STDERR] == -1)
+        return NULL;
+    shell->pgid = getpgid(getpid());
+    if (shell->pgid == -1)
         return NULL;
     return shell;
 }

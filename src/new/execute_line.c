@@ -24,12 +24,20 @@ static struct cmd_s *get_next_command(struct cmd_s *command, ret_t n_return)
 
 static int execute_command_list(struct my_shell *shell, struct cmd_s *command)
 {
+    pid_t pgid = 0;
+
     while (command) {
         if (!command->pipe) {
             command = command->next;
             continue;
-        } else
-            execute_command(shell, command->pipe); // ! return value not checked
+        // } else if (command->id == ID_PARENTHESIS) {
+        //     execute_line()
+        } else {
+            pgid = execute_command(shell, command->pipe, pgid); // ! return value not checked
+            if (pgid == -1)
+                return -1;
+            shell->n_return = get_command_status(shell, command, pgid);
+        }
         command = get_next_command(command, shell->n_return);
     }
     return 0;
