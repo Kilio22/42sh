@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <stdbool.h>
+#include "my_string.h"
 #include "my_stdio.h"
 #include "builtins.h"
 
@@ -34,17 +35,19 @@ static void find_which_path(char *command, char **env)
     fprintf(stderr, "%s: Command not found.\n", command);
 }
 
-int my_which(int argc, char **av, char **env)
+int my_which(struct my_shell *shell, char **av)
 {
-    if (argc < 2) {
+    int ac = my_strarraylen(av);
+
+    if (ac < 2) {
         fprintf(stderr, "%s: Too few arguments.\n", av[0]);
         return -1;
     }
-    for (size_t i = 1; i < (size_t) argc; i++) {
+    for (size_t i = 1; i < (size_t) ac; i++) {
         if (is_a_builtin(av[i]) == true)
             my_printf("%s: shell built-in command.\n");
         else
-            find_which_path(av[i], env);
+            find_which_path(av[i], shell->env);
     }
     return 0;
 }

@@ -28,7 +28,7 @@ bool is_a_builtin(const char *str);
 int find_var_index(char *var, char **env);
 int echo(struct my_shell *shell, char **av);
 int my_yes(struct my_shell *shell, char **av);
-int my_which(int argc, char **av, char **env);
+int my_which(struct my_shell *shell, char **av);
 int my_where(struct my_shell *shell, char **av);
 int my_whoami(struct my_shell *shell, char **av);
 int my_alias(struct my_shell *shell, char *av[]);
