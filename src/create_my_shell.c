@@ -43,5 +43,6 @@ shell->fd_save[SAVE_STDERR] == -1)
     shell->pgid = getpgid(getpid());
     if (shell->pgid == -1)
         return NULL;
+    shell->n_return = 0;
     return shell;
 }
