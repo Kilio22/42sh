@@ -13,6 +13,7 @@
 #define BUILTINS_H_
 
 #define MAX_ALIAS 400
+#define TOO_MANY_CD "cd: Too many arguments."
 
 struct alias_s {
     char *name;
