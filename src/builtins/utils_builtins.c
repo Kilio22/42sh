@@ -7,7 +7,7 @@
 
 #include <stdbool.h>
 #include <stdlib.h>
-#include "builtins.h"
+#include "shell.h"
 #include "shell.h"
 
 char *my_strcat_freeleft(const char *left, const char *right)

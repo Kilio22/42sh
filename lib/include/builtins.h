@@ -18,9 +18,6 @@ struct alias_s {
     char *command;
 };
 
-extern struct my_shell;
-extern const char *my_builtins[][2];
-
 int full_alias(void);
 int is_alphanum(char *str);
 void free_path(char **path);

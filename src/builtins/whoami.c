@@ -8,7 +8,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "my_string.h"
-#include "builtins.h"
+#include "shell.h"
 
 int my_whoami(struct my_shell *shell, char **av)
 {

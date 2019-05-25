@@ -6,7 +6,7 @@
 */
 
 #include <stdio.h>
-#include "builtins.h"
+#include "shell.h"
 
 void display_aliases(struct alias_s alias[MAX_ALIAS])
 {

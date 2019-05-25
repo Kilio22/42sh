@@ -17,7 +17,7 @@
 #include "my_stdio.h"
 #include "my_string.h"
 #include "my.h"
-#include "builtins.h"
+#include "shell.h"
 
 int print_history(struct my_shell *shell, char **av __attribute__((unused)))
 {

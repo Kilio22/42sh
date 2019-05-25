@@ -31,6 +31,8 @@ struct builtins_s {
     int (*ptr)(struct my_shell *, char **);
 };
 
+#include "builtins.h"
+
 extern const struct builtins_s builtins[];
 extern const char *constants_sig[];
 

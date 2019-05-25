@@ -9,7 +9,7 @@
 #include <string.h>
 #include <my_string.h>
 #include "history.h"
-#include "builtins.h"
+#include "shell.h"
 
 static char *my_strcat_freeleft(const char *left, const char *right)
 {
