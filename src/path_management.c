@@ -8,6 +8,7 @@
 #include <unistd.h>
 #include <string.h>
 #include <stdlib.h>
+#include "my.h"
 #include "my_string.h"
 #include "shell.h"
 
@@ -40,8 +41,8 @@ char *get_cmd_path(char *cmd, struct my_shell *shell)
             diff_path[i] = my_strcat_freeleft(diff_path[i], "/");
         path = my_strcat_nofree(diff_path[i], cmd);
         if (!access(path, F_OK))
-            return path;
+            return my_free_fields(diff_path), path;
         free(path);
     }
-    return NULL;
+    return my_free_fields(diff_path), NULL;
 }
