@@ -19,7 +19,7 @@ static char **get_av(struct pipe_s *pipe)
     char **av = NULL;
     struct token_node *tokens;
 
-    if (!pipe)
+    if (!pipe || !pipe->token_list || !pipe->token_list->content)
         return NULL;
     av = malloc(sizeof(char *));
     if (!av)
@@ -77,8 +77,6 @@ pid_t execute_command(struct my_shell *shell, struct pipe_s *pipes, pid_t pgid)
         if (check_pipes_for_cmd(pipes) == -1)
             return -1;
         pgid = execute_pipe(shell, pipes, av, pgid);
-        if (shell->n_return != 0)
-            return -1;
         pipes = pipes->next;
         my_free_fields(av);
         av = get_av(pipes);
