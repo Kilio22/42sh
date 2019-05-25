@@ -38,7 +38,7 @@ static int find_index(char **env, char *name)
     return (good_index);
 }
 
-static char **unset_env(struct my_shell *shell, char *name)
+static int unset_env(struct my_shell *shell, char *name)
 {
     int index = find_index(shell->env, name);
 
