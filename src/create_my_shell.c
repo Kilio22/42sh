@@ -7,6 +7,7 @@
 
 #include <sys/types.h>
 #include <unistd.h>
+#include <string.h>
 #include <stdlib.h>
 #include "my.h"
 #include "my_string.h"
@@ -20,8 +21,11 @@ static char **dup_env(char **env)
     if (!new_env)
         return NULL;
     new_env[len] = NULL;
-    for (size_t i = 0; env[i]; i++)
-        new_env[i] = env[i];
+    for (size_t i = 0; env[i]; i++) {
+        new_env[i] = strdup(env[i]);
+        if (!new_env[i])
+            return NULL;
+    }
     return new_env;
 }
 
