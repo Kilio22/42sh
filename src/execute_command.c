@@ -23,19 +23,19 @@ static char **get_av(struct pipe_s *pipe)
         return NULL;
     av = malloc(sizeof(char *));
     if (!av)
-        return NULL;
+        exit(84);
     av[0] = NULL;
     tokens = pipe->token_list;
     for (; tokens; tokens = tokens->next) {
         av = my_realloc_array(av, strdup(tokens->content));
         if (!av)
-            return NULL;
+            exit(84);
     }
     return av;
 }
 
-pid_t execute_pipe(struct my_shell *shell, struct pipe_s *pipes, char **av,
-                    pid_t pgid)
+static pid_t execute_pipe(struct my_shell *shell, struct pipe_s *pipes,
+                            char **av, pid_t pgid)
 {
     pipes->pid = fork();
     if (pipes->pid < 0)
@@ -43,7 +43,8 @@ pid_t execute_pipe(struct my_shell *shell, struct pipe_s *pipes, char **av,
     if (pipes->pid != 0) {
         if (!pipes->prev)
             pgid = pipes->pid;
-        setpgid(pipes->pid, pgid);
+        if (setpgid(pipes->pid, pgid) == -1)
+            return -1;
     }
     if (pipes->pid == 0) {
         execute_child(shell, pipes, av);
@@ -52,7 +53,7 @@ pid_t execute_pipe(struct my_shell *shell, struct pipe_s *pipes, char **av,
     return pgid;
 }
 
-int check_pipes_for_cmd(struct pipe_s *pipes)
+static int check_pipes_for_cmd(struct pipe_s *pipes)
 {
     int pipefd[2];
 
@@ -62,27 +63,27 @@ int check_pipes_for_cmd(struct pipe_s *pipes)
         pipes->fd[1] = pipefd[1];
         pipes->next->fd[0] = pipefd[0];
     }
-    check_redirections_files(pipes);
-    return 0;
+    return check_redirections_files(pipes);
 }
 
 int execute_builtin_in_shell(char **av, struct my_shell *shell,
 struct pipe_s *pipes)
 {
+    int ret;
+
     ignore_signals(false);
     check_redirections_files(pipes);
     if (setup_io(pipes) == -1)
-        return 0;
-    if (builtins[get_builtin_idx(av[0])].ptr(shell, av) == -1)
-        shell->n_return = 1;
-    if (dup2(shell->fd_save[0], STDIN_FILENO) == -1)
-        return fprintf(stderr, "%s\n", strerror(errno));
-    if (dup2(shell->fd_save[1], STDOUT_FILENO) == -1)
-        return fprintf(stderr, "%s\n", strerror(errno));
-    if (dup2(shell->fd_save[2], STDERR_FILENO) == -1)
-        return fprintf(stderr, "%s\n", strerror(errno));
+        return -1;
+    ret = execute_builtin(av, shell);
     ignore_signals(true);
-    return 0;
+    if (dup2(shell->fd_save[0], STDIN_FILENO) == -1)
+        return fprintf(stderr, "%s\n", strerror(errno)), 1;
+    if (dup2(shell->fd_save[1], STDOUT_FILENO) == -1)
+        return fprintf(stderr, "%s\n", strerror(errno)), 1;
+    if (dup2(shell->fd_save[2], STDERR_FILENO) == -1)
+        return fprintf(stderr, "%s\n", strerror(errno)), 1;
+    return ret;
 }
 
 pid_t execute_command(struct my_shell *shell, struct pipe_s *pipes, pid_t pgid)
@@ -91,8 +92,6 @@ pid_t execute_command(struct my_shell *shell, struct pipe_s *pipes, pid_t pgid)
 
     if (!av)
         return -1;
-    if (is_builtin(av[0]) && !pipes->next)
-        return execute_builtin_in_shell(av, shell, pipes);
     while (pipes) {
         if (is_builtin(av[0]) && !pipes->next)
             return execute_builtin_in_shell(av, shell, pipes);

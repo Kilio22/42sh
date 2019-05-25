@@ -47,12 +47,14 @@ void exit_shell(struct my_shell *shell, ret_t ret_val);
 
 /* Command execution */
 int loop_shell(struct my_shell *shell);
-int execute_line(struct my_shell *shell, char *line);
+ret_t execute_line(struct my_shell *shell, char *line);
 pid_t execute_command(struct my_shell *shell, struct pipe_s *pipes, pid_t pgid);
-ret_t get_command_status(struct my_shell *shell, struct pipe_s *p, pid_t pgid);
 void execute_child(struct my_shell *shell, struct pipe_s *pipes, char **av);
 void my_execve(struct my_shell *shell, char **av, char *bin_name);
 int setup_io(struct pipe_s *pipes);
+/* ...after execution */
+ret_t get_command_status(struct my_shell *shell, struct pipe_s *p, pid_t pgid);
+int analyse_exit_status(int wstatus);
 
 /* Useful functions (maybe) */
 char *my_getenv(struct my_shell *shell, const char *name);
@@ -64,7 +66,7 @@ void ignore_signals(bool flag);
 /* Builtins */
 ssize_t get_builtin_idx(char *cmd);
 bool is_builtin(char *cmd);
-int execute_builtin(char **av, struct my_shell *shell);
+ret_t execute_builtin(char **av, struct my_shell *shell);
 
 /* Redirections */
 int check_redirections_files(struct pipe_s *pipes);

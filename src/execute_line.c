@@ -8,12 +8,12 @@
 #include <stdlib.h>
 #include "shell.h"
 
-static struct cmd_s *get_next_command(struct cmd_s *command, ret_t n_return)
+static struct cmd_s *get_next_command(struct cmd_s *command, ret_t ret)
 {
     if (!command->next)
         return NULL;
-    if ((command->next->id == CMD_AND && n_return != SUCCESS_RETURN) ||
-(command->next->id == CMD_OR && n_return == SUCCESS_RETURN)) {
+    if ((command->next->id == CMD_AND && ret != SUCCESS_RETURN) ||
+(command->next->id == CMD_OR && ret == SUCCESS_RETURN)) {
         command = command->next;
         while (command && command->id != CMD_NORMAL)
             command = command->next;
@@ -25,39 +25,38 @@ static struct cmd_s *get_next_command(struct cmd_s *command, ret_t n_return)
 static int execute_command_list(struct my_shell *shell, struct cmd_s *command)
 {
     pid_t pgid = 0;
+    ret_t ret = 0;
 
     while (command) {
         if (!command->pipe) {
             command = command->next;
             continue;
-        // } else if (command->id == ID_PARENTHESIS) {
-        //     execute_line()
         } else {
             pgid = execute_command(shell, command->pipe, pgid);
             if (pgid == -1)
-                return -1;
-            shell->n_return = get_command_status(shell, command->pipe, pgid);
+                return 1;
+            ret = get_command_status(shell, command->pipe, pgid);
         }
-        command = get_next_command(command, shell->n_return);
+        command = get_next_command(command, ret);
     }
-    return 0;
+    return ret;
 }
 
-int execute_line(struct my_shell *shell, char *line)
+ret_t execute_line(struct my_shell *shell, char *line)
 {
     struct token_node *token_head = create_token_list_from_line(line);
     struct cmd_s *commands;
+    ret_t ret;
 
     if (!token_head)
-        return -1;
+        return 1;
     commands = separate_token_list(token_head);
     if (!commands)
-        return -1;
+        return 1; // ! free
     if (pipe_parser(commands) == -1)
-        return -1;
-    if (execute_command_list(shell, commands) == -1)
-        return -1;
+        return 1; // ! free
+    ret = execute_command_list(shell, commands);
     if (delete_command(commands) == -1)
-        return -1;
-    return 0;
+        return 1; // ! free
+    return ret;
 }
