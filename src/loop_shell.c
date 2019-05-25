@@ -35,5 +35,7 @@ int loop_shell(struct my_shell *shell)
     free_alias(shell->aliases);
     free_history(shell->history);
     destroy_my_shell(shell);
+    if (isatty(STDIN_FILENO))
+        puts("exit");
     return n_return;
 }
