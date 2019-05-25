@@ -21,15 +21,25 @@ static int restore_path(struct my_shell *shell)
     return set_env(shell, "PATH", buffer);
 }
 
+static char *check_restore_path(struct my_shell *shell)
+{
+    char *path;
+
+    if (restore_path(shell) == -1)
+        return NULL;
+    path = my_getenv(shell, "PATH");
+    if (!path)
+        return NULL;
+    return path;
+}
+
 char *get_cmd_path(char *cmd, struct my_shell *shell)
 {
     char *path = my_getenv(shell, "PATH");
     char **diff_path = NULL;
 
     if (!path) {
-        if (restore_path(shell) == -1)
-            return NULL;
-        path = my_getenv(shell, "PATH");
+        path = check_restore_path(shell);
         if (!path)
             return NULL;
     }
