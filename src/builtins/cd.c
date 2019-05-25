@@ -37,7 +37,7 @@ static int change_dir(struct my_shell *shell, char *path)
     char pwd[PATH_MAX] = {0};
 
     if (!getcwd(old_pwd, sizeof(old_pwd)))
-        return fprintf(stderr, strerror(errno)), -1;
+        return fprintf(stderr, "%s.\n", strerror(errno)), -1;
     if (check_chdir_error(path) == -1)
         return -1;
     if (chdir(path) == -1) {
@@ -45,7 +45,7 @@ static int change_dir(struct my_shell *shell, char *path)
         return -1;
     }
     if (!getcwd(pwd, sizeof(pwd)))
-        return fprintf(stderr, strerror(errno)), -1;
+        return fprintf(stderr, "%s.\n", strerror(errno)), -1;
     if (set_env(shell, "OLDPWD", old_pwd) == -1
 || set_env(shell, "PWD", pwd) == -1)
         return -1;
