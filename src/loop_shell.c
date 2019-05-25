@@ -20,8 +20,9 @@ int loop_shell(struct my_shell *shell)
     while (true) {
         prompt = get_prompt();
         if (!prompt)
-            exit(84);
+            return 84;
         if (execute_line(shell, prompt) == -1)
-            exit(84);
+            return 84;
     }
+    return 0;
 }

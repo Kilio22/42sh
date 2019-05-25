@@ -22,5 +22,6 @@ const struct builtins_s builtins[] = {
     {"history", "displays the history of commands", print_history},
     {"unalias", "remove one or more aliases", my_unalias},
     {"builtins", "displays all shell built-in", display_builtins},
-    {"unsetenv", "unset one or more env variable(s)", my_unsetenv}
+    {"unsetenv", "unset one or more env variable(s)", my_unsetenv},
+    {NULL, NULL, NULL}
 };

@@ -6,14 +6,14 @@
 */
 
 #include <sys/types.h>
+#include <string.h>
+#include <stdlib.h>
 #include "shell.h"
 
 ssize_t get_builtin_idx(char *cmd)
 {
-    if (!cmd)
-        exit(1);
-    for (ssize_t i = 0; builtins[i]; i++)
-        if (!strcmp(cmd, builtins[i]->name))
+    for (ssize_t i = 0; builtins[i].name; i++)
+        if (!strcmp(cmd, builtins[i].name))
             return i;
     return -1;
 }

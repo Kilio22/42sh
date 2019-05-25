@@ -16,6 +16,10 @@
 #include "defines.h"
 #include "parser.h"
 
+struct my_shell;
+
+#include "builtins.h"
+
 typedef unsigned char ret_t;
 
 struct my_shell {
@@ -23,6 +27,8 @@ struct my_shell {
     int fd_save[FD_SAVE_NB];
     ret_t n_return;
     pid_t pgid;
+    struct alias_s aliases[MAX_ALIAS];
+    struct breakpoints_s *history;
 };
 
 struct builtins_s {
@@ -30,8 +36,6 @@ struct builtins_s {
     char *desc;
     int (*ptr)(struct my_shell *, char **);
 };
-
-#include "builtins.h"
 
 extern const struct builtins_s builtins[];
 extern const char *constants_sig[];

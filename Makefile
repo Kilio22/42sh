@@ -42,10 +42,36 @@ SRC_PATH	=	$(ROOT_PATH)$(SRC_NAME)
 INCL_PATH	=	$(ROOT_PATH)$(INCL_NAME)
 TESTS_PATH	=	$(ROOT_PATH)$(TESTS_NAME)
 
+BUILTINS	=	builtins/
 TOKENIZER	=	tokenizer/
 PARSER	=	parser/
+UTILS	=	utils/
 
-SRC	=	$(TOKENIZER)add_node.c \
+SRC	=	$(BUILTINS)echo/echo.c \
+		$(BUILTINS)echo/flag_parsing.c \
+		$(BUILTINS)history/add_history.c \
+		$(BUILTINS)history/find_in_history.c \
+		$(BUILTINS)history/free_and_save_history.c \
+		$(BUILTINS)history/get_line.c \
+		$(BUILTINS)history/init_history.c \
+		$(BUILTINS)history/print_history.c \
+		$(BUILTINS)history/replace_string_history.c \
+		$(BUILTINS)setenv/setenv.c \
+		$(BUILTINS)setenv/str_valid.c \
+		$(BUILTINS)alias.c \
+		$(BUILTINS)builtins.c \
+		$(BUILTINS)unalias.c \
+		$(BUILTINS)unsetenv.c \
+		$(BUILTINS)disp_alias.c \
+		$(BUILTINS)unalias.c \
+		$(BUILTINS)unsetenv.c \
+		$(BUILTINS)utils_alias.c \
+		$(BUILTINS)utils_builtins.c \
+		$(BUILTINS)where.c \
+		$(BUILTINS)which.c \
+		$(BUILTINS)whoami.c \
+		$(BUILTINS)yes.c \
+		$(TOKENIZER)add_node.c \
 		$(TOKENIZER)create_node.c \
 		$(TOKENIZER)create_token_list_from_line.c \
 		$(TOKENIZER)create_token_list_head.c \
@@ -62,6 +88,12 @@ SRC	=	$(TOKENIZER)add_node.c \
 		$(PARSER)pipe_parser.c \
 		$(PARSER)separate_token_list.c \
 		$(PARSER)separate_cmd_list.c \
+		$(UTILS)get_builtin_idx.c \
+		$(UTILS)get_line.c \
+		$(UTILS)is_builtin.c \
+		$(UTILS)my_getenv_index.c \
+		$(UTILS)my_getenv.c \
+		$(UTILS)set_foreground_pgid.c \
 		builtins_constants.c \
 		create_my_shell.c \
 		destroy_my_shell.c \
