@@ -5,6 +5,7 @@
 ** execute_line
 */
 
+#include <stdlib.h>
 #include "shell.h"
 
 static struct cmd_s *get_next_command(struct cmd_s *command, ret_t n_return)
@@ -49,6 +50,7 @@ int execute_line(struct my_shell *shell, char *line)
 
     if (!token_head)
         return -1;
+    free(line);
     commands = separate_token_list(token_head);
     if (!commands)
         return -1;
