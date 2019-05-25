@@ -98,7 +98,6 @@ struct token_node *create_token_list_from_line(char *line)
     return head;
 }
 
-
 /*
 
 echo "\"oui"\" == echo "\" + oui + "\" = \oui\

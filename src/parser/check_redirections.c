@@ -16,21 +16,11 @@ struct pipe_s *pipe)
 {
     if ((*token)->id >= ID_DB_FULL_RREDIRECTION && (*token)->id
 <= ID_RREDIRECTION) {
-        if (!(*token)->next || (*token)->next->id != ID_TEXT)
-            return fprintf(stderr, "Missing name for redirect.\n"), -1;
-        else if (check_already_redirect(pipe, 0, 4) == -1 || pipe->next)
-            return fprintf(stderr, "Ambiguous output redirect.\n"), -1;
-        else
-            pipe->redirections[(*token)->id - ID_DB_FULL_RREDIRECTION] =
-strdup((*token)->next->content);
+        if (check_red_type_conditions_input(token, pipe) == -1)
+            return -1;
     } else {
-        if (!(*token)->next || (*token)->next->id != ID_TEXT)
-            return fprintf(stderr, "Missing name for redirect.\n"), -1;
-        else if (check_already_redirect(pipe, 5, 6) == -1 || pipe->prev)
-            return fprintf(stderr, "Ambiguous input redirect.\n"), -1;
-        else
-            pipe->redirections[(*token)->id - ID_DB_FULL_RREDIRECTION] =
-strdup((*token)->next->content);
+        if (check_red_type_conditions_output(token, pipe) == -1)
+            return -1;
     }
     if (!pipe->redirections[(*token)->id - ID_DB_FULL_RREDIRECTION])
         return -1;

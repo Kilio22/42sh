@@ -45,5 +45,9 @@ struct pipe_s *delete_pipe(struct pipe_s *list);
 int check_pipe_redirections(struct pipe_s *pipe);
 int check_already_redirect(struct pipe_s *pipe, int idx1, int idx2);
 int check_redirections(struct token_node *head, struct pipe_s *pipe);
+int check_red_type_conditions_input(struct token_node **token,
+struct pipe_s *pipe);
+int check_red_type_conditions_output(struct token_node **token,
+struct pipe_s *pipe);
 
 #endif /* !PARSER_H_ */
