@@ -8,7 +8,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "my_string.h"
-#include "builtins.h"
+#include "shell.h"
 
 static void unalias_all(struct alias_s alias[MAX_ALIAS])
 {

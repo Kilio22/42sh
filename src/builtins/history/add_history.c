@@ -8,7 +8,7 @@
 #include <stdlib.h>
 #include "history.h"
 #include "my_string.h"
-#include "builtins.h"
+#include "shell.h"
 
 static int is_in_history(char *buff, struct breakpoints_s *historic)
 {

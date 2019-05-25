@@ -8,7 +8,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "my_string.h"
-#include "builtins.h"
+#include "shell.h"
 #include "my.h"
 
 static char *get_name(char *env)

@@ -6,7 +6,6 @@
 */
 
 #include "shell.h"
-#include "builtins.h"
 
 const struct builtins_s builtins[] = {
     {"cd", "change the current working directory", NULL},

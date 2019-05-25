@@ -9,7 +9,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include "history.h"
-#include "builtins.h"
+#include "shell.h"
 #include "my_string.h"
 #include "my.h"
 

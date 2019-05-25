@@ -6,7 +6,7 @@
 */
 
 #include <stdlib.h>
-#include "builtins.h"
+#include "shell.h"
 
 void free_alias(struct alias_s alias[MAX_ALIAS])
 {

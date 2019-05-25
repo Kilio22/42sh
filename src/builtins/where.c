@@ -10,7 +10,7 @@
 #include <stdbool.h>
 #include "my_stdio.h"
 #include "my_string.h"
-#include "builtins.h"
+#include "shell.h"
 
 static int find_where_path(char *command, char **env)
 {

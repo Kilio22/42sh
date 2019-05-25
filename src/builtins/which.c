@@ -10,7 +10,7 @@
 #include <stdbool.h>
 #include "my_string.h"
 #include "my_stdio.h"
-#include "builtins.h"
+#include "shell.h"
 
 static void find_which_path(char *command, char **env)
 {

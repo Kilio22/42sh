@@ -6,7 +6,7 @@
 */
 
 #include <stdlib.h>
-#include "builtins.h"
+#include "shell.h"
 #include "my_string.h"
 
 static int new_alias(int ac, char *name, char **cmd,

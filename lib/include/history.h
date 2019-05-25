@@ -11,8 +11,6 @@
 #ifndef HISTORY_H_
 #define HISTORY_H_
 
-extern struct token_node;
-
 struct content_s {
     int number;
     time_t timer;
@@ -38,6 +36,5 @@ int add_history(char *buff, struct breakpoints_s *historic);
 char *find_history(struct breakpoints_s *historic, char *buff);
 int replace_str_history(struct token_node *node,
 struct breakpoints_s *historic);
-
 
 #endif /* !HISTORY_H_ */
