@@ -14,7 +14,6 @@ const struct builtins_s builtins[] = {
     {"echo", "displays the given arguments", echo},
     {"exit", "exit the shell with the given return value", NULL},
     {"alias", "display aliases, or add a new one for a command", my_alias},
-    {"snake", "launch the snake game", snake},
     {"where", "displays all known instances of command.", my_where},
     {"which", "displays the real command that the shell execute", my_which},
     {"setenv", "set a new env variable or change an existing one", my_setenv},

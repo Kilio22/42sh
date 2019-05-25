@@ -59,8 +59,6 @@ SRC	=	$(BUILTINS)echo/echo.c \
 		$(BUILTINS)setenv/str_valid.c \
 		$(BUILTINS)alias.c \
 		$(BUILTINS)builtins.c \
-		$(BUILTINS)unalias.c \
-		$(BUILTINS)unsetenv.c \
 		$(BUILTINS)disp_alias.c \
 		$(BUILTINS)unalias.c \
 		$(BUILTINS)unsetenv.c \
