@@ -9,7 +9,6 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include "my.h"
-#include "minishell.h"
 
 static int is_alphanumeric(char c)
 {
