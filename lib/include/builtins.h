@@ -60,5 +60,6 @@ void free_tab(char **tab);
 bool is_in_touched(char *name, char **touched);
 char *free_and_dup_command(char **command, int index,
 struct alias_s aliases[MAX_ALIAS]);
+int my_repeat(struct my_shell *shell, char **av);
 
 #endif /* !BUILTINS_H_ */
