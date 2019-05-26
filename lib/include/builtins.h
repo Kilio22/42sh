@@ -51,5 +51,11 @@ int my_cd(struct my_shell *shell, char **av);
 int apply_alias(struct token_node **node, struct alias_s aliases[MAX_ALIAS]);
 int my_exit(struct my_shell *shell, char **av);
 int is_alphanumeric(char c);
+int my_set(struct my_shell *shell, char **av);
+int set_local(struct my_shell *shell, char *name, char *val);
+char *get_val(char *arg);
+int my_unset(struct my_shell *shell, char **av);
+int my_str_isalpha(char *str);
+int is_alpha(char c);
 
 #endif /* !BUILTINS_H_ */
