@@ -60,8 +60,7 @@ int check_special_char(struct cmd_s *cmd, struct my_shell *shell)
     for (; cmd; cmd = cmd->next) {
         if (!cmd->pipe)
             continue;
-        head = cmd->pipe;
-        for (; head && n_val == 0; head = head->next) {
+        for (head = cmd->pipe; head && n_val == 0; head = head->next) {
             apply_alias(&head->token_list, shell->aliases);
             n_val = env_variables_loop(head->token_list, shell);
         }
