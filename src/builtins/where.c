@@ -12,25 +12,39 @@
 #include "my_string.h"
 #include "shell.h"
 
-static int find_where_path(char *command, char **env)
+static int get_path(char **path, char *command)
 {
-    char **path = my_str_towordarray(env[find_var_index("PATH", env)], ":");
     char *str = NULL;
     int occ = 0;
 
     for (size_t i = 0; path[i] != NULL; i++) {
         str = my_strcat_nofree(path[i], "/");
         if (str == NULL)
-            continue;
+            exit(84);
         str = my_strcat_freeleft(str, command);
         if (str == NULL)
-            continue;
+            exit(84);
         if (access(str, F_OK) == 0) {
             puts(str);
             occ++;
         }
         free(str);
     }
+    return occ;
+}
+
+static int find_where_path(char *command, char **env)
+{
+    int idx = find_var_index("PATH", env);
+    char **path = NULL;
+    int occ = 0;
+
+    if (idx == -1)
+        return 0;
+    path = my_str_towordarray(env[idx], ":");
+    if (!path)
+        exit(84);
+    occ = get_path(path, command);
     free_path(path);
     return occ;
 }

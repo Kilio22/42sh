@@ -136,15 +136,15 @@ DEBUG_FLAGS	=	-g3 -gdwarf-4
 MAKE_RULE	=	all
 CLEAN_RULE	=	clean
 
-all:	build_libs $(NAME)
+all:	message build_libs $(NAME)
 
 message:
 	@$(LINE_RETURN)
-	@$(ECHO) $(BOLD_T)$(COLOR_THEME)" ____        _ _     _  "$(DEFAULT)
-	@$(ECHO) $(BOLD_T)$(COLOR_THEME)"| __ ) _   _(_) | __| | "$(DEFAULT)
-	@$(ECHO) $(BOLD_T)$(COLOR_THEME)"|  _ \| | | | | |/ _\` |"$(DEFAULT)
-	@$(ECHO) $(BOLD_T)$(COLOR_THEME)"| |_) | |_| | | | (_| | "$(DEFAULT)
-	@$(ECHO) $(BOLD_T)$(COLOR_THEME)"|____/ \__,_|_|_|\__,_| "$(DEFAULT)
+	@$(ECHO) $(BOLD_T)$(COLOR_THEME)"  ___  _   _ ___       _     "$(DEFAULT)
+	@$(ECHO) $(BOLD_T)$(COLOR_THEME)" / _ \| | | |_ _|  ___| |__  "$(DEFAULT)
+	@$(ECHO) $(BOLD_T)$(COLOR_THEME)"| | | | | | || |  / __| '_ \ "$(DEFAULT)
+	@$(ECHO) $(BOLD_T)$(COLOR_THEME)"| |_| | |_| || | _\__ \ | | |"$(DEFAULT)
+	@$(ECHO) $(BOLD_T)$(COLOR_THEME)" \___/ \___/|___(_)___/_| |_|"$(DEFAULT)
 	@$(LINE_RETURN)
 
 $(NAME): $(OBJ)
