@@ -12,10 +12,15 @@ static struct cmd_s *get_next_command(struct cmd_s *command, ret_t ret)
 {
     if (!command->next)
         return NULL;
-    if ((command->next->id == CMD_AND && ret != SUCCESS_RETURN) ||
-(command->next->id == CMD_OR && ret == SUCCESS_RETURN)) {
+    if ((command->next->id == CMD_AND && ret != SUCCESS_RETURN)) {
         command = command->next;
-        while (command && command->id != CMD_NORMAL)
+        while (command && (command->id != CMD_NORMAL && command->id != CMD_OR))
+            command = command->next;
+        return command;
+    }
+    if (command->next->id == CMD_OR && ret == SUCCESS_RETURN) {
+        command = command->next;
+        while (command && (command->id != CMD_NORMAL))
             command = command->next;
         return command;
     }
