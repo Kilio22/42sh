@@ -89,9 +89,11 @@ int loop_apply_alias(struct token_node **node,
 struct alias_s aliases[MAX_ALIAS])
 {
     int ret_val = 0;
-    char *alias = strdup((*node)->content);
+    char *alias = NULL;
     char **touched = malloc(sizeof(char *));
 
+    if ((*node)->content != NULL)
+        alias = strdup((*node)->content);
     if (alias == NULL || touched == NULL)
         return -1;
     touched[0] = NULL;
