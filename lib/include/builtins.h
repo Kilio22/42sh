@@ -7,6 +7,7 @@
 
 #include <stdbool.h>
 #include "history.h"
+#include "shell.h"
 #include "echo.h"
 
 #ifndef BUILTINS_H_
@@ -49,5 +50,6 @@ int my_env(struct my_shell *shell, char **av);
 int my_cd(struct my_shell *shell, char **av);
 int apply_alias(struct token_node **node, struct alias_s aliases[MAX_ALIAS]);
 int my_exit(struct my_shell *shell, char **av);
+int is_alphanumeric(char c);
 
 #endif /* !BUILTINS_H_ */
