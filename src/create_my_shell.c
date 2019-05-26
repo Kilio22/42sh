@@ -13,20 +13,28 @@
 #include "my_string.h"
 #include "shell.h"
 
-static char **dup_env(char **env)
+static void dup_env(char **env, struct my_shell *shell)
 {
     size_t len = my_strarraylen(env);
     char **new_env = malloc(sizeof(char *) * (len + 1));
 
-    if (!new_env)
-        return NULL;
+    if (!new_env) {
+        shell->env = NULL;
+        return;
+    }
     new_env[len] = NULL;
     for (size_t i = 0; env[i]; i++) {
         new_env[i] = strdup(env[i]);
-        if (!new_env[i])
-            return NULL;
+        if (!new_env[i]) {
+            shell->env = NULL;
+            return;
+        }
     }
-    return new_env;
+    shell->env = new_env;
+    shell->local_env = malloc(sizeof(char *));
+    if (!shell->local_env)
+        return;
+    shell->local_env[0] = NULL;
 }
 
 static int init_history_and_alias(struct my_shell *shell)
@@ -46,8 +54,8 @@ struct my_shell *create_my_shell(char const **env)
 
     if (!shell)
         return NULL;
-    shell->env = dup_env((char **) env);
-    if (!shell->env)
+    dup_env((char **) env, shell);
+    if (!shell->env || !shell->local_env)
         return NULL;
     shell->fd_save[SAVE_STDIN] = dup(STDIN_FILENO);
     shell->fd_save[SAVE_STDOUT] = dup(STDOUT_FILENO);
