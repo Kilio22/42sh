@@ -19,12 +19,12 @@ static char **get_path(char **env)
 
     env_index = find_var_index("PATH", env);
     if (env_index == -1) {
-        fprint(stderr, "No PATH in env.\n");
+        fprintf(stderr, "No PATH in env.\n");
         return NULL;
     }
     path = my_str_towordarray(env[env_index], ":");
     if (path == NULL)
-        fprint(stderr, "No PATH in env.\n");
+        fprintf(stderr, "No PATH in env.\n");
     return path;
 }
 
