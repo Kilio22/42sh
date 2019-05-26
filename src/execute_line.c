@@ -6,6 +6,11 @@
 */
 
 #include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+#include "my_string.h"
+#include "builtins.h"
+#include "my.h"
 #include "shell.h"
 
 static struct cmd_s *get_next_command(struct cmd_s *command, ret_t ret)
@@ -47,16 +52,21 @@ static int execute_command_list(struct my_shell *shell, struct cmd_s *command)
     return ret;
 }
 
-void check_aliases(struct cmd_s *cmd, struct my_shell *shell)
+int check_special_char(struct cmd_s *cmd, struct my_shell *shell)
 {
     struct pipe_s *head;
+    int n_val = 0;
 
     for (; cmd; cmd = cmd->next) {
         head = cmd->pipe;
-        for (; head; head = head->next) {
+        for (; head && n_val == 0; head = head->next) {
             apply_alias(&head->token_list, shell->aliases);
+            n_val = env_variables_loop(head->token_list, shell);
         }
+        if (n_val != 0)
+            return -1;
     }
+    return 0;
 }
 
 ret_t execute_line(struct my_shell *shell, char *line)
@@ -72,7 +82,8 @@ ret_t execute_line(struct my_shell *shell, char *line)
         return 1; // ! free
     if (pipe_parser(commands) == -1)
         return 1; // ! free
-    check_aliases(commands, shell);
+    if (check_special_char(commands, shell) == -1)
+        return 1;
     ret = execute_command_list(shell, commands);
     if (delete_command(commands) == -1)
         return 1; // ! free
