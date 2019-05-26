@@ -64,6 +64,7 @@ ssize_t my_getenv_index(struct my_shell *shell, const char *name);
 char *get_line(FILE *f_stream);
 int set_foreground_pgrp(pid_t pgrp);
 void ignore_signals(bool flag);
+int env_variables_token(struct token_node *token, struct my_shell *shell);
 int env_variables_loop(struct token_node *token, struct my_shell *shell);
 
 /* Builtins */

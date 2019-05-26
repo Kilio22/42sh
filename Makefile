@@ -106,6 +106,7 @@ SRC	=	$(BUILTINS)echo/echo.c \
 		delete_command.c \
 		destroy_my_shell.c \
 		do_redirections.c \
+		env_variables_tokens.c \
 		env_variables.c	\
 		execute_builtin.c \
 		execute_command.c \

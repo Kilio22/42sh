@@ -80,13 +80,13 @@ ret_t execute_line(struct my_shell *shell, char *line)
         return 1;
     commands = separate_token_list(token_head);
     if (!commands)
-        return 1; // ! free
+        return 1;
     if (pipe_parser(commands) == -1)
-        return 1; // ! free
+        return 1; 
     if (check_special_char(commands, shell) == -1)
         return 1;
     ret = execute_command_list(shell, commands);
     if (delete_command(commands) == -1)
-        return 1; // ! free
+        return 1;
     return ret;
 }
