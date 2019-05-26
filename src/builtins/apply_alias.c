@@ -32,7 +32,7 @@ static int new_node(struct token_node **node, char **command)
 {
     struct token_node *new;
 
-    if (*command == (*node)->content)
+    if (strcmp(*command, (*node)->content) == 0)
         return 0;
     new = create_token_list_from_line(*command);
     free(*command);
