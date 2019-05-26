@@ -67,6 +67,7 @@ SRC	=	$(BUILTINS)echo/echo.c \
 		$(BUILTINS)disp_alias.c \
 		$(BUILTINS)env.c \
 		$(BUILTINS)exit.c \
+		$(BUILTINS)repeat.c \
 		$(BUILTINS)unalias.c \
 		$(BUILTINS)unset.c \
 		$(BUILTINS)unsetenv.c \

@@ -24,5 +24,6 @@ const struct builtins_s builtins[] = {
     {"unsetenv", "unset one or more env variable(s)", my_unsetenv},
     {"set", "display local env", my_set},
     {"unset", "unset one or more local variable(s)", my_unset},
+    {"repeat", "repeats the given command N times", my_repeat},
     {NULL, NULL, NULL}
 };

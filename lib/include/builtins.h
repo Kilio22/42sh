@@ -60,5 +60,6 @@ int my_str_isalpha(char *str);
 int is_alpha(char c);
 void free_tab(char **tab);
 bool is_in_touched(char *name, char **touched);
+int my_repeat(struct my_shell *shell, char **av);
 
 #endif /* !BUILTINS_H_ */
