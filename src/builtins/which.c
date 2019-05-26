@@ -12,11 +12,29 @@
 #include "my_stdio.h"
 #include "shell.h"
 
+static char **get_path(char **env)
+{
+    int env_index;
+    char **path;
+
+    env_index = find_var_index("PATH", env);
+    if (env_index == -1) {
+        fprintf(stderr, "No PATH in env.\n");
+        return NULL;
+    }
+    path = my_str_towordarray(env[env_index], ":");
+    if (path == NULL)
+        fprintf(stderr, "No PATH in env.\n");
+    return path;
+}
+
 static void find_which_path(char *command, char **env)
 {
-    char **path = my_str_towordarray(env[find_var_index("PATH", env)], ":");
+    char **path = get_path(env);
     char *str = NULL;
 
+    if (path == NULL)
+        return;
     for (size_t i = 0; path[i] != NULL; i++) {
         str = my_strcat_nofree(path[i], "/");
         if (str == NULL)
