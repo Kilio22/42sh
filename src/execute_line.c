@@ -58,6 +58,8 @@ int check_special_char(struct cmd_s *cmd, struct my_shell *shell)
     int n_val = 0;
 
     for (; cmd; cmd = cmd->next) {
+        if (!cmd->pipe)
+            continue;
         head = cmd->pipe;
         for (; head && n_val == 0; head = head->next) {
             apply_alias(&head->token_list, shell->aliases);

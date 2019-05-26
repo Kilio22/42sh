@@ -71,7 +71,13 @@ int env_variables_loop(struct token_node *token, struct my_shell *shell)
 {
     int n_val = 0;
 
+    if (!token)
+        return 0;
     while (token) {
+        if (!token->content) {
+            token = token->next;
+            continue;
+        }
         if (!strncmp(token->content, "$?", 2))
             n_val = get_return_value(token, shell);
         else if (!strncmp(token->content, "$", 1) && token->content[1] != '\0')
