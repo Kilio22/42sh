@@ -9,7 +9,7 @@
 #include <stdlib.h>
 #include "tokenizer.h"
 
-int add_node(struct token_node *head, enum delim_ids id, char *ptr, size_t n)
+int add_node(struct token_node *head, enum delim_ids id, char *ptr, ssize_t n)
 {
     struct token_node *last;
     struct token_node *new;

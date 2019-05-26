@@ -10,7 +10,7 @@
 #include <stdlib.h>
 #include "my.h"
 
-static int is_alphanumeric(char c)
+int is_alphanumeric(char c)
 {
     if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'))
         return (1);
