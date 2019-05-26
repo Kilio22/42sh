@@ -14,7 +14,7 @@
 static ssize_t get_container_end(char *ptr, char *begin, char *end)
 {
     size_t count = 1;
-    
+
     for (ssize_t i = 0; ptr[i]; i++) {
         if (begin && !strncmp(ptr + i, begin, strlen(begin)))
             ++count;
