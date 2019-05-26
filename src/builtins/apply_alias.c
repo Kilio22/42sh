@@ -5,6 +5,7 @@
 ** apply_alias
 */
 
+#include <stdlib.h>
 #include "shell.h"
 #include "my_string.h"
 
