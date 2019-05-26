@@ -42,6 +42,18 @@ static int execute_command_list(struct my_shell *shell, struct cmd_s *command)
     return ret;
 }
 
+void check_aliases(struct cmd_s *cmd, struct my_shell *shell)
+{
+    struct pipe_s *head;
+
+    for (; cmd; cmd = cmd->next) {
+        head = cmd->pipe;
+        for (; head; head = head->next) {
+            apply_alias(&head->token_list, shell->aliases);
+        }
+    }
+}
+
 ret_t execute_line(struct my_shell *shell, char *line)
 {
     struct token_node *token_head = create_token_list_from_line(line);
@@ -55,6 +67,7 @@ ret_t execute_line(struct my_shell *shell, char *line)
         return 1; // ! free
     if (pipe_parser(commands) == -1)
         return 1; // ! free
+    check_aliases(commands, shell);
     ret = execute_command_list(shell, commands);
     if (delete_command(commands) == -1)
         return 1; // ! free
