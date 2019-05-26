@@ -29,7 +29,6 @@ struct my_shell {
     ret_t n_return;
     pid_t pgid;
     struct alias_s aliases[MAX_ALIAS];
-    struct breakpoints_s *history;
 };
 
 struct builtins_s {

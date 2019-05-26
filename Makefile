@@ -51,12 +51,6 @@ SRC	=	$(BUILTINS)echo/echo.c \
 		$(BUILTINS)echo/flag_parsing.c \
 		$(BUILTINS)set/set.c \
 		$(BUILTINS)set/set_util.c \
-		$(BUILTINS)history/add_history.c \
-		$(BUILTINS)history/find_in_history.c \
-		$(BUILTINS)history/free_and_save_history.c \
-		$(BUILTINS)history/init_history.c \
-		$(BUILTINS)history/print_history.c \
-		$(BUILTINS)history/replace_string_history.c \
 		$(BUILTINS)setenv/setenv.c \
 		$(BUILTINS)setenv/str_valid.c \
 		$(BUILTINS)alias.c \

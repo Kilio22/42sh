@@ -22,7 +22,7 @@ static char *strcat_for_env_variables(char *str, char *new, char *ptr)
     total_len = strlen(str) - tmp_len + strlen(new);
     full_str = malloc(sizeof(char) * (total_len + 1));
     if (!full_str)
-        return str;
+        exit(84);
     for (total_len = 0; str[total_len] != '$'; total_len++);
     full_str[0] = '\0';
     strncpy(full_str, str, total_len);

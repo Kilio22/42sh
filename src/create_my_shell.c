@@ -37,13 +37,8 @@ static void dup_env(char **env, struct my_shell *shell)
     shell->local_env[0] = NULL;
 }
 
-static int init_history_and_alias(struct my_shell *shell)
+static int init_aliases(struct my_shell *shell)
 {
-    shell->history = malloc(sizeof(struct breakpoints_s));
-    if (shell->history == NULL)
-        return -1;
-    if (init_history(shell->history) == -1)
-        return -1;
     init_alias(shell->aliases);
     return 0;
 }
@@ -67,7 +62,7 @@ shell->fd_save[SAVE_STDERR] == -1)
     if (shell->pgid == -1)
         return NULL;
     shell->n_return = 0;
-    if (init_history_and_alias(shell) == -1)
+    if (init_aliases(shell) == -1)
         return NULL;
     return shell;
 }

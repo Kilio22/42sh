@@ -18,7 +18,6 @@ const struct builtins_s builtins[] = {
     {"which", "displays the real command that the shell execute", my_which},
     {"setenv", "set a new env variable or change an existing one", my_setenv},
     {"whoami", "displays who you are", my_whoami},
-    {"history", "displays the history of commands", print_history},
     {"unalias", "remove one or more aliases", my_unalias},
     {"builtins", "displays all shell built-in", display_builtins},
     {"unsetenv", "unset one or more env variable(s)", my_unsetenv},

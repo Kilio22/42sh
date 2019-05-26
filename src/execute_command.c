@@ -17,6 +17,7 @@
 static char **get_av(struct pipe_s *pipe)
 {
     char **av = NULL;
+    char *tmp = NULL;
     struct token_node *tokens;
 
     if (!pipe || !pipe->token_list || !pipe->token_list->content)
@@ -27,7 +28,10 @@ static char **get_av(struct pipe_s *pipe)
     av[0] = NULL;
     tokens = pipe->token_list;
     for (; tokens; tokens = tokens->next) {
-        av = my_realloc_array(av, strdup(tokens->content));
+        tmp = strdup(tokens->content);
+        if (!tmp)
+            exit(84);
+        av = my_realloc_array(av, tmp);
         if (!av)
             exit(84);
     }

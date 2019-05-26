@@ -6,7 +6,6 @@
 */
 
 #include <stdbool.h>
-#include "history.h"
 #include "shell.h"
 #include "echo.h"
 
@@ -42,7 +41,6 @@ void display_aliases(struct alias_s alias[MAX_ALIAS]);
 int find_alias(struct alias_s alias[MAX_ALIAS], char *name);
 char *my_strcat_freeleft(const char *left, const char *right);
 void display_one_alias(struct alias_s alias[MAX_ALIAS], char *name);
-int print_history(struct my_shell *shell, char **av);
 int display_builtins(struct my_shell *shell, char **av);
 int correct_price(struct my_shell *shell, char **av);
 int snake(struct my_shell *shell, char **av);

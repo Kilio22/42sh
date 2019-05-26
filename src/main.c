@@ -6,6 +6,7 @@
 */
 
 #include <stdlib.h>
+#include <time.h>
 #include "shell.h"
 
 int main(int argc, char const *argv[], char const *env[])
