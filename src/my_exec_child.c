@@ -23,17 +23,17 @@ static ret_t execute_parenthesises(struct my_shell *shell, struct pipe_s *pipes)
 {
     pid_t pid = fork();
     int wstatus;
-    ret_t ret;
 
     if (pid == -1)
         return 1;
     if (pid == 0) {
+        shell->fd_save[0] = dup(pipes->fd[0]);
+        shell->fd_save[1] = dup(pipes->fd[1]);
+        shell->fd_save[2] = dup(pipes->fd[2]);
         _exit(execute_line(shell, pipes->token_list->content));
-    } else {
+    } else
         waitpid(pid, &wstatus, 0);
-        ret = analyse_exit_status(wstatus);
-    }
-    return ret;
+    return analyse_exit_status(wstatus);
 }
 
 void execute_child(struct my_shell *shell, struct pipe_s *pipes, char **av)
