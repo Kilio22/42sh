@@ -25,7 +25,7 @@ static char *get_name(char *env)
 static int find_index(char **env, char *name)
 {
     int good_index = -1;
-    char *env_name;
+    char *env_name = NULL;
 
     for (int i = 0; env[i] != NULL; i++) {
         env_name = get_name(env[i]);
