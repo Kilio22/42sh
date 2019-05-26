@@ -48,12 +48,13 @@ static int do_db_lredir(struct pipe_s *pipes, int i)
     ssize_t len;
     char *full_line = get_input_line();
 
-    if (!full_line || strcmp(full_line, pipes->redirections[i]))
+    if (!full_line || !strcmp(full_line, pipes->redirections[i]))
         return 0;
-    while ((line = get_input_line()) != NULL ||
+    full_line = my_strcat_freeleft(full_line, "\n");
+    while ((line = get_input_line()) != NULL &&
 strcmp(line, pipes->redirections[i])) {
-        full_line = my_strcat(full_line, "\n");
         full_line = my_strcat(full_line, line);
+        full_line = my_strcat_freeleft(full_line, "\n");
     }
     len = strlen(full_line);
     if (pipe(pipefd) == -1 || write(pipefd[1], full_line, len) != len)

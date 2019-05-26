@@ -47,7 +47,7 @@ int correct_price(struct my_shell *shell, char **av);
 int snake(struct my_shell *shell, char **av);
 int my_env(struct my_shell *shell, char **av);
 int my_cd(struct my_shell *shell, char **av);
-int apply_alias(struct token_node *node, struct alias_s aliases[MAX_ALIAS]);
+int apply_alias(struct token_node **node, struct alias_s aliases[MAX_ALIAS]);
 int my_exit(struct my_shell *shell, char **av);
 
 #endif /* !BUILTINS_H_ */

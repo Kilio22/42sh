@@ -8,10 +8,6 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-#include <errno.h>
-#include <string.h>
-#include <stdio.h>
-
 int set_foreground_pgrp(pid_t pgrp)
 {
     if (!isatty(STDIN_FILENO))
