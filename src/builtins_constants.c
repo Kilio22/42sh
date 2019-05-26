@@ -22,5 +22,7 @@ const struct builtins_s builtins[] = {
     {"unalias", "remove one or more aliases", my_unalias},
     {"builtins", "displays all shell built-in", display_builtins},
     {"unsetenv", "unset one or more env variable(s)", my_unsetenv},
+    {"set", "display local env", my_set},
+    {"unset", "unset one or more local variable(s)", my_unset},
     {NULL, NULL, NULL}
 };

@@ -32,6 +32,18 @@ static char *strcat_for_env_variables(char *str, char *new, char *ptr)
     return full_str;
 }
 
+static char *get_var(struct my_shell *shell, char *name)
+{
+    char *var;
+
+    if (!name)
+        return NULL;
+    var = my_get(shell, name);
+    if (!var)
+        var = my_getenv(shell, name);
+    return var;
+}
+
 static int env_variables(struct token_node *token, struct my_shell *shell)
 {
     char *ptr = NULL;
@@ -44,7 +56,7 @@ static int env_variables(struct token_node *token, struct my_shell *shell)
     for (; ptr[len] && is_alphanumeric(ptr[len]) && ptr[len] != '_'; len++);
     if (!(ptr = strndup(ptr, len)))
         return -1;
-    var = my_getenv(shell, ptr);
+    var = get_var(shell, ptr);
     if (!var) {
         ptr[len] = '\0';
         fprintf(stderr, "%s: Undefined variable.\n", ptr);
@@ -71,10 +83,16 @@ int env_variables_loop(struct token_node *token, struct my_shell *shell)
 {
     int n_val = 0;
 
+    if (!token)
+        return 0;
     while (token) {
+        if (!token->content) {
+            token = token->next;
+            continue;
+        }
         if (!strncmp(token->content, "$?", 2))
             n_val = get_return_value(token, shell);
-        else if (!strncmp(token->content, "$", 1) && token->content[1] != '\0')
+        else if (strchr(token->content, '$') && token->content[1] != '\0')
             n_val = env_variables(token, shell);
         if (n_val != 0)
             return -1;

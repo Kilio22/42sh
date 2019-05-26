@@ -49,6 +49,8 @@ UTILS	=	utils/
 
 SRC	=	$(BUILTINS)echo/echo.c \
 		$(BUILTINS)echo/flag_parsing.c \
+		$(BUILTINS)set/set.c \
+		$(BUILTINS)set/set_util.c \
 		$(BUILTINS)history/add_history.c \
 		$(BUILTINS)history/find_in_history.c \
 		$(BUILTINS)history/free_and_save_history.c \
@@ -59,12 +61,14 @@ SRC	=	$(BUILTINS)echo/echo.c \
 		$(BUILTINS)setenv/str_valid.c \
 		$(BUILTINS)alias.c \
 		$(BUILTINS)apply_alias.c \
+		$(BUILTINS)apply_alias_utils.c \
 		$(BUILTINS)builtins.c \
 		$(BUILTINS)cd.c \
 		$(BUILTINS)disp_alias.c \
 		$(BUILTINS)env.c \
 		$(BUILTINS)exit.c \
 		$(BUILTINS)unalias.c \
+		$(BUILTINS)unset.c \
 		$(BUILTINS)unsetenv.c \
 		$(BUILTINS)utils_alias.c \
 		$(BUILTINS)utils_builtins.c \
@@ -93,6 +97,7 @@ SRC	=	$(BUILTINS)echo/echo.c \
 		$(UTILS)get_builtin_idx.c \
 		$(UTILS)get_line.c \
 		$(UTILS)is_builtin.c \
+		$(UTILS)my_get.c \
 		$(UTILS)my_getenv_index.c \
 		$(UTILS)my_getenv.c \
 		$(UTILS)set_foreground_pgrp.c \

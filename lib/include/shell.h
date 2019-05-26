@@ -24,6 +24,7 @@ typedef unsigned char ret_t;
 
 struct my_shell {
     char **env;
+    char **local_env;
     int fd_save[FD_SAVE_NB];
     ret_t n_return;
     pid_t pgid;
@@ -58,6 +59,7 @@ int analyse_exit_status(int wstatus);
 
 /* Useful functions (maybe) */
 char *my_getenv(struct my_shell *shell, const char *name);
+char *my_get(struct my_shell *shell, const char *name);
 ssize_t my_getenv_index(struct my_shell *shell, const char *name);
 char *get_line(FILE *f_stream);
 int set_foreground_pgrp(pid_t pgrp);

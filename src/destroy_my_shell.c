@@ -13,6 +13,7 @@
 void destroy_my_shell(struct my_shell *shell)
 {
     my_free_fields(shell->env);
+    my_free_fields(shell->local_env);
     close(shell->fd_save[SAVE_STDIN]);
     close(shell->fd_save[SAVE_STDOUT]);
     close(shell->fd_save[SAVE_STDERR]);
