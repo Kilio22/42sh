@@ -11,10 +11,16 @@
 #include "parser.h"
 #include "tokenizer.h"
 
-static ssize_t get_container_end(char *ptr, char *end)
+static ssize_t get_container_end(char *ptr, char *begin, char *end)
 {
+    size_t count = 1;
+    
     for (ssize_t i = 0; ptr[i]; i++) {
+        if (begin && !strncmp(ptr + i, begin, strlen(begin)))
+            ++count;
         if (!strncmp(ptr + i, end, strlen(end)))
+            --count;
+        if (count == 0)
             return i;
     }
     fprintf(stderr, "Unmatched '%s'\n", end);
@@ -22,19 +28,19 @@ static ssize_t get_container_end(char *ptr, char *end)
 }
 
 static int analyse_delimiter(struct token_node *head, char *ptr,
-                                size_t delim_idx, ssize_t *n)
+                                size_t d, ssize_t *n)
 {
     ssize_t end_n;
 
-    if (DELIM_TYPE(delim_idx) == T_CONTAINER) {
-        end_n = get_container_end(ptr + *n, DELIM_END(delim_idx));
+    if (DELIM_TYPE(d) == T_CONTAINER) {
+        end_n = get_container_end(ptr + *n, DELIM_STR(d), DELIM_END(d));
         if (end_n == -1)
             return -1;
-        if (add_node(head, DELIM_ID(delim_idx), ptr + *n, end_n) == -1)
+        if (add_node(head, DELIM_ID(d), ptr + *n, end_n) == -1)
             return -1;
-        *n += end_n + strlen(DELIM_END(delim_idx));
+        *n += end_n + strlen(DELIM_END(d));
     } else {
-        if (add_node(head, DELIM_ID(delim_idx), ptr, *n) == -1)
+        if (add_node(head, DELIM_ID(d), ptr, *n) == -1)
             return -1;
     }
     return 0;
@@ -47,6 +53,8 @@ static int add_token_node(struct token_node *head, char *ptr,
         if (add_node(head, ID_TEXT, ptr, *n) == -1)
             return delete_token_node_list(head), -1;
     } else {
+        if (!DELIM_STR(delim_idx))
+            return 0;
         (*n) += strlen(DELIM_STR(delim_idx));
         if (DELIM_TYPE(delim_idx) == T_WITHOUT)
             return 0;
@@ -65,7 +73,7 @@ static ssize_t find_next_delim_index(char *line)
     while (line[i]) {
         if (DELIM_TYPE(d) == T_CONTAINER && DELIM_ID(d) != ID_PARENTHESIS) {
             RM_CHAR(line, i);
-            if ((i_end = get_container_end(line + i, DELIM_END(d))) == -1)
+            if ((i_end = get_container_end(line + i, NULL, DELIM_END(d))) == -1)
                 return -1;
             i += i_end;
             RM_CHAR(line, i);
