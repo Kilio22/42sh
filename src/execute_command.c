@@ -78,11 +78,11 @@ struct pipe_s *pipes)
     ret = execute_builtin(av, shell);
     ignore_signals(true);
     if (dup2(shell->fd_save[0], STDIN_FILENO) == -1)
-        return fprintf(stderr, "%s\n", strerror(errno)), 1;
+        return 1;
     if (dup2(shell->fd_save[1], STDOUT_FILENO) == -1)
-        return fprintf(stderr, "%s\n", strerror(errno)), 1;
+        return 1;
     if (dup2(shell->fd_save[2], STDERR_FILENO) == -1)
-        return fprintf(stderr, "%s\n", strerror(errno)), 1;
+        return 1;
     return ret;
 }
 

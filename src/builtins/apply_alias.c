@@ -32,6 +32,10 @@ static int new_node(struct token_node **node, char **command)
 {
     struct token_node *new;
 
+    if (strcmp(*command, (*node)->content) == 0) {
+        free(*command);
+        return 0;
+    }
     new = create_token_list_from_line(*command);
     free(*command);
     if (new == NULL)
@@ -89,9 +93,11 @@ int loop_apply_alias(struct token_node **node,
 struct alias_s aliases[MAX_ALIAS])
 {
     int ret_val = 0;
-    char *alias = strdup((*node)->content);
+    char *alias = NULL;
     char **touched = malloc(sizeof(char *));
 
+    if ((*node)->content != NULL)
+        alias = strdup((*node)->content);
     if (alias == NULL || touched == NULL)
         return -1;
     touched[0] = NULL;
