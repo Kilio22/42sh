@@ -92,9 +92,9 @@ pid_t execute_command(struct my_shell *shell, struct pipe_s *pipes, pid_t pgid)
 
     if (!av)
         return -1;
+    if (is_builtin(av[0]) && !pipes->next)
+        return execute_builtin_in_shell(av, shell, pipes);
     while (pipes) {
-        if (is_builtin(av[0]) && !pipes->next)
-            return execute_builtin_in_shell(av, shell, pipes);
         if (check_pipes_for_cmd(pipes) == -1)
             return -1;
         pgid = execute_pipe(shell, pipes, av, pgid);
