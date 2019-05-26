@@ -27,9 +27,9 @@ static ret_t execute_parenthesises(struct my_shell *shell, struct pipe_s *pipes)
     if (pid == -1)
         return 1;
     if (pid == 0) {
-        shell->fd_save[0] = dup(pipes->fd[0]);
-        shell->fd_save[1] = dup(pipes->fd[1]);
-        shell->fd_save[2] = dup(pipes->fd[2]);
+        shell->fd_save[0] = pipes->fd[0];
+        shell->fd_save[1] = pipes->fd[1];
+        shell->fd_save[2] = pipes->fd[2];
         _exit(execute_line(shell, pipes->token_list->content));
     } else
         waitpid(pid, &wstatus, 0);
