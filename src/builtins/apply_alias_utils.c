@@ -11,6 +11,16 @@
 #include "my_string.h"
 #include "my.h"
 
+char *free_and_dup_command(char **command, int index,
+struct alias_s aliases[MAX_ALIAS])
+{
+    char *str;
+
+    free(*command);
+    str = strdup(aliases[index].command);
+    return str;
+}
+
 void free_tab(char **tab)
 {
     if (!tab)

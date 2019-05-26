@@ -15,7 +15,7 @@ struct alias_s alias[MAX_ALIAS])
     char *new_cmd = my_strdup("");
     int index = find_alias(alias, name);
 
-    if (new_cmd == NULL)
+    if (new_cmd == NULL || index == -1)
         return -1;
     for (int i = 0; i < ac; i++) {
         new_cmd = my_strcat_freeleft(new_cmd, cmd[i]);

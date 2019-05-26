@@ -60,5 +60,7 @@ int my_str_isalpha(char *str);
 int is_alpha(char c);
 void free_tab(char **tab);
 bool is_in_touched(char *name, char **touched);
+char *free_and_dup_command(char **command, int index,
+struct alias_s aliases[MAX_ALIAS]);
 
 #endif /* !BUILTINS_H_ */

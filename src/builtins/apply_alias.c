@@ -54,8 +54,7 @@ int index, char ***touched)
     if (is_in_touched(aliases[index].name, *touched) == true)
         return -2;
     *touched = my_realloc_array(*touched, strdup(aliases[index].name));
-    free(*command);
-    *command = strdup(aliases[index].command);
+    *command = free_and_dup_command(command, index, aliases);
     if (*command == NULL)
         return -1;
     for (int i = 1; array[i] != NULL; i++) {
