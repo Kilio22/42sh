@@ -41,3 +41,6 @@ Here is a list of desired extras:
 - aliases,
 - line edition (multiline, dynamic rebinding, auto-completion dynamic,
 - scripting (a bit harsh though).
+
+# How to use it ?
+make && ./42sh, then use this program like a normal shell.
