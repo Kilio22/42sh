@@ -43,4 +43,6 @@ Here is a list of desired extras:
 - scripting (a bit harsh though).
 
 # How to use it ?
-make && ./42sh, then use this program like a normal shell.
+```sh
+make && ./42sh
+```
